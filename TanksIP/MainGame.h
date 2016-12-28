@@ -1,10 +1,12 @@
 #pragma once
 #include<iostream>
 #include<SDL.h>
+#include "GLSL.h"
 #include "Window.h"
 #include "Input.h"
+#include "Map.h"
 
-namespace tanks{
+namespace Engine{
 
 enum class GameState {
 	PLAY,
@@ -24,13 +26,19 @@ private:
 	void mainLoop();
 	void draw();
 	void processInput();
+	void update();
+	void loadShaders();
+
+	int _height = 768;
+	int _width = 1024;
+	float _fps = 0;
+	int _currentMap = -1;
 
 	Window _window;
 	Input _input;
 	GameState _gameState;
-	int _width = 1024;
-	int _height = 768;
+	GLSL _texProgram;
 
-
+	std::vector<Mapz*> _map;
 };
 }

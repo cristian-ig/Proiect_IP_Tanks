@@ -1,7 +1,7 @@
 #pragma once
 #include <gl/glew.h>
 #include <string>
-namespace tanks
+namespace Engine
 {
 	//a struct that will hold the textures infos
 struct GLTexture 

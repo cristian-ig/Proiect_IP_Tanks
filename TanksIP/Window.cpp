@@ -1,8 +1,9 @@
 #include "Window.h"
 #include <iostream>
-#include "FatError.h"
+//#include "FatError.h"
 
-namespace tanks {
+
+namespace Engine {
 
 Window::Window()
 {
@@ -52,20 +53,19 @@ int Window::init(std::string windowName,
 		flags);
 	if (_window == nullptr)
 	{
-		//eroare fatala
-		FatalError("Window failed to create! unlucky..\n");
+	//FatalError("Window failed to create! unlucky..\n");
 	}
 	//set up OpenGL context
 	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
 	if (glContext == nullptr)
 	{
-		//eroare fatala
+	//FatalError("GLContext failed to create! unlucky..\n");
 	}
 	//init glew
 	GLenum error = glewInit();
 	if (error != GLEW_OK)
 	{
-		FatalError("Glew failed to init! unlucky..\n");
+	//	FatalError("Glew failed to init! unlucky..\n");
 	}
 
 	//Set the background color to blue.. kind of

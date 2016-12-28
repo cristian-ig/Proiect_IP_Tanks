@@ -1,6 +1,6 @@
 #include "Input.h"
 
-namespace tanks {
+namespace Engine {
 
 Input::Input()
 {

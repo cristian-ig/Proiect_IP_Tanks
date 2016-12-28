@@ -1,8 +1,4 @@
-﻿  Window.cpp
-  MainGame.cpp
-  main.cpp
-  Entity.cpp
-  Generating Code...
-  LINK : E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe not found or not built by the last incremental link; performing full link
+﻿  MainGame.cpp
+e:\coding\c++ games\tankrep\trunk\tanksip\maingame.cpp(87): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
   TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe
   TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)

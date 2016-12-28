@@ -1,7 +1,7 @@
 #include <iostream>
 #include "MainGame.h"
 
-using namespace tanks;
+using namespace Engine;
 
 int main(int argc, char** argv) {
 
@@ -53,5 +53,6 @@ http://www-cs-students.stanford.edu/~amitp/gameprog.html
 http://www.3dgep.com/simulating-particle-effects-using-opengl/
 http://www.opengl-tutorial.org/intermediate-tutorials/billboards-particles/particles-instancing/
 http://www.randygaul.net/2014/01/01/simple-sprite-batching/
+https://www.livecoding.tv/learn
 
 #endif
