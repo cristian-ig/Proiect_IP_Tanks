@@ -18,7 +18,7 @@ void MainGame::start()
 	init();
 
 	//loop
-	//mainLoop();
+	mainLoop();
 
 }
 void MainGame::init() {
@@ -26,4 +26,31 @@ void MainGame::init() {
 	window.init("Tanks", 1024, 768, 0);
 	
 }
+
+void MainGame::mainLoop() {
+
+	while (isRunnig) {
+		
+		
+		processInput();
+
+	}
+}
+void MainGame::processInput() {
+
+
+	SDL_Event newEvent;
+
+	while (SDL_PollEvent(&newEvent)) {
+
+		switch (newEvent.type)
+		{
+		case SDL_QUIT: 
+			isRunnig = false;
+			break;
+		}
+
+	}
+}
+
 }

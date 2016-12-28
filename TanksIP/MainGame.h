@@ -23,6 +23,7 @@ class MainGame {
 		void init();
 		void mainLoop();
 		void draw();
+		void processInput();
 
 		Window window;
 
