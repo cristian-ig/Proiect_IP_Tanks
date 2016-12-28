@@ -37,8 +37,8 @@ int Window::init(std::string windowName,
 	_window = SDL_CreateWindow(windowName.c_str(),
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		windowHeight,
 		windowWidth,
+		windowHeight,
 		flags);
 	if (_window == nullptr)
 	{
