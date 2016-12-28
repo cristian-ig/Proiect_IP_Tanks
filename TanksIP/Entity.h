@@ -6,7 +6,10 @@ class Entity
 {
 public:
 	Entity();
-	~Entity();
+	virtual ~Entity();
+
+	virtual void update() = 0;
+
 private:
 
 	float _health = 0.0f;

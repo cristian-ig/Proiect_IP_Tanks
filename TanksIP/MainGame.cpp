@@ -20,7 +20,8 @@ void MainGame::start()
 }
 void MainGame::init() 
 {
-	_window.init("Tanks", _width, _height, 0);
+	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
+	_window.init("Tanks", _width, _height, 0); 
 }
 
 void MainGame::draw()
@@ -37,6 +38,11 @@ void MainGame::mainLoop() {
 	{
 		draw();
 		processInput();
+		/* DEBUG
+
+		std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
+		
+		//*/
 		_window.swapBuffer();
 	}
 }

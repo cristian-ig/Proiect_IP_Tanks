@@ -32,7 +32,7 @@ void Input::releaseKey(unsigned int keyID) {
 
 void Input::setMouseCoords(float x, float y) {
 	_mouseCoords.x = x;
-	_mouseCoords.y = y;
+	_mouseCoords.y = y;	
 }
 
 bool Input::isKeyDown(unsigned int keyID) {
