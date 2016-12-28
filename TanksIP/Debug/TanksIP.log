@@ -1,6 +1,8 @@
-﻿  MainGame.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
+﻿  Window.cpp
+  MainGame.cpp
   main.cpp
-  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\trunk\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+  Entity.cpp
+  Generating Code...
+  LINK : E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe not found or not built by the last incremental link; performing full link
+  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)
