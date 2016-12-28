@@ -7,6 +7,6 @@ int main(int argc, char** argv) {
 
 	MainGame maingame;
 	maingame.start();
-	system("pause");
+//	system("pause");
 	return 0;
 }

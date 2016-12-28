@@ -17,6 +17,15 @@ int Window::init(std::string windowName,
 	int windowHeight,
 	unsigned int windowFlag)
 {
+	//Initialize SDL
+	SDL_Init(SDL_INIT_EVERYTHING);
+
+	//Tell SDL that we want a double buffered window so we dont get
+	//any flickering
+	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
+
+
 	Uint32 flags = SDL_WINDOW_OPENGL;
 	_windowWidth = windowWidth;
 	_windowHeight = windowHeight;
