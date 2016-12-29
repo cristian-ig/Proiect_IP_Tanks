@@ -79,6 +79,7 @@ int Window::init(std::string windowName,
 	//Check the OpenGL version
 	std::printf("***   OpenGL Version: %s   ***\n", glGetString(GL_VERSION));
 
+	
 	//Set VSYNC
 	SDL_GL_SetSwapInterval(1);
 

@@ -1,4 +1,3 @@
-﻿  MainGame.cpp
-e:\coding\c++ games\tankrep\trunk\tanksip\maingame.cpp(87): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+﻿  SpriteBatch.cpp
+  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\trunk\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)

@@ -18,7 +18,7 @@ void MainGame::start()
 	mainLoop();
 
 }
-
+	//SDL_Init(SDL_INIT_EVERYTHING);
 void MainGame::update()
 {
 	return;
@@ -49,8 +49,10 @@ void MainGame::draw()
 
 	//TODO: Add Camera
 	//FIX THIS?!?!?
-	//_map[0]->draw();
-
+	try {
+   		_map[0]->draw();
+	}
+	catch (int ex) { std::cout << "_map[0]->draw(); err"; }
 
 	_texProgram.unbind();
 	_window.swapBuffer();

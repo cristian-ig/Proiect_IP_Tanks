@@ -1,5 +1,6 @@
 #include "GLSL.h"
 #include "FileLoad.h"
+#include<iostream>
 //#include "FatError.h"
 
 
@@ -51,7 +52,7 @@ void GLSL::compileShadersFromSource(const char* vertexSource, const char* fragme
 }
 
 void GLSL::linkShaders()
-{
+{	try{
 	//Attach our shaders to our program
 	glAttachShader(_programID, _vertexShaderID);
 	glAttachShader(_programID, _fragmentShaderID);
@@ -79,7 +80,8 @@ void GLSL::linkShaders()
 
 		//print the error log and quit
 		std::printf("%s\n", &(errorLog[0]));
-	//	FatalError("Shaders failed to link!");
+		//	FatalError("Shaders failed to link!");
+	
 	}
 
 	//Always detach shaders after a successful link.
@@ -87,6 +89,7 @@ void GLSL::linkShaders()
 	glDetachShader(_programID, _fragmentShaderID);
 	glDeleteShader(_vertexShaderID);
 	glDeleteShader(_fragmentShaderID);
+} catch (int ex) { std::cout << "linkShader err"; throw ex; }
 }
 
 void GLSL::addAttribute(const std::string& attributeName)

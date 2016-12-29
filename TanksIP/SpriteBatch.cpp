@@ -1,5 +1,6 @@
 #include "SpriteBatch.h"
 #include <algorithm>
+#include<iostream>
 
 namespace Engine {
 
@@ -65,31 +66,46 @@ namespace Engine {
 
 	void SpriteBatch::end() {
 		// Set up all pointers for fast sorting
-		_glyphPointers.resize(_glyphs.size());
-		for (size_t i = 0; i < _glyphs.size(); i++) {
-			_glyphPointers[i] = &_glyphs[i];
+		try {
+			_glyphPointers.resize(_glyphs.size());
+			for (size_t i = 0; i < _glyphs.size(); i++) {
+				_glyphPointers[i] = &_glyphs[i];
+				//std::cout << _glyphPointers[i] << std::endl;
+			}
+			sortGlyphs();
+			createRenderBatches();
 		}
-		sortGlyphs();
-		createRenderBatches();
+		catch (int ex) {
+			std::cout << "spritebatch end err"; throw ex;
+		}
 	}
 
 	void SpriteBatch::draw(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint texture, float depth, const Color& color) {
-		_glyphs.emplace_back(destRect, uvRect, texture, depth, color);
+		try {
+			_glyphs.emplace_back(destRect, uvRect, texture, depth, color);
+		}
+		catch (int ex) { std::cout << "Spritebatch draw err"; throw ex; }
 	}
 
 	void SpriteBatch::renderBatch() {
 
 		// Bind our VAO. This sets up the opengl state we need, including the 
 		// vertex attribute pointers and it binds the VBO
-		glBindVertexArray(_vao);
-
+		//PROGRAM BREAKS HERE
+		
+		try {
+			glBindVertexArray(_vao);
+			std::cout << &_vao << std::endl;
 		for (size_t i = 0; i < _renderBatches.size(); i++) {
+			std::cout << &_renderBatches[i] << std::endl;;
 			glBindTexture(GL_TEXTURE_2D, _renderBatches[i].texture);
 
-			glDrawArrays(GL_TRIANGLES, _renderBatches[i].offset, _renderBatches[i].numVertices);
+			glDrawArrays(GL_TRIANGLES, _renderBatches[i].offset, _renderBatches[i].numVertices);//PROGRAM BREAKS AFTER THIS
 		}
 
 		glBindVertexArray(0);
+		} catch (...) { std::cout << "glBindVertexArray(vao) error";  }
+
 	}
 
 	void SpriteBatch::createRenderBatches() {
@@ -100,6 +116,7 @@ namespace Engine {
 		vertices.resize(_glyphPointers.size() * 6);
 
 		if (_glyphPointers.empty()) {
+			std::cout << "glyphpointers empty" << std::endl;
 			return;
 		}
 
@@ -115,27 +132,29 @@ namespace Engine {
 		vertices[cv++] = _glyphPointers[0]->topRight;
 		vertices[cv++] = _glyphPointers[0]->topLeft;
 		offset += 6;
+		try {
+			//Add all the rest of the glyphs
+			for (size_t cg = 1; cg < _glyphPointers.size(); cg++) {
 
-		//Add all the rest of the glyphs
-		for (size_t cg = 1; cg < _glyphPointers.size(); cg++) {
-
-			// Check if this glyph can be part of the current batch
-			if (_glyphPointers[cg]->texture != _glyphPointers[cg - 1]->texture) {
-				// Make a new batch
-				_renderBatches.emplace_back(offset, 6, _glyphPointers[cg]->texture);
+				// Check if this glyph can be part of the current batch
+				if (_glyphPointers[cg]->texture != _glyphPointers[cg - 1]->texture) {
+					// Make a new batch
+					_renderBatches.emplace_back(offset, 6, _glyphPointers[cg]->texture);
+				}
+				else {
+					// If its part of the current batch, just increase numVertices
+					_renderBatches.back().numVertices += 6;
+				}
+				vertices[cv++] = _glyphPointers[cg]->topLeft;
+				vertices[cv++] = _glyphPointers[cg]->bottomLeft;
+				vertices[cv++] = _glyphPointers[cg]->bottomRight;
+				vertices[cv++] = _glyphPointers[cg]->bottomRight;
+				vertices[cv++] = _glyphPointers[cg]->topRight;
+				vertices[cv++] = _glyphPointers[cg]->topLeft;
+				offset += 6;
 			}
-			else {
-				// If its part of the current batch, just increase numVertices
-				_renderBatches.back().numVertices += 6;
-			}
-			vertices[cv++] = _glyphPointers[cg]->topLeft;
-			vertices[cv++] = _glyphPointers[cg]->bottomLeft;
-			vertices[cv++] = _glyphPointers[cg]->bottomRight;
-			vertices[cv++] = _glyphPointers[cg]->bottomRight;
-			vertices[cv++] = _glyphPointers[cg]->topRight;
-			vertices[cv++] = _glyphPointers[cg]->topLeft;
-			offset += 6;
 		}
+		catch (int ex) { std::cout << "glyph err"; throw ex; }
 
 		// Bind our VBO
 		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
@@ -150,44 +169,54 @@ namespace Engine {
 	}
 
 	void SpriteBatch::createVertexArray() {
+		try {
+			// Generate the VAO if it isn't already generated
+			if (_vao == 0) {
+				glGenVertexArrays(1, &_vao);
+			}
 
-		// Generate the VAO if it isn't already generated
-		if (_vao == 0) {
-			glGenVertexArrays(1, &_vao);
+			// Bind the VAO. All subsequent opengl calls will modify it's state.
+			glBindVertexArray(_vao);
+
+			//G enerate the VBO if it isn't already generated
+			if (_vbo == 0) {
+				glGenBuffers(1, &_vbo);
+			}
+			glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+
+			//Tell opengl what attribute arrays we need
+			glEnableVertexAttribArray(0);
+			glEnableVertexAttribArray(1);
+			glEnableVertexAttribArray(2);
+
+			//This is the position attribute pointer
+			glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
+			//This is the color attribute pointer
+			glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+			//This is the UV attribute pointer
+			glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
+
+			glBindVertexArray(0);
 		}
-
-		// Bind the VAO. All subsequent opengl calls will modify it's state.
-		glBindVertexArray(_vao);
-
-		//G enerate the VBO if it isn't already generated
-		if (_vbo == 0) {
-			glGenBuffers(1, &_vbo);
-		}
-		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-
-		//Tell opengl what attribute arrays we need
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-
-		//This is the position attribute pointer
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
-		//This is the color attribute pointer
-		glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-		//This is the UV attribute pointer
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, uv));
-
-		glBindVertexArray(0);
-
+		catch (int ex) { std::cout << "create vertex array error"; throw ex; }
 	}
 
 	void SpriteBatch::sortGlyphs() 
 	{
-		std::stable_sort(_glyphPointers.begin(), _glyphPointers.end(), compareTexture);
+		try {
+			std::stable_sort(_glyphPointers.begin(), _glyphPointers.end(), compareTexture);
+		}
+		catch (...) { std::cout << "sortGlyph err";  }
 	}
 
 	bool SpriteBatch::compareTexture(Glyph* a, Glyph* b) {
-		return (a->texture < b->texture);
+		try {
+			//std::cout << a << " " << b << std::endl;
+			return (a->texture < b->texture);
+		}
+		catch (int ex) {
+			std::cout << "comapre texture err"; throw ex;
+		}
 	}
 
 }

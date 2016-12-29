@@ -6,7 +6,10 @@ using namespace Engine;
 int main(int argc, char** argv) {
 
 	MainGame maingame;
-	maingame.start();
+	try {
+		maingame.start();
+	}
+	catch (...) { std::cout << "main"; }
 //	system("pause");
 	return 0;
 }
