@@ -7,12 +7,8 @@ int main(int argc, char** argv) {
 
 	MainGame maingame;
 	maingame.start();
-//	system("pause");
 	return 0;
 }
-
-
-
 
 #if 0
 

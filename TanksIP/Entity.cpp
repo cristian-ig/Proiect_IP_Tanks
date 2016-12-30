@@ -1,8 +1,6 @@
 #include "Entity.h"
 #include <algorithm>
 
-namespace tanks {
-
 	// The minimum distance before a collision occurs
 const float MIN_DISTANCE_X = TANK_WIDTH / 2.0f + TILE_RADIUS;
 const float MIN_DISTANCE_Y = TANK_HEIGHT / 2.0f + TILE_RADIUS;
@@ -155,6 +153,4 @@ void Entity::collideWithTile(glm::vec2 tilePos)
 			}
 		}
 	}
-}
-
 }

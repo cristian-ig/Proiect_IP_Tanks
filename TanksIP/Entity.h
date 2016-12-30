@@ -3,9 +3,10 @@
 #include "OpenGLTexture.h"
 #include <vector>
 #include "Defines.h"
+#include "BonusBox.h"
 
-namespace tanks{
-
+class Players;
+class Enemys;
 
 class Entity
 {
@@ -13,7 +14,9 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	virtual void update() = 0;
+	virtual void update(const std::vector<std::string>& harta,
+		std::vector<Players*>& players,
+		std::vector<Enemys*>& enemys) = 0;
 
 	void draw();
 
@@ -22,6 +25,8 @@ public:
 	bool collideWithMap(const std::vector<std::string>& harta);
 
 	bool collideWithEntity(Entity* entity);
+
+	void applyBonus(BonusBox newBonus);
 
 	//getters
 	glm::vec2 getPosition() const { return _position; }
@@ -43,4 +48,3 @@ protected:
 	GLuint _textureID;
 };
 
-}

@@ -2,7 +2,7 @@
 #include <SDL.h>
 #include <gl/glew.h>
 #include <string>
-
+#include "Defines.h"
 namespace tanks{
 
 	enum Flags {
