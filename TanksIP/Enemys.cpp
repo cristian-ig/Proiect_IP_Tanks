@@ -12,4 +12,9 @@ Enemys::~Enemys()
 {
 }
 
+void Enemys::update()
+{
+	return;
+}
+
 }

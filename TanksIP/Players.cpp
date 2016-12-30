@@ -11,4 +11,10 @@ Players::~Players()
 {
 }
 
+
+void Players::update()
+{
+	return;
+}
+
 }
