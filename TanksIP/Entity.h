@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "GLTexture.h"
+#include "OpenGLTexture.h"
 #include <vector>
 #include "Defines.h"
 
