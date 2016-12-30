@@ -117,9 +117,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Enemys.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="FileLoad.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
@@ -127,10 +129,12 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Enemys.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FatError.h" />
     <ClInclude Include="FileLoad.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="OpenGLTexture.h" />
     <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Input.h" />

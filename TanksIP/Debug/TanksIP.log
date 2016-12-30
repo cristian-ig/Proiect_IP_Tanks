@@ -1,8 +1,10 @@
-﻿  Window.cpp
-  MainGame.cpp
-  main.cpp
-  Entity.cpp
+﻿  MainGame.cpp
+d:\facultate\ip\repo_project_ip\branches\mybranch\tanksip\maingame.cpp(71): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+  FPS.cpp
+d:\facultate\ip\repo_project_ip\branches\mybranch\tanksip\fps.cpp(23): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
   Generating Code...
-  LINK : E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe not found or not built by the last incremental link; performing full link
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+  Compiling...
+  main.cpp
+  Generating Code...
+  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\branches\myBranch\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\branches\myBranch\TanksIP\Debug\TanksIP.pdb (Partial PDB)

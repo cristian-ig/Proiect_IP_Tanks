@@ -26,6 +26,8 @@ int Window::init(std::string windowName,
 
 
 
+
+
 	Uint32 flags = SDL_WINDOW_OPENGL;
 	_windowWidth = windowWidth;
 	_windowHeight = windowHeight;

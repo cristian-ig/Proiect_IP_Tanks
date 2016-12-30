@@ -3,6 +3,11 @@
 #include<SDL.h>
 #include "Window.h"
 #include "Input.h"
+#include"Camera.h"
+#include"FPS.h"
+
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 786
 
 namespace tanks{
 
@@ -28,8 +33,9 @@ private:
 	Window _window;
 	Input _input;
 	GameState _gameState;
-	int _width = 1024;
-	int _height = 768;
+	Camera _camera;
+	FPS _frameTimer;
+	
 
 
 };

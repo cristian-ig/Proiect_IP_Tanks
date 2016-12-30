@@ -21,7 +21,17 @@ void MainGame::start()
 void MainGame::init() 
 {
 	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
-	_window.init("Tanks", _width, _height, 0); 
+	_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
+
+	// camera
+	_camera.init(SCREEN_WIDTH,SCREEN_HEIGHT);
+
+	//timer
+	_frameTimer.init(60);
+
+	//gl
+
+	glDisable(GL_DEPTH_TEST);
 }
 
 void MainGame::draw()
