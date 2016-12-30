@@ -32,6 +32,13 @@ void MainGame::init()
 	//gl
 
 	glDisable(GL_DEPTH_TEST);
+
+	//shaders
+	_shaders.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
+	_shaders.addAttribute("vertexPosition");
+	_shaders.addAttribute("vertexColor");
+	_shaders.addAttribute("vertexUV");
+	_shaders.linkShaders();
 }
 
 void MainGame::draw()
