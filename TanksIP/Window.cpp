@@ -2,7 +2,7 @@
 #include <iostream>
 #include "FatError.h"
 
-namespace tanks {
+namespace Engine {
 
 Window::Window()
 {

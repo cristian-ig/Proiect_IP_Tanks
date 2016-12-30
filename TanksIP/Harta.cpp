@@ -11,7 +11,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 
 	//failure check
 	if (file.fail()) {}
-		//tanks::FatalError("Failed to open " + fileName);
+		//Engine::FatalError("Failed to open " + fileName);
 
 
 	std::string temp;
@@ -20,7 +20,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 		_mapData.emplace_back(temp);  //read the map line by line
 	}
 
-	tanks::Color(255, 255, 255, 255); //white
+	Engine::Color(255, 255, 255, 255); //white
 
 									  // Render all the tiles
 	for (size_t y = 0; y < _mapData.size(); y++) 

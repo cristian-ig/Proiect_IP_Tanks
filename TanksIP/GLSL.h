@@ -3,7 +3,7 @@
 #include<gl/glew.h>
 
 
-namespace tanks {
+namespace Engine {
 
 	class GLSL
 	{

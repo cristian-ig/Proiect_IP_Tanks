@@ -9,7 +9,7 @@
 
 
 
-namespace tanks{
+using namespace Engine;
 
 enum class GameState {
 	PLAY,
@@ -40,4 +40,3 @@ private:
 
 
 };
-}

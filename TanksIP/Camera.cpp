@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace tanks {
+namespace Engine {
 
 	Camera::Camera() :
 		_cameraMatrix(1.0f),

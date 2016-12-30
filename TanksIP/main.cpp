@@ -1,7 +1,7 @@
 #include <iostream>
 #include "MainGame.h"
 
-using namespace tanks;
+using namespace Engine;
 
 int main(int argc, char** argv) {
 

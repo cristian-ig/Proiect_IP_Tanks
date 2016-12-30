@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <string>
 
-namespace tanks {
+namespace Engine {
 
 void FatalError(std::string errorString)
 {

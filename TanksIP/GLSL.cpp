@@ -2,7 +2,7 @@
 #include<vector>
 #include<fstream>
 #include<iostream>
-namespace tanks {
+namespace Engine {
 
 	GLSL::GLSL() : _numAttributes(0), _programID(0), _vertexShaderID(0), _fragmentShaderID(0)
 	{

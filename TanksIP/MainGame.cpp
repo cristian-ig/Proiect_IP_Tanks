@@ -1,6 +1,6 @@
 #include"MainGame.h"
 
-namespace tanks{
+using namespace Engine;
 
 MainGame::MainGame() : _gameState(GameState::PLAY)
 {
@@ -94,4 +94,3 @@ void MainGame::processInput() {
 	}
 }
 
-}

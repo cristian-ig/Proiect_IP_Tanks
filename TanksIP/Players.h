@@ -12,11 +12,11 @@ public:
 
 	virtual void update(const std::vector<std::string>& harta, std::vector<Players*>& players, std::vector<Enemys*>& enemys) override;
 	
-	void init(glm::vec2 position, tanks::Camera camera, float speed = TANK_SPEED, float damage = TANK_DAMAGE, float health = TANK_HEALTH);
+	void init(glm::vec2 position, Engine::Camera camera, float speed = TANK_SPEED, float damage = TANK_DAMAGE, float health = TANK_HEALTH);
 
 
 private:
-	tanks::Input* _input;
-	tanks::Camera _camera;
+	Engine::Input* _input;
+	Engine::Camera _camera;
 };
 

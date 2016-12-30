@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 
-namespace tanks {
+namespace Engine {
 
 // Input manager stores a key map that maps SDL_Keys to booleans.
 // If the value in the key map is true, then the key is pressed.

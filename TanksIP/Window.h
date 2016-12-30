@@ -3,7 +3,7 @@
 #include <gl/glew.h>
 #include <string>
 #include "Defines.h"
-namespace tanks{
+namespace Engine{
 
 	enum Flags {
 		INVISIBLE = 0x1,
