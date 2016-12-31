@@ -21,8 +21,8 @@ void BonusBox::spawnBonus(const Harta& harta)
 
 		static std::mt19937 randomEngine(time(nullptr));
 		// For offsetting the coordonates
-		std::uniform_real_distribution<float> randX(0, harta.getWidth());
-		std::uniform_real_distribution<float> randY(0, harta.getHeight());
+		std::uniform_int_distribution<int> randX(0, harta.getWidth());
+		std::uniform_int_distribution<int> randY(0, harta.getHeight());
 
 		_bonusBoxes.push_back(new BonusBox(randX(randomEngine), randY(randomEngine)));
 
