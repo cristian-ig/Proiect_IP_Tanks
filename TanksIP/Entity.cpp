@@ -19,13 +19,24 @@ void Entity::draw()
 	return;
 }
 
-bool Entity::applyDamage( float damage)
+bool Entity::applyDamage(float damage)
 {
-	_health -= damage;
-	// If we died, return true
-	if (_health <= 0) {
-		return true;
+	if (!_isInvulnerable)
+	{
+
+		if (_isShielded)
+			_health -= damage / 2.5f; //ia 1/4 din dmg
+		else
+			_health -= damage;
+	
+	// If we died, return True
+		if (_health <= 0)
+			return true;
 	}
+
+	if (damage == BONUS_ONE_HIT_KILL) //invinc se anuleaza cu OHK
+		_health -= TANK_DAMAGE;
+
 	return false;
 }
 //AABB, returns true if there was a collision

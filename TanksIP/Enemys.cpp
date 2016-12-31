@@ -43,7 +43,7 @@ Players* Enemys::getNearestPlayer(std::vector<Players*> players)
 	float minDist = 999999999.0f;
 
 	//AI
-	for (int i = 0; i < players.size(); i++) {
+	for (size_t i = 0; i < players.size(); i++) {
 		// Get the direction vector
 		glm::vec2 distVec = players[i]->getPosition() - _position;
 		// Get distance
