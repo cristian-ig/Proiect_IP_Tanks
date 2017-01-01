@@ -33,11 +33,54 @@ void BonusBox::spawnBonus(float x, float y, Harta harta)
 	_bonusBoxes.push_back(new BonusBox(x, y));
 }
 
+void BonusBox::drawBox(BonusType bonusType)
+{
+	switch (bonusType)
+	{
+	case BonusType::MAX_HEALTH:
+		//draw
+		break;
+	case BonusType::HEAL:
+		//draw
+		break;
+	case BonusType::HEAL_PLUS:
+		//draw
+		break;
+	case BonusType::SPEED:
+		//draw
+		break;
+	case BonusType::SPEED_PLUS:
+		//draw
+		break;
+	case BonusType::DAMAGE:
+		//draw
+		break;
+	case BonusType::DAMAGE_PLUS:
+		//draw
+		break;
+	case BonusType::ONE_HIT_KILL:
+		//draw
+		break;
+	case BonusType::SHIELD:
+		//draw
+		break;
+	case BonusType::INVULNERABILITY:
+		//draw
+		break;
+	default:
+		//draw random box
+		break;
+	}
+	return;
+}
+
 void BonusBox::applyBonus(BonusType bonusType, Entity& entity)
 {
+	//generate a random bonus
 	if (bonusType == BonusType::RANDOM)
 		bonusType = static_cast<BonusType>(rand() % MAX_BONUSES);
 
+	//apply every bonus possible
 	switch (bonusType)
 	{
 	case BonusType::MAX_HEALTH:

@@ -1,7 +1,7 @@
 #include "Harta.h"
 #include <iostream>
 #include <fstream>
-//#include "FatError.h"
+#include "FatError.h"
 #include "Vertex.h"
 
 Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
@@ -11,7 +11,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 
 	//failure check
 	if (file.fail()) {}
-		//Engine::FatalError("Failed to open " + fileName);
+		Engine::FatalError("Failed to open " + fileName);
 
 
 	std::string temp;
@@ -22,7 +22,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 
 	Engine::Color(255, 255, 255, 255); //white
 
-									  // Render all the tiles
+		 // Render all the tiles
 	for (size_t y = 0; y < _mapData.size(); y++) 
 	{
 		for (size_t x = 0; x < _mapData[y].size(); x++) 

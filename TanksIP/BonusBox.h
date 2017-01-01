@@ -31,6 +31,8 @@ public:
 	
 	void applyBonus(BonusType bonusType, Entity& entity);
 
+	void drawBox(BonusType bonusType);
+
 	void addDamage(float damage, Entity& entity);
 	void addHealth(float health, Entity& entity);
 	void addMaxHealth(float addmaxHealth, Entity& entity);
