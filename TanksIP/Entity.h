@@ -29,11 +29,12 @@ public:
 
 	void draw();
 
-	bool applyDamage(float damage);
+	bool applyDamage(float damage); //return true if kill confirmed
 
 	bool collideWithMap(const std::vector<std::string>& harta);
 
 	bool collideWithEntity(Entity* entity);
+
 
 
 	//getters
