@@ -19,6 +19,7 @@ public:
 	int getHeight()		const { return _mapData.size(); }
 	int getEntitys()	const { return _numEntitys; }
 	int getEnemysLeft() const { return _numEnemyLeft; }
+
 	const std::vector<std::string>& getMapData() { return _mapData; }
 	const std::vector<glm::vec2>& getPlayerStartPos() const { return _playerStartPos; }
 	const std::vector<glm::vec2>& getEnemysStartPos() const { return _enemyStartPos; }

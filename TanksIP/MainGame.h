@@ -7,8 +7,9 @@
 #include"FPS.h"
 #include"GLSL.h"
 #include"Harta.h"
-
-
+#include <vector>
+#include "Entity.h"
+#include "Players.h"
 
 using namespace Engine;
 
@@ -37,6 +38,8 @@ private:
 	Camera _camera;
 	FPS _frameTimer;
 	GLSL _shaders;
+	Players _player;
+	std::vector<Harta*> _harta;
 	
 	
 	

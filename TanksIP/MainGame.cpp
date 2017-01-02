@@ -1,4 +1,5 @@
 #include"MainGame.h"
+#include "glm/glm.hpp"
 
 using namespace Engine;
 
@@ -25,12 +26,17 @@ void MainGame::init()
 
 	// camera
 	_camera.init(SCREEN_WIDTH,SCREEN_HEIGHT);
+	const float CAMERA_SCALE = 1.0f / 1.0f;
+	//const float CAMERA_SCALE = 1.0f / 4.0f;
+	_camera.offsetScale(CAMERA_SCALE);
+	
+	//player
+	_player.init(_player.getPosition(), _camera);
 
 	//timer
 	_frameTimer.init(60);
 
 	//gl
-
 	glDisable(GL_DEPTH_TEST);
 
 	//shaders
@@ -41,6 +47,7 @@ void MainGame::init()
 	_shaders.linkShaders();
 
 	//Harta
+	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
 	
 }
 
@@ -50,23 +57,42 @@ void MainGame::draw()
 	glClearDepth(1.0);
 	// Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
-
 	
+	_shaders.use();
+
+
+	GLint textureUniform = _shaders.getUniformLocation("mySampler");
+	glUniform1i(textureUniform, 0);
+
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+    GLint pUniform = _shaders.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	_harta[0]->draw();
+
+	_shaders.unuse();
 }
 
 void MainGame::mainLoop() {
-	Harta _map("Maps/Map1.txt",1,1);
+	
 
 	while (_gameState == GameState::PLAY) 
 	{
+		
 		draw();
-		_map.draw();
+	
 		processInput();
 		/* DEBUG
 
 		std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
 		
 		//*/
+
+		_camera.offsetPosition(_player.getPosition());
+		//_camera.setPosition(_player.getPosition());
+		_camera.update();
+	//	_player.update(_harta[0], _player, _enemys);
+
 		_window.swapBuffer();
 	}
 }

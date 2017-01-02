@@ -4,7 +4,7 @@
 
 
 namespace Engine {
-
+	//http://www.opengl.org/wiki/Shader_Compilation
 	class GLSL
 	{
 	public:
@@ -37,7 +37,7 @@ namespace Engine {
 		GLuint _vertexShaderID;
 		GLuint _fragmentShaderID;
 
-		bool readFileToBuffer(std::string filePath, std::string& buffer);
+		//bool readFileToBuffer(std::string filePath, std::string& buffer);
 	};
 
 }

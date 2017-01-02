@@ -19,8 +19,6 @@ namespace Engine {
 		OpenGLTexture()
 		{
 		}
-		GLTexture _texture;
-
 
 
 		GLTexture loadTexture(std::string filePath);

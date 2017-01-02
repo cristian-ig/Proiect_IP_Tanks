@@ -15,8 +15,9 @@ namespace Engine {
 
 		glm::vec2 convertToWorldCoordonates(glm::vec2 screenCoords);
 		bool checkIfInView(const glm::vec2& position, const glm::vec2& dimension);
-
+		const glm::mat4& getCameraMatrix() const { return _cameraMatrix; }
 		void offsetPosition(const glm::vec2& offset) { _position += offset; _update = true; }
+		void setPosition(const glm::vec2& offset) { _position = offset; _update = true; }
 		void offsetScale(float offset) { _scale += offset; if (_scale < 0.001f) _scale = 0.001f; _update = true; }
 
 	private:

@@ -4,7 +4,6 @@
 #include "FatError.h"
 #include "Vertex.h"
 
-
 Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 {
 	std::ifstream file;
@@ -46,8 +45,9 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				_drawHandler.addObj(destRect, uvCoords, _wallTexture.id, color);
 				break;
 			case '@':
-				_mapData[y][x] = '.'; //so we dont collide with the tile later on
 				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
+				//_playerStartPos = glm::vec2(y, x);
+				_mapData[y][x] = '.'; //so we dont collide with the tile later on
 				if (numPlayers > 0)
 				{
 					_playerStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);

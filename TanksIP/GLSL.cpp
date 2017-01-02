@@ -2,6 +2,8 @@
 #include<vector>
 #include<fstream>
 #include<iostream>
+#include "FatError.h"
+#include "FileLoad.h"
 namespace Engine {
 
 	GLSL::GLSL() : _numAttributes(0), _programID(0), _vertexShaderID(0), _fragmentShaderID(0)
@@ -13,22 +15,22 @@ namespace Engine {
 	{
 	}
 
-	void GLSL::compileShaders(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath) {
+	void GLSL::compileShaders(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)
+	{
+
 		std::string vertSource;
 		std::string fragSource;
-		try {
-			if (!readFileToBuffer(vertexShaderFilePath, vertSource)) {
-				throw"shader load err";
-			}
-			else std::cout << "Succes";
-			if (!readFileToBuffer(fragmentShaderFilePath, fragSource)) {
-				throw"shader load err";
-			}
-			else std::cout << "Succes";
-		}
-		catch (...) { std::cout << "shader load error"; }
+
+		if (!FileLoad::readFileToBuffer(vertexShaderFilePath, vertSource))
+			FatalError("Failed to read Vertex File");
+
+		if (!FileLoad::readFileToBuffer(fragmentShaderFilePath, fragSource))
+			FatalError("Failed to read Fragment File");
+
+
 		compileShadersFromSource(vertSource.c_str(), fragSource.c_str());
 	}
+	
 	void GLSL::compileShadersFromSource(const char* vertexSource, const char* fragmentSource) {
 		//Vertex and fragment shaders are successfully compiled.
 		//Now time to link them together into a program.
@@ -99,7 +101,7 @@ namespace Engine {
 	GLint GLSL::getUniformLocation(const std::string& uniformName) {
 		GLint location = glGetUniformLocation(_programID, uniformName.c_str());
 		if (location == GL_INVALID_INDEX) {
-			throw"GL_INVALID_INDEX";
+			FatalError("GL_INVALID_INDEX");
 		}
 		return location;
 	}
@@ -149,6 +151,7 @@ namespace Engine {
 			
 		}
 	}
+/*
 	  bool GLSL::readFileToBuffer(std::string filePath, std::string& buffer) {
 		std::ifstream file(filePath, std::ios::binary);
 		if (file.fail()) {
@@ -172,4 +175,5 @@ namespace Engine {
 
 		return true;
 	}
+*/
 }

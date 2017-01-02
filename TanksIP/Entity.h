@@ -65,8 +65,8 @@ protected:
 	float _speed  = 0.0f;
 	bool _isInvulnerable = false;
 	bool _isShielded = false;
-	glm::vec2 _position = glm::vec2(1.0f, 1.0f);
-	glm::vec2 _direction = glm::vec2(1.0f, 0.0f); //directia dreapta
+	glm::vec2 _position;// = glm::vec2(1.0f, 1.0f);
+	glm::vec2 _direction;// = glm::vec2(1.0f, 0.0f); //directia dreapta
 	GLuint _textureID;
 };
 

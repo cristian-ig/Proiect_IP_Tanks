@@ -1,5 +1,6 @@
 #include "Entity.h"
 #include <algorithm>
+#include "DrawClass.h"
 
 	// The minimum distance before a collision occurs
 const float MIN_DISTANCE_X = TANK_WIDTH / 2.0f + TILE_RADIUS;
@@ -16,7 +17,26 @@ Entity::~Entity()
 
 void Entity::draw()
 {
-	return;
+	Engine::OpenGLTexture _textureHandler;
+	Engine::DrawClass _drawHandler;
+	Engine::GLTexture playerTex;
+	playerTex = _textureHandler.loadTexture("Assets/light_wall.png");
+
+	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glm::vec4 destRect;
+	destRect.x = _position.x;
+	destRect.y = _position.y;
+	destRect.z = TANK_WIDTH;
+	destRect.w = TANK_HEIGHT;
+
+	Engine::Color color;
+	color.R = 255;
+	color.G = 255;
+	color.B = 255;
+	color.A = 255;
+
+	_drawHandler.addObj(destRect, uvRect, playerTex.id, color);
 }
 
 bool Entity::applyDamage(float damage)

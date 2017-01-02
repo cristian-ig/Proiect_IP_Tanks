@@ -1,13 +1,13 @@
 #include "Camera.h"
-
+#include "Defines.h"
 namespace Engine {
 
 	Camera::Camera() :
 		_cameraMatrix(1.0f),
 		_orthoMatrix(1.0f),
 		_scale(1.0f),
-		_screenWidth(1024),
-		_screenHeight(768)
+		_screenWidth(SCREEN_WIDTH),
+		_screenHeight(SCREEN_HEIGHT)
 		//1024 768
 	{
 
