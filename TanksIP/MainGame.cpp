@@ -39,6 +39,9 @@ void MainGame::init()
 	_shaders.addAttribute("vertexColor");
 	_shaders.addAttribute("vertexUV");
 	_shaders.linkShaders();
+
+	//Harta
+	
 }
 
 void MainGame::draw()
@@ -47,13 +50,17 @@ void MainGame::draw()
 	glClearDepth(1.0);
 	// Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+
+	
 }
 
 void MainGame::mainLoop() {
+	Harta _map("Maps/Map1.txt",1,1);
 
 	while (_gameState == GameState::PLAY) 
 	{
 		draw();
+		_map.draw();
 		processInput();
 		/* DEBUG
 

@@ -4,13 +4,14 @@
 #include "FatError.h"
 #include "Vertex.h"
 
+
 Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 {
 	std::ifstream file;
 	file.open(fileName);
 
 	//failure check
-	if (file.fail()) {}
+	if (file.fail()) 
 		Engine::FatalError("Failed to open " + fileName);
 
 
@@ -20,7 +21,13 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 		_mapData.emplace_back(temp);  //read the map line by line
 	}
 
-	Engine::Color(255, 255, 255, 255); //white
+	Engine::Color color(255, 255, 255, 255); //white
+	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
+
+	_wallTexture = _textureHandler.loadTexture("Assets/light_wall.png");
+	_waterTexture = _textureHandler.loadTexture("Assets/water.png");
+	_drawHandler.init();
+	_drawHandler.begin();
 
 		 // Render all the tiles
 	for (size_t y = 0; y < _mapData.size(); y++) 
@@ -35,10 +42,12 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 
 			// Process the tile
 			switch (tile) {
-			case '#':
+			case 'W':
+				_drawHandler.addObj(destRect, uvCoords, _wallTexture.id, color);
 				break;
 			case '@':
 				_mapData[y][x] = '.'; //so we dont collide with the tile later on
+				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
 				if (numPlayers > 0)
 				{
 					_playerStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
@@ -56,6 +65,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				}
 				break;
 			case '.':
+				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
 				break;
 			default:
 				std::printf("Unexpected symbol %c at (%d,%d)", tile, x, y);
@@ -63,6 +73,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 			}
 		}
 	}
+	_drawHandler.end();
 	
 }
 
@@ -73,5 +84,5 @@ Harta::~Harta()
 
 void Harta::draw()
 {
-	return;
+	_drawHandler.renderBatch();
 }

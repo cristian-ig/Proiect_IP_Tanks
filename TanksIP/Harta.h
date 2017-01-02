@@ -3,6 +3,8 @@
 #include <string>
 #include <glm/glm.hpp>
 #include "Defines.h"
+#include "DrawClass.h"
+#include "OpenGLTexture.h"
 
 class Harta
 {
@@ -27,6 +29,11 @@ private:
 	std::vector<std::string> _mapData;
 	std::vector<glm::vec2> _playerStartPos;
 	std::vector<glm::vec2> _enemyStartPos;
+	
+	Engine::DrawClass _drawHandler;
+	Engine::OpenGLTexture _textureHandler;
+	Engine::GLTexture _wallTexture;
+	Engine::GLTexture _waterTexture;
 
 };
 

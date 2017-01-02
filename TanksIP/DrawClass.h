@@ -41,17 +41,18 @@ public:
 	void init();
 	void dispose();
 
+	void addObj(const glm::vec4& quadCoord, const glm::vec4& uvCoord, GLuint texture, const Color& color);
+
+	void renderBatch();
+
+	void begin();
+
+	void end();
 
 
 private:
 
 	void createVertexArray();
-
-	void begin();
-
-	void addObj(const glm::vec4& quadCoord, const glm::vec4& uvCoord, GLuint texture, const Color& color);
-	
-	void end();
 
 	void createRenderBatches();
 
@@ -59,7 +60,7 @@ private:
 
 	static bool compare(objSprite* a, objSprite* b);
 
-	void renderBatch();
+	
 
 	
 

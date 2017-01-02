@@ -6,6 +6,7 @@
 #include"Camera.h"
 #include"FPS.h"
 #include"GLSL.h"
+#include"Harta.h"
 
 
 
@@ -36,6 +37,8 @@ private:
 	Camera _camera;
 	FPS _frameTimer;
 	GLSL _shaders;
+	
+	
 	
 
 

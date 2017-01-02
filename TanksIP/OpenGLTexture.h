@@ -16,21 +16,16 @@ namespace Engine {
 	};
 	class OpenGLTexture {
 	public:
-		OpenGLTexture(std::string filePath)
-		{
-			_texture = loadTexture(filePath);
-		}
 		OpenGLTexture()
 		{
-
 		}
 		GLTexture _texture;
 
 
 
-
-	private:
 		GLTexture loadTexture(std::string filePath);
+	private:
+		
 		bool readBufferData(std::string filePath, std::vector<unsigned char>& buffer);
 	};
 }
