@@ -1,6 +1,5 @@
 #include"OpenGLTexture.h"
 
-namespace Engine {
 
 	GLTexture OpenGLTexture::loadTexture(std::string filePath) {
 
@@ -84,4 +83,3 @@ namespace Engine {
 
 
 
-}
