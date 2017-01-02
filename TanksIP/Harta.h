@@ -24,6 +24,7 @@ public:
 	const std::vector<glm::vec2>& getPlayerStartPos() const { return _playerStartPos; }
 	const std::vector<glm::vec2>& getEnemysStartPos() const { return _enemyStartPos; }
 
+
 private:
 	int _numEntitys = 0;
 	int _numEnemyLeft = 0;

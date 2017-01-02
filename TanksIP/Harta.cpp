@@ -46,7 +46,6 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				break;
 			case '@':
 				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
-				//_playerStartPos = glm::vec2(y, x);
 				_mapData[y][x] = '.'; //so we dont collide with the tile later on
 				if (numPlayers > 0)
 				{

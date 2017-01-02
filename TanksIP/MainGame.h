@@ -10,6 +10,7 @@
 #include <vector>
 #include "Entity.h"
 #include "Players.h"
+#include "Enemys.h"
 
 using namespace Engine;
 
@@ -27,6 +28,7 @@ public:
 
 	void start();
 private:
+	void initShaders();
 	void init();
 	void mainLoop();
 	void draw();
@@ -38,8 +40,15 @@ private:
 	Camera _camera;
 	FPS _frameTimer;
 	GLSL _shaders;
-	Players _player;
+
+	std::vector<Players*> _player;
+	std::vector<Enemys*> _enemy;
 	std::vector<Harta*> _harta;
+
+	int _curLevel = -1;
+
+	char _numEnem = 1;
+	char _numPlayers = 1;
 	
 	
 	

@@ -25,13 +25,24 @@ void MainGame::init()
 	_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
 
 	// camera
-	_camera.init(SCREEN_WIDTH,SCREEN_HEIGHT);
+	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
 	const float CAMERA_SCALE = 1.0f / 1.0f;
-	//const float CAMERA_SCALE = 1.0f / 4.0f;
 	_camera.offsetScale(CAMERA_SCALE);
+
+	//Harta
+	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
+	_curLevel = 0;
 	
 	//player
-	_player.init(_player.getPosition(), _camera);
+	_player.push_back(new Players);
+	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, _camera);
+
+	//enemys
+	for (size_t i = 0; i<_numEnem; i++)
+	{
+		_enemy.push_back(new Enemys);
+		_enemy[i]->init(glm::vec2(14.0f, 6.0f));
+	}
 
 	//timer
 	_frameTimer.init(60);
@@ -40,17 +51,9 @@ void MainGame::init()
 	glDisable(GL_DEPTH_TEST);
 
 	//shaders
-	_shaders.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
-	_shaders.addAttribute("vertexPosition");
-	_shaders.addAttribute("vertexColor");
-	_shaders.addAttribute("vertexUV");
-	_shaders.linkShaders();
-
-	//Harta
-	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
+	initShaders();
 	
 }
-
 void MainGame::draw()
 {
 	// Set the base depth to 1.0
@@ -68,33 +71,30 @@ void MainGame::draw()
     GLint pUniform = _shaders.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	_harta[0]->draw();
+	_harta[_curLevel]->draw();
 
 	_shaders.unuse();
 }
-
-void MainGame::mainLoop() {
+void MainGame::mainLoop() 
+{
+while (_gameState == GameState::PLAY) 
+{
 	
+	draw();  //draws the game
+ 
+	processInput(); //gets input
 
-	while (_gameState == GameState::PLAY) 
-	{
-		
-		draw();
-	
-		processInput();
-		/* DEBUG
+	/* DEBUG
+	std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
+	//*/
 
-		std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
-		
-		//*/
+	//_camera.offsetPosition(_player.getPosition());
+	_camera.setPosition(_player[0]->getPosition());
+	_camera.update();
+	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 
-		_camera.offsetPosition(_player.getPosition());
-		//_camera.setPosition(_player.getPosition());
-		_camera.update();
-	//	_player.update(_harta[0], _player, _enemys);
-
-		_window.swapBuffer();
-	}
+	_window.swapBuffer();
+}
 }
 void MainGame::processInput() {
 
@@ -126,4 +126,12 @@ void MainGame::processInput() {
 
 	}
 }
-
+void MainGame::initShaders()
+{
+	//shaders
+	_shaders.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
+	_shaders.addAttribute("vertexPosition");
+	_shaders.addAttribute("vertexColor");
+	_shaders.addAttribute("vertexUV");
+	_shaders.linkShaders();
+}
