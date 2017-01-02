@@ -1,10 +1,13 @@
-﻿  MainGame.cpp
-d:\facultate\ip\repo_project_ip\branches\mybranch\tanksip\maingame.cpp(71): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-  FPS.cpp
-d:\facultate\ip\repo_project_ip\branches\mybranch\tanksip\fps.cpp(23): warning C4244: 'argument': conversion from 'float' to 'Uint32', possible loss of data
+﻿  OpenGlTexture.cpp
   Generating Code...
   Compiling...
-  main.cpp
+  Players.cpp
+  Entity.cpp
+e:\coding\c++ games\tankrep\branches\mybranch\tanksip\entity.cpp(127): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
+  Enemys.cpp
+  BonusBox.cpp
+e:\coding\c++ games\tankrep\branches\mybranch\tanksip\bonusbox.cpp(22): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+e:\coding\c++ games\tankrep\branches\mybranch\tanksip\bonusbox.cpp(27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating Code...
-  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\branches\myBranch\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\branches\myBranch\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\branches\myBranch\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\branches\myBranch\TanksIP\Debug\TanksIP.pdb (Partial PDB)
