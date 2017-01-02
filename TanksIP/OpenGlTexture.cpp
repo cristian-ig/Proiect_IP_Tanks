@@ -1,5 +1,7 @@
 #include"OpenGLTexture.h"
+#include "picoPNG.h"
 
+namespace Engine {
 
 	GLTexture OpenGLTexture::loadTexture(std::string filePath) {
 
@@ -83,3 +85,4 @@
 
 
 
+}
