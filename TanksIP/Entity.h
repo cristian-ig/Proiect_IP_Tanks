@@ -31,14 +31,20 @@ public:
 
 	bool applyDamage(float damage); //return true if kill confirmed
 
-	bool collideWithMap(const std::vector<std::string>& harta);
+	bool collideWithMap(const std::vector<std::string>& harta); //returns true if collision
 
-	bool collideWithEntity(Entity* entity);
+	bool collideWithEntity(Entity* entity); //returns true if collisions
 
 
 
 	//getters
 	glm::vec2 getPosition() const { return _position; }
+	float getSpeed() { return _speed; }
+	float getDamage() { return _damage; }
+
+	//setters
+	void setSpeed(float newSpeed) { _speed = newSpeed; }
+	void setDamage(float newDamage) { _damage = newDamage; }
 
 	//bonus related
 	friend class BonusBox;

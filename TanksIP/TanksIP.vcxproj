@@ -132,6 +132,7 @@
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="OpenGlTexture.cpp" />
     <ClCompile Include="Players.cpp" />
+    <ClCompile Include="Projectiles.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +152,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Players.h" />
+    <ClInclude Include="Projectiles.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

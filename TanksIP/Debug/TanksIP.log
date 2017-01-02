@@ -1,13 +1,9 @@
-﻿  OpenGlTexture.cpp
-  Generating Code...
-  Compiling...
-  Players.cpp
-  Entity.cpp
-e:\coding\c++ games\tankrep\branches\mybranch\tanksip\entity.cpp(127): warning C4244: 'argument': conversion from 'float' to 'unsigned int', possible loss of data
-  Enemys.cpp
-  BonusBox.cpp
-e:\coding\c++ games\tankrep\branches\mybranch\tanksip\bonusbox.cpp(22): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-e:\coding\c++ games\tankrep\branches\mybranch\tanksip\bonusbox.cpp(27): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\branches\myBranch\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\branches\myBranch\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+﻿  Projectiles.cpp
+e:\coding & projects\repositoryip\branches\mybranch\tanksip\projectiles.h(39): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+e:\coding & projects\repositoryip\branches\mybranch\tanksip\projectiles.cpp(61): warning C4018: '<': signed/unsigned mismatch
+e:\coding & projects\repositoryip\branches\mybranch\tanksip\projectiles.cpp(77): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\coding & projects\repositoryip\branches\mybranch\tanksip\projectiles.cpp(78): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+e:\coding & projects\repositoryip\branches\mybranch\tanksip\projectiles.cpp(81): warning C4018: '>=': signed/unsigned mismatch
+e:\coding & projects\repositoryip\branches\mybranch\tanksip\projectiles.cpp(82): warning C4018: '>=': signed/unsigned mismatch
+  TanksIP.vcxproj -> E:\Coding & Projects\RepositoryIP\branches\myBranch\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> E:\Coding & Projects\RepositoryIP\branches\myBranch\TanksIP\Debug\TanksIP.pdb (Partial PDB)
