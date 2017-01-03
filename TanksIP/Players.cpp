@@ -27,17 +27,29 @@ void Players::update(const std::vector<std::string>& harta, std::vector<Players*
 		_position.x += _speed;
 
 	glm::vec2 mouseCoords = _input->getMouseCoords();
-	mouseCoords = _camera.convertToWorldCoordonates(mouseCoords);
+	mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
 
 
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 
 	_direction = glm::normalize(mouseCoords - centerPosition);
 
+	_guns[0]->update(_input->isKeyDown(SDL_BUTTON_LEFT),
+		centerPosition,
+		_direction,
+		*_bullets);
+
 	collideWithMap(harta);
 }
 
-void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera camera, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)
+void Players::initGun(Artillery* gun)
+{
+	_guns.push_back(gun);
+	//if no gun, just equip
+	if (_currentIndex == -1)
+		_currentIndex = 0;
+}
+void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)
 {
 	_speed = speed;
 	_position = position;
@@ -45,7 +57,7 @@ void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera came
 	_camera = camera;
 	_damage = damage;
 	_health = health;
-
+	_bullets = bullets;
 
 }
 

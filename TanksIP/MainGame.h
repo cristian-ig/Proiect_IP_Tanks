@@ -48,7 +48,7 @@ private:
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;
 	std::vector<Harta*> _harta;
-	std::vector<Projectiles*> _projectiles;
+	std::vector<Projectiles> _projectiles;
 
 	//Artillery _artilllery;
 

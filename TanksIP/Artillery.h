@@ -7,10 +7,10 @@ class Artillery
 {
 public:
 	Artillery(int fireRate, int bulletsPerShot,
-		float spread, float bulletDamage, float bulletSpeed);
+		float bulletDamage, float bulletSpeed);
 	~Artillery();
 
-	void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, float deltaTime);
+	void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets);
 
 	int getFireRate() { return  _fireRate; }
 	int getBPS() { return _bulletsPerShot; }
@@ -28,7 +28,7 @@ private:
 
 	int _bulletsPerShot; ///< How many bullets are fired at at time
 
-	float _spread; ///< Accuracy
+	//float _spread; ///< Accuracy
 
 	float _bulletSpeed;
 

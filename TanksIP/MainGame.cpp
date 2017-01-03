@@ -33,7 +33,7 @@ void MainGame::init()
 	// camera
 	glm::vec2 cameraMij = glm::vec2((_harta[0]->getWidth() / 2) * 32 + 16, (_harta[0]->getHeight()) *16);
 	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
-	const float CAMERA_SCALE = 1.0f / 1.0f;
+	const float CAMERA_SCALE = 4.0f / 1.0f;
 	_camera.offsetScale(CAMERA_SCALE);
 	_camera.setPosition(cameraMij);
 	//_camera.setPosition(glm::vec2(380, 220));
@@ -41,10 +41,10 @@ void MainGame::init()
 	
 	//player
 	_player.push_back(new Players);
-	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, _camera);
-
+	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles);
+	_player[0]->initGun(new Artillery(20, 1, 10, TANK_SPEED));
 	//enemys
-	for (size_t i = 0; i<_numEnem; i++)
+	for (int i = 0; i<_numEnem; i++)
 	{
 		_enemy.push_back(new Enemys);
 		_enemy[i]->init(glm::vec2(14.0f, 6.0f));
@@ -56,6 +56,8 @@ void MainGame::init()
 	//shaders
 	initShaders();
 	
+	
+
 }
 void MainGame::draw()
 {
@@ -76,8 +78,9 @@ void MainGame::draw()
 	
 	_harta[_curLevel]->draw();
 	_player[0]->draw();
+
 	for (size_t i = 0; i < _projectiles.size(); i++) {
-		_projectiles[i]->draw();
+		_projectiles[i].draw();
 	}
 	
 
@@ -187,7 +190,7 @@ void MainGame::updateBullets() {
 	//Update and collide with world
 	for (size_t i = 0; i < _projectiles.size(); ) {
 		// If update returns true, the bullet collided with a wall
-		if (_projectiles[i]->update(_harta[_curLevel]->getMapData()))
+		if (_projectiles[i].update(_harta[_curLevel]->getMapData()))
 		{
 			_projectiles[i] = _projectiles.back();
 			_projectiles.pop_back();
@@ -198,17 +201,17 @@ void MainGame::updateBullets() {
 	}
 	bool wasBulletRemoved;
 
-	// Collide with humans and zombies
+	// Collide with players and enemys
 	for (size_t i = 0; i < _projectiles.size(); i++) {
 		wasBulletRemoved = false;
-		// Loop through zombies
+		// Loop through enemys
 		for (size_t j = 0; j < _enemy.size(); ) {
 			// Check collision
-			if (_projectiles[i]->collideWithEntity(_enemy[j])) {
+			if (_projectiles[i].collideWithEntity(_enemy[j])) {
 
-				// Damage zombie, and kill it if its out of health
-				if (_enemy[j]->applyDamage(_projectiles[i]->getDamage())) {
-					// If the zombie died, remove him
+				// Damage enemy, and kill it if its out of health
+				if (_enemy[j]->applyDamage(_projectiles[i].getDamage())) {
+					// If the enemy died, remove him
 					delete _enemy[j];
 					_enemy[j] = _enemy.back();
 					_enemy.pop_back();

@@ -3,13 +3,12 @@
 
 
 Artillery::Artillery(int fireRate, int bulletsPerShot,
-	float spread, float bulletDamage, float bulletSpeed) :
+	 float bulletDamage, float bulletSpeed) :
 	_fireRate(fireRate),
 	_bulletsPerShot(bulletsPerShot),
-	_spread(spread),
 	_bulletDamage(bulletDamage),
 	_bulletSpeed(bulletSpeed),
-	_frameCounter(0)
+	_frameCounter(0.0f)
 {
 }
 
@@ -28,7 +27,7 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 	}
 }
 
-void Artillery::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, float deltaTime)
+void Artillery::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets)
 {
 	_frameCounter++;
 	// After a certain number of frames has passed we fire our gun

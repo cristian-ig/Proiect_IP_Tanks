@@ -99,7 +99,7 @@ namespace Engine {
 	
 		const glm::vec2 right(1.0f, 0.0f);
 		float angle = acos(glm::dot(right, dir));
-		std::cout << angle << std::endl;
+		//std::cout << angle << std::endl;
 		if (dir.y < 0.0f) angle = -angle;
 
 		objSprite* newSpriteObj = new objSprite;
