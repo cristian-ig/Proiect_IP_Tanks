@@ -1,5 +1,6 @@
 #include"MainGame.h"
 #include "glm/glm.hpp"
+#include <iostream>
 
 using namespace Engine;
 
@@ -24,14 +25,18 @@ void MainGame::init()
 	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
 	_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
 
-	// camera
-	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
-	const float CAMERA_SCALE = 1.0f / 1.0f;
-	_camera.offsetScale(CAMERA_SCALE);
 	//Harta
 	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
 	_curLevel = 0;
 	
+	// camera
+	glm::vec2 cameraMij = glm::vec2((_harta[0]->getWidth() / 2) * 32 + 16, (_harta[0]->getHeight()) *16);
+	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
+	const float CAMERA_SCALE = 1.0f / 1.0f;
+	_camera.offsetScale(CAMERA_SCALE);
+	_camera.setPosition(cameraMij);
+	//_camera.setPosition(glm::vec2(380, 220));
+	//std::cout << cameraMij.x << ", " << cameraMij.y << std::endl;
 	
 	//player
 	_player.push_back(new Players);
@@ -46,9 +51,6 @@ void MainGame::init()
 
 	//timer
 	_frameTimer.init(60);
-
-	//gl
-	
 
 	//shaders
 	initShaders();
@@ -97,6 +99,8 @@ while (_gameState == GameState::PLAY)
 	//_camera.setPosition(_player[0]->getPosition());
 	_camera.update();
 	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+	//std::cout << _player[0]->getPosition().x << ", " << _player[0]->getPosition().y << std::endl;
+
 
 	_window.swapBuffer();
 }

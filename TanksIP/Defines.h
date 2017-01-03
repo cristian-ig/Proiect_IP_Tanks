@@ -1,7 +1,7 @@
 #pragma once
 //Window
-#define SCREEN_WIDTH 1920
-#define SCREEN_HEIGHT 1080
+#define SCREEN_WIDTH 1600
+#define SCREEN_HEIGHT 900
 
 //Map
 #define TILE_WIDTH 32.0f
@@ -9,7 +9,7 @@
 //Tanks
 #define TANK_WIDTH 16.0f
 #define TANK_HEIGHT 20.0f
-#define TANK_SPEED 2.0f
+#define TANK_SPEED 22.0f
 #define TANK_DAMAGE 100.0f
 #define TANK_HEALTH 500.0f
 //Bonus Boxes

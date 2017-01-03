@@ -20,6 +20,7 @@ public:
 	int getEntitys()	const { return _numEntitys; }
 	int getEnemysLeft() const { return _numEnemyLeft; }
 
+	glm::vec2 getCameraCenter() { return _cameraPos; }
 	const std::vector<std::string>& getMapData() { return _mapData; }
 	const std::vector<glm::vec2>& getPlayerStartPos() const { return _playerStartPos; }
 	const std::vector<glm::vec2>& getEnemysStartPos() const { return _enemyStartPos; }
@@ -31,6 +32,8 @@ private:
 	std::vector<std::string> _mapData;
 	std::vector<glm::vec2> _playerStartPos;
 	std::vector<glm::vec2> _enemyStartPos;
+
+	glm::vec2 _cameraPos;
 	
 	Engine::DrawClass _drawHandler;
 	Engine::OpenGLTexture _textureHandler;

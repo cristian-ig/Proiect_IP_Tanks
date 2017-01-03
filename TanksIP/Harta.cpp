@@ -65,6 +65,12 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 					numEnemys--;
 				}
 				break;
+			case 'c':
+				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
+				_cameraPos.x = x;
+				_cameraPos.y = y;
+				_mapData[y][x] = '.';//so we dont collide with the tile later on
+				break;
 			case '.':
 				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
 				break;
