@@ -47,30 +47,6 @@ bool Projectiles::collideWithEntity(Entity* entity)
 	return false;
 }
 
-void Projectiles::fireUpdate(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets)
-{
-	_counter++;
-	if (_counter >= _fireRate && isMouseDown)
-	{
-		fire(direction, position, bullets);
-	}
-}
-
-void Projectiles::fire(const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets)
-{
-	for (size_t i = 0; i < _bulletsPerShot; i++) {
-		// Add a new bullet
-		bullets.emplace_back(position - glm::vec2(BULLET_RADIUS),direction, _damage, _speed);
-	}
-}
-
-void Projectiles::weaponsInit(int fireRate, int BPS, float counter)
-{
-	_fireRate = fireRate;
-	_bulletsPerShot = BPS;
-	_counter = counter;
-}
-
 bool Projectiles::collideWithWorld(const std::vector<std::string>& harta)
 {
 	glm::ivec2 gridPosition;
