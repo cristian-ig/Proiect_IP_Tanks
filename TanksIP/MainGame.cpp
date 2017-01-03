@@ -75,6 +75,9 @@ void MainGame::draw()
 	
 	_harta[_curLevel]->draw();
 	_player[0]->draw();
+	for (size_t i = 0; i < _projectiles.size(); i++) {
+		_projectiles[i]->draw();
+	}
 	
 
 	
@@ -102,7 +105,7 @@ while (_gameState == GameState::PLAY)
 	//std::cout << _player[0]->getPosition().x << ", " << _player[0]->getPosition().y << std::endl;
 
 	updateEntitys();
-
+	updateBullets();
 	_window.swapBuffer();
 }
 }
@@ -150,4 +153,53 @@ void MainGame::updateEntitys()
 	//check collision with world
 	for (size_t i = 0; i < _player.size(); i++)
 		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+}
+void MainGame::updateBullets() {
+	//Update and collide with world
+	for (size_t i = 0; i < _projectiles.size(); ) {
+		// If update returns true, the bullet collided with a wall
+		if (_projectiles[i]->update(_harta[_curLevel]->getMapData()))
+		{
+			_projectiles[i] = _projectiles.back();
+			_projectiles.pop_back();
+		}
+		else {
+			i++;
+		}
+	}
+	bool wasBulletRemoved;
+
+	// Collide with humans and zombies
+	for (size_t i = 0; i < _projectiles.size(); i++) {
+		wasBulletRemoved = false;
+		// Loop through zombies
+		for (size_t j = 0; j < _enemy.size(); ) {
+			// Check collision
+			if (_projectiles[i]->collideWithEntity(_enemy[j])) {
+
+				// Damage zombie, and kill it if its out of health
+				if (_enemy[j]->applyDamage(_projectiles[i]->getDamage())) {
+					// If the zombie died, remove him
+					delete _enemy[j];
+					_enemy[j] = _enemy.back();
+					_enemy.pop_back();
+
+				}
+				else {
+					j++;
+				}
+
+				// Remove the bullet
+				_projectiles[i] = _projectiles.back();
+				_projectiles.pop_back();
+				wasBulletRemoved = true;
+				i--; // Make sure we don't skip a bullet
+					 // Since the bullet died, no need to loop through any more zombies
+				break;
+			}
+			else {
+				j++;
+			}
+		}
+	}
 }

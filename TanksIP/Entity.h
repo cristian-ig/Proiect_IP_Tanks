@@ -48,8 +48,13 @@ public:
 
 	//bonus related
 	friend class BonusBox;
-
+	
+private:
+	
 protected:
+
+	Engine::OpenGLTexture _textureHandler;
+	
 
 	void checkTilePosition(const std::vector<std::string>& harta,
 		std::vector<glm::vec2>& collideTilePositions,
@@ -68,6 +73,6 @@ protected:
 	glm::vec2 _position;// = glm::vec2(1.0f, 1.0f);
 	float _drawAngle = 0.0f;
 	glm::vec2 _direction;// = glm::vec2(1.0f, 0.0f); //directia dreapta
-	GLuint _textureID;
+	GLuint _textureID = _textureHandler.loadTexture("Assets/tank.png").id;
 };
 

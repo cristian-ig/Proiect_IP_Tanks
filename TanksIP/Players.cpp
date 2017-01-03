@@ -32,9 +32,9 @@ void Players::update(const std::vector<std::string>& harta, std::vector<Players*
 
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 
-	_direction = glm::normalize(mouseCoords);
+	_direction = glm::normalize(mouseCoords - centerPosition);
 
-	
+	collideWithMap(harta);
 }
 
 void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera camera, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)

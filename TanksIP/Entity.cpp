@@ -17,10 +17,9 @@ Entity::~Entity()
 
 void Entity::draw()
 {
-	Engine::OpenGLTexture _textureHandler;
+	
+	
 	Engine::DrawClass _drawHandler;
-	Engine::GLTexture playerTex;
-	playerTex = _textureHandler.loadTexture("Assets/tank.png");
 
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -37,7 +36,7 @@ void Entity::draw()
 	color.A = 255;
 	_drawHandler.init();
 	_drawHandler.begin();
-	_drawHandler.addObj(destRect, uvRect, playerTex.id, color,_direction);
+	_drawHandler.addObj(destRect, uvRect, _textureID, color,_direction);
 	_drawHandler.end();
 	_drawHandler.renderBatch();
 }
@@ -71,8 +70,8 @@ bool Entity::collideWithMap(const std::vector<std::string>& harta)
 	// First corner
 	checkTilePosition(harta,
 		collideTilePositions,
-		_position.x,
-		_position.y);
+		_position.x+getSpeed(),
+		_position.y+getSpeed());
 	// Second Corner
 	checkTilePosition(harta,
 		collideTilePositions,

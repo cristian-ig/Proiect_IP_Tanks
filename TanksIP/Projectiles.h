@@ -1,6 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <vector>
+#include "DrawClass.h"
+#include "OpenGLTexture.h"
 
 class Entity;
 class Player;
@@ -33,10 +35,13 @@ private:
 	bool collideWithWorld(const std::vector<std::string>& harta);
 
 	glm::vec2 _position = glm::vec2(0.0f, 0.0f);
-	glm::vec2 _drection = glm::vec2(1.0f, 0.0f);
+	glm::vec2 _direction = glm::vec2(1.0f, 0.0f);
 
 	float _speed = 0.0f; //pixels / frame
 	float _damage = 0.0f; //bullet damage
+	Engine::OpenGLTexture _textureHandler;
+	Engine::DrawClass _drawHandler;
+	GLuint _projectileTexture = _textureHandler.loadTexture("Assets/bullet.png").id;
 	
 
 };

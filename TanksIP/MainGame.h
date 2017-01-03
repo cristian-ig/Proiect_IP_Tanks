@@ -11,6 +11,8 @@
 #include "Entity.h"
 #include "Players.h"
 #include "Enemys.h"
+#include"Projectiles.h"
+#include"Artillery.h"
 
 using namespace Engine;
 
@@ -34,6 +36,7 @@ private:
 	void draw();
 	void processInput();
 	void updateEntitys();
+	void MainGame::updateBullets();
 
 	Window _window;
 	Input _input;
@@ -45,6 +48,9 @@ private:
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;
 	std::vector<Harta*> _harta;
+	std::vector<Projectiles*> _projectiles;
+
+	Engine::Artillery _artilllery;
 
 	int _curLevel = -1;
 

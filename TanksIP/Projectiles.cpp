@@ -6,7 +6,7 @@
 #include "Harta.h"
 
 Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
-	_position(position), _drection(direction), _damage(damage), _speed(speed)
+	_position(position), _direction(direction), _damage(damage), _speed(speed)
 {
 }
 
@@ -16,12 +16,32 @@ Projectiles::~Projectiles()
 
 bool Projectiles::update(const std::vector<std::string>& harta)
 {
-	_position += _drection * _speed;
+	_position += _direction * _speed;
 	return collideWithWorld(harta);
 }
 
 void Projectiles::draw()
 {
+	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glm::vec4 destRect;
+	destRect.x = _position.x;
+	destRect.y = _position.y;
+	destRect.z = BULLET_RADIUS;
+	destRect.w = BULLET_RADIUS;
+
+	Engine::Color color;
+	color.R = 255;
+	color.G = 255;
+	color.B = 255;
+	color.A = 255;
+
+	_drawHandler.init();
+	_drawHandler.begin();
+	_drawHandler.addObj(destRect, uvRect, _projectileTexture, color, _direction);
+	_drawHandler.end();
+	_drawHandler.renderBatch();
+
 	return;
 }
 
