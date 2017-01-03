@@ -10,7 +10,7 @@ out vec2 fragmentPosition;
 out vec4 fragmentColor;
 out vec2 fragmentUV;
 
-uniform mat4 Poo;
+uniform mat4 P;
 
 void main() {
     //Set the x,y position on the screen
