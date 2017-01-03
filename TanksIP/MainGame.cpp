@@ -1,6 +1,7 @@
 #include"MainGame.h"
 #include "glm/glm.hpp"
 #include <iostream>
+#include "FPS.h"
 
 using namespace Engine;
 
@@ -86,26 +87,54 @@ void MainGame::draw()
 }
 void MainGame::mainLoop() 
 {
-	
+
+	// Some helpful constants.
+	const float DESIRED_FPS = 60.0f; // FPS the game is designed to run at
+	const int MAX_PHYSICS_STEPS = 5; // Max number of physics steps per frame
+	const float MS_PER_SECOND = 1000; // Number of milliseconds in a second
+	const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS; // The desired frame time per frame
+	const float MAX_DELTA_TIME = 1.0f; // Maximum size of deltaTime
+
+									   // Used to cap the FPS
+	Engine::FPS fpsLimiter;
+	fpsLimiter.init(70.0f);
+
+	Uint32 previousTicks = SDL_GetTicks();
+
+
 while (_gameState == GameState::PLAY) 
 {
-	
-	draw();  //draws the game
- 
+	fpsLimiter.start();
+					// Calculate the frameTime in milliseconds
+	Uint32 newTicks = SDL_GetTicks();
+	Uint32 frameTime = newTicks - previousTicks;
+	previousTicks = newTicks; // Store newTicks in previousTicks so we can use it next frame
+							  // Get the total delta time
+	float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
+
+	_input.update();
 	processInput(); //gets input
 
-	/* DEBUG
-	std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
-	//*/
+	int i = 0; // This counter makes sure we don't spiral to death!
+			   // Loop while we still have steps to process.
+	while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
+		// The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
+		float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
+		// Update all physics here and pass in deltaTime
+		updateEntitys();
+		updateBullets();
+		// Since we just took a step that is length deltaTime, subtract from totalDeltaTime
+		totalDeltaTime -= deltaTime;
+		// Increment our frame counter so we can limit steps to MAX_PHYSICS_STEPS
+		i++;
+	}
 
-	//_camera.offsetPosition(_player.getPosition());
-	//_camera.setPosition(_player[0]->getPosition());
 	_camera.update();
 	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
-	//std::cout << _player[0]->getPosition().x << ", " << _player[0]->getPosition().y << std::endl;
+	draw();  //draws the game
 
-	updateEntitys();
-	updateBullets();
+	fpsLimiter.end();
+
 	_window.swapBuffer();
 }
 }

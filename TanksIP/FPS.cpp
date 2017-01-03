@@ -14,6 +14,11 @@ void FPS::init(float maximumFPS) {
 	_maximumFPS = maximumFPS;
 }
 
+void FPS::start()
+{
+	_startTicks = SDL_GetTicks();
+}
+
 float FPS::end() {
 	calculate();
 

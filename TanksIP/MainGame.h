@@ -50,7 +50,7 @@ private:
 	std::vector<Harta*> _harta;
 	std::vector<Projectiles*> _projectiles;
 
-	Engine::Artillery _artilllery;
+	//Artillery _artilllery;
 
 	int _curLevel = -1;
 
