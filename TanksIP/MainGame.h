@@ -33,6 +33,7 @@ private:
 	void mainLoop();
 	void draw();
 	void processInput();
+	void updateEntitys();
 
 	Window _window;
 	Input _input;

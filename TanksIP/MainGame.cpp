@@ -101,6 +101,7 @@ while (_gameState == GameState::PLAY)
 	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 	//std::cout << _player[0]->getPosition().x << ", " << _player[0]->getPosition().y << std::endl;
 
+	updateEntitys();
 
 	_window.swapBuffer();
 }
@@ -143,4 +144,10 @@ void MainGame::initShaders()
 	_shaders.addAttribute("vertexColor");
 	_shaders.addAttribute("vertexUV");
 	_shaders.linkShaders();
+}
+void MainGame::updateEntitys()
+{
+	//check collision with world
+	for (size_t i = 0; i < _player.size(); i++)
+		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 }
