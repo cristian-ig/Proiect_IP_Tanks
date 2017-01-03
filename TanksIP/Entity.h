@@ -66,7 +66,7 @@ protected:
 	bool _isInvulnerable = false;
 	bool _isShielded = false;
 	glm::vec2 _position;// = glm::vec2(1.0f, 1.0f);
-	float _drawAngle;
+	float _drawAngle = 0.0f;
 	glm::vec2 _direction;// = glm::vec2(1.0f, 0.0f); //directia dreapta
 	GLuint _textureID;
 };

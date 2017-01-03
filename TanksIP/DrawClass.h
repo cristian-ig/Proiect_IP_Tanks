@@ -43,7 +43,7 @@ public:
 
 	void addObj(const glm::vec4& quadCoord, const glm::vec4& uvCoord, GLuint texture, const Color& color);
 
-	void addObj(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, float Depth, const Color& color, float angle);
+	void addObj(const glm::vec4& destRect, const glm::vec4& uvRect, GLuint Texture, const Color& color,glm::vec2 dir);
 
 	glm::vec2 rotatePoint(const glm::vec2& pos, float angle);
 

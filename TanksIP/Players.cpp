@@ -1,5 +1,6 @@
 #include "Players.h"
 #include <SDL.h>
+#include<iostream>
 
 Players::Players()
 {
@@ -28,9 +29,12 @@ void Players::update(const std::vector<std::string>& harta, std::vector<Players*
 	glm::vec2 mouseCoords = _input->getMouseCoords();
 	mouseCoords = _camera.convertToWorldCoordonates(mouseCoords);
 
+
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 
-	_direction = glm::normalize(mouseCoords - centerPosition);
+	_direction = glm::normalize(mouseCoords);
+
+	
 }
 
 void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera camera, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)

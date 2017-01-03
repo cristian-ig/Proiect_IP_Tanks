@@ -37,7 +37,7 @@ void Entity::draw()
 	color.A = 255;
 	_drawHandler.init();
 	_drawHandler.begin();
-	_drawHandler.addObj(destRect, uvRect, playerTex.id, color);
+	_drawHandler.addObj(destRect, uvRect, playerTex.id, color,_direction);
 	_drawHandler.end();
 	_drawHandler.renderBatch();
 }

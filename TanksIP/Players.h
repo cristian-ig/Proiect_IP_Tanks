@@ -1,7 +1,9 @@
 #pragma once
+#include<math.h>
 #include "Entity.h"
 #include "Input.h"
 #include "Camera.h"
+
 
 
 class Players : public Entity
