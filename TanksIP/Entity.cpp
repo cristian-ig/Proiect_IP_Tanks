@@ -20,7 +20,7 @@ void Entity::draw()
 	Engine::OpenGLTexture _textureHandler;
 	Engine::DrawClass _drawHandler;
 	Engine::GLTexture playerTex;
-	playerTex = _textureHandler.loadTexture("Assets/light_wall.png");
+	playerTex = _textureHandler.loadTexture("Assets/tank.png");
 
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -35,8 +35,11 @@ void Entity::draw()
 	color.G = 255;
 	color.B = 255;
 	color.A = 255;
-
+	_drawHandler.init();
+	_drawHandler.begin();
 	_drawHandler.addObj(destRect, uvRect, playerTex.id, color);
+	_drawHandler.end();
+	_drawHandler.renderBatch();
 }
 
 bool Entity::applyDamage(float damage)

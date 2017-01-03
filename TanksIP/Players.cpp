@@ -42,5 +42,6 @@ void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera came
 	_damage = damage;
 	_health = health;
 
+
 }
 

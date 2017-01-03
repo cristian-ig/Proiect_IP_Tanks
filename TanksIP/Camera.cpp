@@ -7,10 +7,11 @@ namespace Engine {
 		_orthoMatrix(1.0f),
 		_scale(1.0f),
 		_screenWidth(SCREEN_WIDTH),
-		_screenHeight(SCREEN_HEIGHT)
-		//1024 768
+		_screenHeight(SCREEN_HEIGHT),
+		_position(0, 0),
+		_update(true)
 	{
-
+		
 	}
 
 

@@ -37,7 +37,9 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 			char tile = _mapData[y][x];
 
 			// Get dest rect
-			glm::vec4 destRect(x * TILE_WIDTH, y * TILE_WIDTH, TILE_WIDTH, TILE_WIDTH);
+			
+			glm::vec4 destRect((x * TILE_WIDTH), (y * TILE_WIDTH), TILE_WIDTH, TILE_WIDTH);
+		
 
 			// Process the tile
 			switch (tile) {

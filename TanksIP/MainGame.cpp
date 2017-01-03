@@ -28,10 +28,10 @@ void MainGame::init()
 	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
 	const float CAMERA_SCALE = 1.0f / 1.0f;
 	_camera.offsetScale(CAMERA_SCALE);
-
 	//Harta
 	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
 	_curLevel = 0;
+	
 	
 	//player
 	_player.push_back(new Players);
@@ -48,7 +48,7 @@ void MainGame::init()
 	_frameTimer.init(60);
 
 	//gl
-	glDisable(GL_DEPTH_TEST);
+	
 
 	//shaders
 	initShaders();
@@ -68,15 +68,20 @@ void MainGame::draw()
 	glUniform1i(textureUniform, 0);
 
 	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
-    GLint pUniform = _shaders.getUniformLocation("P");
+    GLint pUniform = _shaders.getUniformLocation("Poo");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
-
+	
 	_harta[_curLevel]->draw();
+	_player[0]->draw();
+	
+
+	
 
 	_shaders.unuse();
 }
 void MainGame::mainLoop() 
 {
+	
 while (_gameState == GameState::PLAY) 
 {
 	
@@ -89,7 +94,7 @@ while (_gameState == GameState::PLAY)
 	//*/
 
 	//_camera.offsetPosition(_player.getPosition());
-	_camera.setPosition(_player[0]->getPosition());
+	//_camera.setPosition(_player[0]->getPosition());
 	_camera.update();
 	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 

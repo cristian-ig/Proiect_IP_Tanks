@@ -1,7 +1,8 @@
 #pragma once
 //Window
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 786
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
+
 //Map
 #define TILE_WIDTH 32.0f
 #define TILE_RADIUS  (float)TILE_WIDTH / 2.0f
