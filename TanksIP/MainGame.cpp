@@ -68,7 +68,7 @@ void MainGame::draw()
 	glUniform1i(textureUniform, 0);
 
 	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
-    GLint pUniform = _shaders.getUniformLocation("Poo");
+    GLint pUniform = _shaders.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 	
 	_harta[_curLevel]->draw();
