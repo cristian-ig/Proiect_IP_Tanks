@@ -1,2 +1,5 @@
-﻿  TanksIP.vcxproj -> E:\Coding & Projects\RepositoryIP\trunk\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> E:\Coding & Projects\RepositoryIP\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+﻿  MainGame.cpp
+e:\coding\c++ games\tankrep\trunk\tanksip\maingame.cpp(46): warning C4018: '<': signed/unsigned mismatch
+e:\coding\c++ games\tankrep\trunk\tanksip\maingame.cpp(121): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Debug\TanksIP.pdb (Partial PDB)

@@ -117,6 +117,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Artillery.cpp" />
     <ClCompile Include="BonusBox.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawClass.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Artillery.h" />
     <ClInclude Include="BonusBox.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Defines.h" />

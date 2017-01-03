@@ -96,7 +96,7 @@ while (_gameState == GameState::PLAY)
 	//*/
 
 	//_camera.offsetPosition(_player.getPosition());
-	_camera.setPosition(_player[0]->getPosition());
+	//_camera.setPosition(_player[0]->getPosition());
 	_camera.update();
 	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 	//std::cout << _player[0]->getPosition().x << ", " << _player[0]->getPosition().y << std::endl;
