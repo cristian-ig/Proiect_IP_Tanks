@@ -117,34 +117,45 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BonusBox.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="DrawClass.cpp" />
     <ClCompile Include="Enemys.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="FatError.cpp" />
     <ClCompile Include="FileLoad.cpp" />
+    <ClCompile Include="FPS.cpp" />
     <ClCompile Include="GLSL.cpp" />
+    <ClCompile Include="Harta.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="Map.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
+    <ClCompile Include="OpenGlTexture.cpp" />
     <ClCompile Include="Players.cpp" />
+    <ClCompile Include="Projectiles.cpp" />
     <ClCompile Include="Sprite.cpp" />
-    <ClCompile Include="SpriteBatch.cpp" />
     <ClCompile Include="TextureCache.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BonusBox.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="DrawClass.h" />
     <ClInclude Include="Enemys.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="FatError.h" />
     <ClInclude Include="FileLoad.h" />
+    <ClInclude Include="FPS.h" />
     <ClInclude Include="GLSL.h" />
-    <ClInclude Include="Map.h" />
+    <ClInclude Include="Harta.h" />
     <ClInclude Include="OpenGLTexture.h" />
     <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="Players.h" />
+    <ClInclude Include="Projectiles.h" />
     <ClInclude Include="Sprite.h" />
-    <ClInclude Include="SpriteBatch.h" />
     <ClInclude Include="TextureCache.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />

@@ -1,6 +1,7 @@
 #include"MainGame.h"
+#include "glm/glm.hpp"
 
-namespace Engine{
+using namespace Engine;
 
 MainGame::MainGame() : _gameState(GameState::PLAY)
 {
@@ -18,61 +19,82 @@ void MainGame::start()
 	mainLoop();
 
 }
-	//SDL_Init(SDL_INIT_EVERYTHING);
-void MainGame::update()
-{
-	return;
-}
-
 void MainGame::init() 
 {
 	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
-	_window.init("Tanks", _width, _height, 0);  //creates a window
-	loadShaders(); //load and compile shaders
-	_map.push_back(new Mapz("Maps/Map1.level"));
-}
+	_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
 
+	// camera
+	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
+	const float CAMERA_SCALE = 1.0f / 1.0f;
+	_camera.offsetScale(CAMERA_SCALE);
+
+	//Harta
+	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
+	_curLevel = 0;
+	
+	//player
+	_player.push_back(new Players);
+	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, _camera);
+
+	//enemys
+	for (size_t i = 0; i<_numEnem; i++)
+	{
+		_enemy.push_back(new Enemys);
+		_enemy[i]->init(glm::vec2(14.0f, 6.0f));
+	}
+
+	//timer
+	_frameTimer.init(60);
+
+	//gl
+	glDisable(GL_DEPTH_TEST);
+
+	//shaders
+	initShaders();
+	
+}
 void MainGame::draw()
 {
 	// Set the base depth to 1.0
 	glClearDepth(1.0);
 	// Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
+	
+	_shaders.use();
 
-	_texProgram.bind();
 
-	//Draw code goes here
-	glActiveTexture(GL_TEXTURE0);
-
-	GLint textureUniform = _texProgram.getUniformLocation("mySampler");
+	GLint textureUniform = _shaders.getUniformLocation("mySampler");
 	glUniform1i(textureUniform, 0);
 
-	//TODO: Add Camera
-	//FIX THIS?!?!?
-	try {
-   		_map[0]->draw();
-	}
-	catch (int ex) { std::cout << "_map[0]->draw(); err"; }
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+    GLint pUniform = _shaders.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 
-	_texProgram.unbind();
+	_harta[_curLevel]->draw();
+
+	_shaders.unuse();
+}
+void MainGame::mainLoop() 
+{
+while (_gameState == GameState::PLAY) 
+{
+	
+	draw();  //draws the game
+ 
+	processInput(); //gets input
+
+	/* DEBUG
+	std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
+	//*/
+
+	//_camera.offsetPosition(_player.getPosition());
+	_camera.setPosition(_player[0]->getPosition());
+	_camera.update();
+	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+
 	_window.swapBuffer();
 }
-
-void MainGame::mainLoop() {
-
-	while (_gameState == GameState::PLAY) 
-	{
-		draw();
-		processInput();
-		update();
-
-		/* DEBUG
-
-		std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
-		
-		//*/
-
-	}
 }
 void MainGame::processInput() {
 
@@ -87,37 +109,29 @@ void MainGame::processInput() {
 			break;
 		case SDL_MOUSEMOTION:
 			_input.setMouseCoords(newEvent.motion.x, newEvent.motion.y); //keep track of mouse
-			std::cout << "(" << _input.getMouseCoords().x << ", " << _input.getMouseCoords().y << ")\n";
 			break;
 		case SDL_KEYDOWN:
 			_input.pressKey(newEvent.key.keysym.sym); //keep track if the key is held down
-			std::cout << "Key is pressed!\n";
 			break;
 		case SDL_KEYUP:
 			_input.releaseKey(newEvent.key.keysym.sym); //keep track if the key is released
-			std::cout << "Key is realeased!\n";
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			std::cout << "MouseButton is pressed!\n";
 			_input.pressKey(newEvent.button.button);  //keep track if the mouse buttons are held down
 			break;
 		case SDL_MOUSEBUTTONUP:
 			_input.releaseKey(newEvent.button.button); //release mouse buttons
-			std::cout << "MouseButton is realeased!\n";
 			break;
 		}
 
 	}
 }
-void MainGame::loadShaders()
+void MainGame::initShaders()
 {
-	// Compile our color shader
-	_texProgram.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
-	_texProgram.addAttribute("vertexPosition");
-	_texProgram.addAttribute("vertexColor");
-	_texProgram.addAttribute("vertexUV");
-	_texProgram.linkShaders();
-}
-
-
+	//shaders
+	_shaders.compileShaders("Shaders/colorShader.vert", "Shaders/colorShader.frag");
+	_shaders.addAttribute("vertexPosition");
+	_shaders.addAttribute("vertexColor");
+	_shaders.addAttribute("vertexUV");
+	_shaders.linkShaders();
 }

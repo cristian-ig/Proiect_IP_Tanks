@@ -1,12 +1,18 @@
 #pragma once
 #include<iostream>
 #include<SDL.h>
-#include "GLSL.h"
 #include "Window.h"
 #include "Input.h"
-#include "Map.h"
+#include"Camera.h"
+#include"FPS.h"
+#include"GLSL.h"
+#include"Harta.h"
+#include <vector>
+#include "Entity.h"
+#include "Players.h"
+#include "Enemys.h"
 
-namespace Engine{
+using namespace Engine;
 
 enum class GameState {
 	PLAY,
@@ -22,23 +28,30 @@ public:
 
 	void start();
 private:
+	void initShaders();
 	void init();
 	void mainLoop();
 	void draw();
 	void processInput();
-	void update();
-	void loadShaders();
-
-	int _height = 768;
-	int _width = 1024;
-	float _fps = 0;
-	int _currentMap = -1;
 
 	Window _window;
 	Input _input;
 	GameState _gameState;
-	GLSL _texProgram;
+	Camera _camera;
+	FPS _frameTimer;
+	GLSL _shaders;
 
-	std::vector<Mapz*> _map;
+	std::vector<Players*> _player;
+	std::vector<Enemys*> _enemy;
+	std::vector<Harta*> _harta;
+
+	int _curLevel = -1;
+
+	char _numEnem = 1;
+	char _numPlayers = 1;
+	
+	
+	
+
+
 };
-}

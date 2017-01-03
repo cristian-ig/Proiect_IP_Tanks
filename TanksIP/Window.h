@@ -2,6 +2,8 @@
 #include <SDL.h>
 #include <gl/glew.h>
 #include <string>
+#include "Defines.h"
+
 
 namespace Engine{
 
@@ -19,7 +21,7 @@ public:
 	int init(std::string windowName,
 		int windowWidth,
 		int windowHeight,
-		unsigned int windowFlag); //Creates a sdl baisic window
+		unsigned int windowFlag); //Creates a sdl basic window
 
 	void swapBuffer(); //swaps buffers between clear and draw for no screen flikering
 

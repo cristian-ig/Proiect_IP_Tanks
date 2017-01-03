@@ -1,7 +1,6 @@
 #include "Window.h"
 #include <iostream>
-//#include "FatError.h"
-
+#include "FatError.h"
 
 namespace Engine {
 
@@ -13,10 +12,7 @@ Window::~Window()
 {
 }
 
-int Window::init(std::string windowName,
-	int windowWidth,
-	int windowHeight,
-	unsigned int windowFlag)
+int Window::init(std::string windowName, int windowWidth, int windowHeight, unsigned int windowFlag)
 {
 	//Initialize SDL
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -24,7 +20,6 @@ int Window::init(std::string windowName,
 	//Tell SDL that we want a double buffered window so we dont get
 	//any flickering
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-
 
 
 	Uint32 flags = SDL_WINDOW_OPENGL;
@@ -53,19 +48,20 @@ int Window::init(std::string windowName,
 		flags);
 	if (_window == nullptr)
 	{
-	//FatalError("Window failed to create! unlucky..\n");
+		//eroare fatala
+		FatalError("Window failed to create! unlucky..\n");
 	}
 	//set up OpenGL context
 	SDL_GLContext glContext = SDL_GL_CreateContext(_window);
 	if (glContext == nullptr)
 	{
-	//FatalError("GLContext failed to create! unlucky..\n");
+		//eroare fatala
 	}
 	//init glew
 	GLenum error = glewInit();
 	if (error != GLEW_OK)
 	{
-	//	FatalError("Glew failed to init! unlucky..\n");
+		FatalError("Glew failed to init! unlucky..\n");
 	}
 
 	//Set the background color to blue.. kind of
@@ -79,7 +75,6 @@ int Window::init(std::string windowName,
 	//Check the OpenGL version
 	std::printf("***   OpenGL Version: %s   ***\n", glGetString(GL_VERSION));
 
-	
 	//Set VSYNC
 	SDL_GL_SetSwapInterval(1);
 

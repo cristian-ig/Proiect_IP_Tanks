@@ -1,38 +1,43 @@
 #pragma once
-#include <gl/glew.h>
-#include <string>
+#include<string>
+#include<gl/glew.h>
 
-namespace Engine{
 
-class GLSL
-{
-public:
-	GLSL();
-	~GLSL();
+namespace Engine {
+	//http://www.opengl.org/wiki/Shader_Compilation
+	class GLSL
+	{
+	public:
+		GLSL();
+		~GLSL();
 
-	void compileShaders(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
 
-	void compileShadersFromSource(const char* vertexSource, const char* fragmentSource);
+		void compileShaders(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath);
 
-	void linkShaders();
+		void compileShadersFromSource(const char* vertexSource, const char* fragmentSource);
 
-	void addAttribute(const std::string& attributeName);
+		void linkShaders();
 
-	GLint getUniformLocation(const std::string& uniformName);
+		void addAttribute(const std::string& attributeName);
 
-	void bind();
+		GLint getUniformLocation(const std::string& uniformName);
 
-	void unbind();
+		void use();
+		void unuse();
 
-	void clear();
+		void dispose();
+	private:
 
-private:
-	void compileShader(const char* source, const std::string& name, GLuint id);
+		int _numAttributes;
 
-	int _numAttributes = 0;
-	GLuint _programID = 0;
-	GLuint _vertexShaderID = 0;
-	GLuint _fragmentShaderID = 0;
-};
+		void compileShader(const char* source, const std::string& name, GLuint id);
+
+		GLuint _programID;
+
+		GLuint _vertexShaderID;
+		GLuint _fragmentShaderID;
+
+		//bool readFileToBuffer(std::string filePath, std::string& buffer);
+	};
 
 }

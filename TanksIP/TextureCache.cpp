@@ -1,5 +1,4 @@
 #include "TextureCache.h"
-#include "FileLoad.h"
 
 namespace Engine{
 
@@ -17,7 +16,7 @@ GLTexture TextureCache::getTexture(std::string texturePath)
 	//check if its not in the map
 	if (mit == _textureMap.end()) {
 		//Load the texture
-		GLTexture newTexture = FileLoad::loadPNG(texturePath);
+		GLTexture newTexture = _handler.loadTexture(texturePath);
 
 		//Insert it into the map
 		_textureMap.insert(make_pair(texturePath, newTexture));

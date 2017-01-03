@@ -6,16 +6,9 @@ using namespace Engine;
 int main(int argc, char** argv) {
 
 	MainGame maingame;
-	try {
-		maingame.start();
-	}
-	catch (...) { std::cout << "main"; }
-//	system("pause");
+	maingame.start();
 	return 0;
 }
-
-
-
 
 #if 0
 
@@ -56,6 +49,6 @@ http://www-cs-students.stanford.edu/~amitp/gameprog.html
 http://www.3dgep.com/simulating-particle-effects-using-opengl/
 http://www.opengl-tutorial.org/intermediate-tutorials/billboards-particles/particles-instancing/
 http://www.randygaul.net/2014/01/01/simple-sprite-batching/
-https://www.livecoding.tv/learn
+https://www.khanacademy.org/math/linear-algebra/alternate-bases/orthonormal-basis/v/lin-alg-orthogonal-matrices-preserve-angles-and-lengths
 
 #endif
