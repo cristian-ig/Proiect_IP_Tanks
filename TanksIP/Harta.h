@@ -39,6 +39,7 @@ private:
 	Engine::OpenGLTexture _textureHandler;
 	Engine::GLTexture _wallTexture;
 	Engine::GLTexture _waterTexture;
+	Engine::GLTexture _backgroundTexture;
 
 };
 

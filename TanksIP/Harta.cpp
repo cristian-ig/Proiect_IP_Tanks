@@ -25,6 +25,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 
 	_wallTexture = _textureHandler.loadTexture("Assets/light_wall.png");
 	_waterTexture = _textureHandler.loadTexture("Assets/water.png");
+	_backgroundTexture = _textureHandler.loadTexture("Assets/wall.png");
 	_drawHandler.init();
 	_drawHandler.begin();
 
@@ -47,7 +48,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				_drawHandler.addObj(destRect, uvCoords, _wallTexture.id, color);
 				break;
 			case '@':
-				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
+				_drawHandler.addObj(destRect, uvCoords, _backgroundTexture.id, color);
 				_mapData[y][x] = '.'; //so we dont collide with the tile later on
 				if (numPlayers > 0)
 				{
@@ -57,6 +58,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				}
 				break;
 			case 'E':
+				_drawHandler.addObj(destRect, uvCoords, _backgroundTexture.id, color);
 				_mapData[y][x] = '.';//so we dont collide with the tile later on
 				if (numEnemys > 0)
 				{
@@ -72,7 +74,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				_mapData[y][x] = '.';//so we dont collide with the tile later on
 				break;
 			case '.':
-				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
+				_drawHandler.addObj(destRect, uvCoords, _backgroundTexture.id, color);
 				break;
 			default:
 				std::printf("Unexpected symbol %c at (%d,%d)", tile, x, y);

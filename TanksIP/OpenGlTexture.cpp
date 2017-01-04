@@ -21,11 +21,12 @@ namespace Engine {
 		}
 
 		//Decode the .png format into an array of pixels
-		int errorCode = decodePNG(out, width, height, &(in[0]), in.size());
-		if (errorCode != 0) {
-			throw"terxture decoding error";
-		}
-
+		try {
+			int errorCode = decodePNG(out, width, height, &(in[0]), in.size());
+			if (errorCode != 0) {
+				throw"terxture decoding error";
+			}
+		}catch(...){}
 		//Generate the openGL texture object
 		glGenTextures(1, &(texture.id));
 

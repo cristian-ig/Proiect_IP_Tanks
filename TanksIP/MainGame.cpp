@@ -33,7 +33,7 @@ void MainGame::init()
 	// camera
 	glm::vec2 cameraMij = glm::vec2((_harta[0]->getWidth() / 2) * 32 + 16, (_harta[0]->getHeight()) *16);
 	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
-	const float CAMERA_SCALE = 4.0f / 1.0f;
+	const float CAMERA_SCALE = 1.0f / 1.0f;
 	_camera.offsetScale(CAMERA_SCALE);
 	_camera.setPosition(cameraMij);
 	//_camera.setPosition(glm::vec2(380, 220));
@@ -42,12 +42,12 @@ void MainGame::init()
 	//player
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles);
-	_player[0]->initGun(new Artillery(20, 1, 10, TANK_SPEED));
+	_player[0]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
 	//enemys
 	for (int i = 0; i<_numEnem; i++)
 	{
 		_enemy.push_back(new Enemys);
-		_enemy[i]->init(glm::vec2(14.0f, 6.0f));
+		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f));
 	}
 
 	//timer
@@ -78,6 +78,11 @@ void MainGame::draw()
 	
 	_harta[_curLevel]->draw();
 	_player[0]->draw();
+
+	for (size_t i = 0; i < _numEnem; i++) {
+		if (_enemy[i] != nullptr)
+			_enemy[i]->draw();
+	}
 
 	for (size_t i = 0; i < _projectiles.size(); i++) {
 		_projectiles[i].draw();
@@ -114,7 +119,6 @@ while (_gameState == GameState::PLAY)
 	previousTicks = newTicks; // Store newTicks in previousTicks so we can use it next frame
 							  // Get the total delta time
 	float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
-
 	_input.update();
 	processInput(); //gets input
 
@@ -185,6 +189,10 @@ void MainGame::updateEntitys()
 	//check collision with world
 	for (size_t i = 0; i < _player.size(); i++)
 		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+
+	for (size_t i = 0; i < _numEnem; i++)
+		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+
 }
 void MainGame::updateBullets() {
 	//Update and collide with world
@@ -192,8 +200,21 @@ void MainGame::updateBullets() {
 		// If update returns true, the bullet collided with a wall
 		if (_projectiles[i].update(_harta[_curLevel]->getMapData()))
 		{
-			_projectiles[i] = _projectiles.back();
-			_projectiles.pop_back();
+			//ricochet
+			glm::ivec2 gridPosition =floor( _projectiles[i].getPosition()/(float)TILE_WIDTH);
+
+			glm::vec2 dir = _projectiles[i].getDirection();
+
+			if (gridPosition.x < 0 || gridPosition.x >= _harta[_curLevel]->getMapData()[0].size()) 
+				_projectiles[i].setDirection(glm::vec2(-dir.x, dir.y));
+			
+			else _projectiles[i].setDirection(glm::vec2(dir.x, -dir.y));
+
+			
+
+
+		//	_projectiles[i] = _projectiles.back();
+			//_projectiles.pop_back();
 		}
 		else {
 			i++;
@@ -213,8 +234,11 @@ void MainGame::updateBullets() {
 				if (_enemy[j]->applyDamage(_projectiles[i].getDamage())) {
 					// If the enemy died, remove him
 					delete _enemy[j];
-					_enemy[j] = _enemy.back();
-					_enemy.pop_back();
+					if (!_enemy.empty()) 
+						_enemy[j] = _enemy.back();
+
+						_enemy.pop_back();
+					_numEnem--;
 
 				}
 				else {

@@ -40,6 +40,7 @@ void Players::update(const std::vector<std::string>& harta, std::vector<Players*
 		*_bullets);
 
 	collideWithMap(harta);
+	
 }
 
 void Players::initGun(Artillery* gun)

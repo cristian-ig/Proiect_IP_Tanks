@@ -1,6 +1,7 @@
 #include "Entity.h"
 #include <algorithm>
 #include "DrawClass.h"
+#include<iostream>
 
 	// The minimum distance before a collision occurs
 const float MIN_DISTANCE_X = TANK_WIDTH / 2.0f + TILE_RADIUS;
@@ -50,7 +51,7 @@ bool Entity::applyDamage(float damage)
 			_health -= damage / 2.5f; //ia 1/4 din dmg
 		else
 			_health -= damage;
-	
+		std::cout << _health << std::endl;
 	// If we died, return True
 		if (_health <= 0)
 			return true;

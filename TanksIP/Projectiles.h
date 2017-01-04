@@ -23,16 +23,20 @@ public:
 
 	//getters
 	glm::vec2 getPosition() const { return _position; }
+	glm::vec2 getDirection() const { return _direction; };
 	float getSpeed() { return _speed; }
 	float getDamage() { return _damage; }
+
 
 	//setters
 	void setSpeed(float newSpeed) { _speed = newSpeed; }
 	void setDamage(float newDamage) { _damage = newDamage; }
+	void setDirection(glm::vec2 dir) { _direction = dir; }
 
 private:
 
 	bool collideWithWorld(const std::vector<std::string>& harta);
+	unsigned short _reflections;
 
 	glm::vec2 _position = glm::vec2(0.0f, 0.0f);
 	glm::vec2 _direction = glm::vec2(1.0f, 0.0f);

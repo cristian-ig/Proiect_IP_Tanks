@@ -54,7 +54,7 @@ private:
 
 	int _curLevel = -1;
 
-	char _numEnem = 1;
+	char _numEnem = 3;
 	char _numPlayers = 1;
 	
 	

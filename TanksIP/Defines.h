@@ -26,3 +26,4 @@
 #define BONUS_DURATION 300.0F //5 secunde
 //Bullet
 #define BULLET_RADIUS 5.0f
+#define REFLECTIONS 4;
