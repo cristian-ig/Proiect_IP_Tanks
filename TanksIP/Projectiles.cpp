@@ -45,11 +45,11 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 
 bool Projectiles::collideWithEntity(Entity* entity)
 {
-	const float MIN_DISTANCE_X = TANK_WIDTH + BULLET_RADIUS;
-	const float MIN_DISTANCE_Y = TANK_HEIGHT + BULLET_RADIUS;
+	const float MIN_DISTANCE_X = TANK_WIDTH / 4.0f + BULLET_RADIUS;
+	const float MIN_DISTANCE_Y = TANK_HEIGHT / 2.0f+ BULLET_RADIUS;
 
 	glm::vec2 centerPosA = _position;
-	glm::vec2 centerPosB = entity->getPosition() + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
+	glm::vec2 centerPosB = entity->getPosition() + glm::vec2(TANK_WIDTH / 1.4f, TANK_HEIGHT / 1.4f);
 
 	glm::vec2 distVec = centerPosA - centerPosB;
 

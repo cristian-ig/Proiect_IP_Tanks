@@ -34,7 +34,7 @@ void Enemys::update(const std::vector<std::string>& harta, std::vector<Players*>
 
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 //	glm::vec2 newDirection(1.0f, 0.0f);
-	_guns[0]->update(true, centerPosition, _direction, *_bullets);
+	//_guns[0]->update(true, centerPosition, _direction, *_bullets);
 	//ADD AI
 }
 

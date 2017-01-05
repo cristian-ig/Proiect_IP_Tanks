@@ -251,7 +251,7 @@ void MainGame::updateBullets() {
 			i++;
 		}
 	}
-/*
+///*
 	bool wasBulletRemoved;
 	// Collide with players and enemys
 	for (size_t i = 0; i < _projectiles.size(); i++) {
@@ -289,5 +289,5 @@ void MainGame::updateBullets() {
 				j++;
 			}
 		}
-	}*/
+	}//*/
 }
