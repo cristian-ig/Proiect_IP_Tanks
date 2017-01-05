@@ -4,6 +4,8 @@
 #include "Enemys.h"
 #include "Players.h"
 #include "Harta.h"
+#include "FileLoad.h"
+
 
 Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
 	_position(position), _direction(direction), _damage(damage), _speed(speed)
@@ -20,7 +22,7 @@ bool Projectiles::update(const std::vector<std::string>& harta)
 	return collideWithWorld(harta);
 }
 
-void Projectiles::draw()
+void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 {
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
@@ -36,11 +38,7 @@ void Projectiles::draw()
 	color.B = 255;
 	color.A = 255;
 
-	_drawHandler.init();
-	_drawHandler.begin();
-	_drawHandler.addObj(destRect, uvRect, _projectileTexture, color, _direction);
-	_drawHandler.end();
-	_drawHandler.renderBatch();
+	spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/bullet.png").id, 0.0f, color);
 
 	return;
 }

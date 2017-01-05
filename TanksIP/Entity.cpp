@@ -1,6 +1,5 @@
 #include "Entity.h"
 #include <algorithm>
-#include "DrawClass.h"
 #include<iostream>
 
 	// The minimum distance before a collision occurs
@@ -16,30 +15,25 @@ Entity::~Entity()
 {
 }
 
-void Entity::draw()
+void Entity::draw(Engine::DrawSprites& _spriteBatch)
 {
 	
-	
-	Engine::DrawClass _drawHandler;
-
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 	glm::vec4 destRect;
 	destRect.x = _position.x;
 	destRect.y = _position.y;
-	destRect.z = TANK_WIDTH;
-	destRect.w = TANK_HEIGHT;
+	destRect.z = TANK_WIDTH ;
+	destRect.w = TANK_HEIGHT ;
 
 	Engine::Color color;
 	color.R = 255;
 	color.G = 255;
 	color.B = 255;
 	color.A = 255;
-	_drawHandler.init();
-	_drawHandler.begin();
-	_drawHandler.addObj(destRect, uvRect, _textureID, color,_direction);
-	_drawHandler.end();
-	_drawHandler.renderBatch();
+
+	//spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/tank.png").id, 0.0f, color);
+	_spriteBatch.draw(destRect, uvRect, _textureID, 0.0f, color, _direction);
 }
 
 bool Entity::applyDamage(float damage)

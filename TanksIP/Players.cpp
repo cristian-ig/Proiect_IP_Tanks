@@ -1,7 +1,7 @@
 #include "Players.h"
 #include <SDL.h>
 #include<iostream>
-
+#include "FileLoad.h"
 Players::Players()
 {
 }
@@ -26,6 +26,8 @@ void Players::update(const std::vector<std::string>& harta, std::vector<Players*
 	else if (_input->isKeyDown(SDLK_d))
 		_position.x += _speed;
 
+	
+
 	glm::vec2 mouseCoords = _input->getMouseCoords();
 	mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
 
@@ -42,7 +44,6 @@ void Players::update(const std::vector<std::string>& harta, std::vector<Players*
 	collideWithMap(harta);
 	
 }
-
 void Players::initGun(Artillery* gun)
 {
 	_guns.push_back(gun);
@@ -50,6 +51,26 @@ void Players::initGun(Artillery* gun)
 	if (_currentIndex == -1)
 		_currentIndex = 0;
 }
+
+void Players::drawP(Engine::DrawSprites& spriteBatch)
+{
+	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glm::vec4 destRect;
+	destRect.x = _position.x;
+	destRect.y = _position.y;
+	destRect.z = TANK_WIDTH;
+	destRect.w = TANK_HEIGHT;
+
+	Engine::Color color;
+	color.R = 255;
+	color.G = 255;
+	color.B = 255;
+	color.A = 255;
+
+	spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/tank.png").id, 0.0f, color, _direction);
+}
+
 void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)
 {
 	_speed = speed;
@@ -59,6 +80,9 @@ void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* cam
 	_damage = damage;
 	_health = health;
 	_bullets = bullets;
+	//_color = color;
+	_textureID = Engine::FileLoad::getTexture("Assets/tank.png").id;
+
 
 }
 

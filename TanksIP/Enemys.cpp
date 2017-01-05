@@ -1,5 +1,7 @@
 #include "Enemys.h"
 #include "Players.h"
+#include "FileLoad.h"
+#include "Artillery.h"
 
 Enemys::Enemys()
 {
@@ -9,7 +11,13 @@ Enemys::Enemys()
 Enemys::~Enemys()
 {
 }
-
+void Enemys::initGun(Artillery* gun)
+{
+	_guns.push_back(gun);
+	//if no gun, just equip
+	if (_currentIndex == -1)
+		_currentIndex = 0;
+}
 void Enemys::update(const std::vector<std::string>& harta, std::vector<Players*>& players, std::vector<Enemys*>& enemys)
 {
 	//find closest player
@@ -21,20 +29,25 @@ void Enemys::update(const std::vector<std::string>& harta, std::vector<Players*>
 	{
 		// Get the direction vector twoards the player
 		_direction = glm::normalize(closestTarget->getPosition() - _position);
-		_position += _direction * _speed;
+	//	_position += _direction * _speed;
 	}
-	
+
+	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
+//	glm::vec2 newDirection(1.0f, 0.0f);
+	_guns[0]->update(true, centerPosition, _direction, *_bullets);
 	//ADD AI
 }
 
-void Enemys::init(glm::vec2 position, float speed, float damage, float health)
+void Enemys::init(glm::vec2 position, std::vector<Projectiles>* bullets, float speed, float damage, float health)
 {
 	_position = position;
 	_speed = speed;
 	_damage = damage;
 	_health = health;
-
+	_bullets = bullets;
+	//_color = color;
 	//TODO: LOAD TEXTURE;
+	_textureID = Engine::FileLoad::getTexture("Assets/tank.png").id;
 }
 
 Players* Enemys::getNearestPlayer(std::vector<Players*> players)

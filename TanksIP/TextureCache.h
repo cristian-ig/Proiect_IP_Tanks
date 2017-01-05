@@ -10,9 +10,8 @@ public:
 	TextureCache();
 	~TextureCache();
 
-	GLTexture getTexture(std::string texturePath);
+	 GLTexture getTexture(std::string texturePath);
 private:
 	std::map<std::string, GLTexture> _textureMap; //first is the texture path, second is the texture (image)
-	OpenGLTexture _handler;
 };
 }

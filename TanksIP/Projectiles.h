@@ -2,7 +2,6 @@
 #include <glm/glm.hpp>
 #include <vector>
 #include "DrawClass.h"
-#include "OpenGLTexture.h"
 
 class Entity;
 class Player;
@@ -16,7 +15,7 @@ public:
 
 	bool update(const std::vector<std::string>& harta); //delete the bullet if returns true
 
-	void draw();
+	void draw(Engine::DrawSprites& spriteBatch);
 
 	bool collideWithEntity(Entity* entity);
 
@@ -43,9 +42,8 @@ private:
 
 	float _speed = 0.0f; //pixels / frame
 	float _damage = 0.0f; //bullet damage
-	Engine::OpenGLTexture _textureHandler;
-	Engine::DrawClass _drawHandler;
-	GLuint _projectileTexture = _textureHandler.loadTexture("Assets/bullet.png").id;
+
+	//GLuint _projectileTexture = _textureHandler.loadTexture("Assets/bullet.png").id;
 	
 
 };

@@ -29,17 +29,14 @@ public:
 private:
 	int _numEntitys = 0;
 	int _numEnemyLeft = 0;
+
 	std::vector<std::string> _mapData;
 	std::vector<glm::vec2> _playerStartPos;
 	std::vector<glm::vec2> _enemyStartPos;
 
 	glm::vec2 _cameraPos;
 	
-	Engine::DrawClass _drawHandler;
-	Engine::OpenGLTexture _textureHandler;
-	Engine::GLTexture _wallTexture;
-	Engine::GLTexture _waterTexture;
-	Engine::GLTexture _backgroundTexture;
+	Engine::DrawSprites _spriteBatch;
 
 };
 

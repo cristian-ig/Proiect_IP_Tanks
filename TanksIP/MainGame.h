@@ -13,6 +13,8 @@
 #include "Enemys.h"
 #include"Projectiles.h"
 #include"Artillery.h"
+#include "DrawClass.h"
+#include "BonusBox.h"
 
 using namespace Engine;
 
@@ -32,6 +34,7 @@ public:
 private:
 	void initShaders();
 	void init();
+	//void initMap();
 	void mainLoop();
 	void draw();
 	void processInput();
@@ -44,11 +47,15 @@ private:
 	Camera _camera;
 	FPS _frameTimer;
 	GLSL _shaders;
+	DrawSprites _drawEntityHandler;
 
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;
 	std::vector<Harta*> _harta;
 	std::vector<Projectiles> _projectiles;
+	//std::vector<BonusBox*> _bonuses;
+	BonusBox* _bonuses;
+
 
 	//Artillery _artilllery;
 

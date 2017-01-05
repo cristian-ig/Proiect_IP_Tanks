@@ -2,20 +2,32 @@
 #include "glm/glm.hpp"
 #include <iostream>
 #include "FPS.h"
+#include <math.h>
 
 using namespace Engine;
 
 MainGame::MainGame() : _gameState(GameState::PLAY)
 {
 }
+
 MainGame::~MainGame()
 {
+	for (size_t i = 0; i < _harta.size(); i++)
+		delete _harta[i];
+
+	for (size_t i = 0; i < _player.size(); i++)
+		delete _player[i];
+
+	for (size_t i = 0; i < _enemy.size(); i++)
+		delete _enemy[i];
 }
 
 void MainGame::start() 
 {
 	//inits
 	init();
+
+
 
 	//loop
 	mainLoop();
@@ -26,39 +38,44 @@ void MainGame::init()
 	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
 	_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
 
-	//Harta
+	//shaders
+	initShaders();
+
+	//render
+	_drawEntityHandler.init();
+	
+	//map
 	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
 	_curLevel = 0;
-	
+	//const std::vector<glm::vec2>& enemyPositions = _harta[_curLevel]->getEnemysStartPos();
+
 	// camera
-	glm::vec2 cameraMij = glm::vec2((_harta[0]->getWidth() / 2) * 32 + 16, (_harta[0]->getHeight()) *16);
+	glm::vec2 cameraMij = glm::vec2((_harta[0]->getWidth() / 2) * 32 + 16, (_harta[0]->getHeight()) * 16);
 	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
 	const float CAMERA_SCALE = 1.0f / 1.0f;
 	_camera.offsetScale(CAMERA_SCALE);
 	_camera.setPosition(cameraMij);
-	//_camera.setPosition(glm::vec2(380, 220));
-	//std::cout << cameraMij.x << ", " << cameraMij.y << std::endl;
 	
 	//player
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles);
 	_player[0]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
+	
 	//enemys
 	for (int i = 0; i<_numEnem; i++)
 	{
 		_enemy.push_back(new Enemys);
-		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f));
+		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f), &_projectiles);
+		_enemy[i]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
 	}
 
 	//timer
-	_frameTimer.init(60);
+	_frameTimer.init(70);
 
-	//shaders
-	initShaders();
-	
-	
-
+	//_bonuses = new BonusBox(22,22);
+	//_bonuses->spawnBonus( _harta[0]->getMapData());
 }
+
 void MainGame::draw()
 {
 	// Set the base depth to 1.0
@@ -67,7 +84,7 @@ void MainGame::draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 	
 	_shaders.use();
-
+	
 
 	GLint textureUniform = _shaders.getUniformLocation("mySampler");
 	glUniform1i(textureUniform, 0);
@@ -76,21 +93,27 @@ void MainGame::draw()
     GLint pUniform = _shaders.getUniformLocation("P");
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 	
+	_drawEntityHandler.begin();
+
 	_harta[_curLevel]->draw();
-	_player[0]->draw();
+
+	_player[0]->drawP(_drawEntityHandler);
 
 	for (size_t i = 0; i < _numEnem; i++) {
 		if (_enemy[i] != nullptr)
-			_enemy[i]->draw();
+			_enemy[i]->draw(_drawEntityHandler);
 	}
 
 	for (size_t i = 0; i < _projectiles.size(); i++) {
-		_projectiles[i].draw();
+		_projectiles[i].draw(_drawEntityHandler);
 	}
 	
 
+	//_bonuses[0]->drawBox(BonusType::DAMAGE, _drawEntityHandler);
+	//_bonuses->drawBox(BonusType::DAMAGE, _drawEntityHandler);
 	
-
+	_drawEntityHandler.end();
+	_drawEntityHandler.renderBatch();
 	_shaders.unuse();
 }
 void MainGame::mainLoop() 
@@ -109,7 +132,7 @@ void MainGame::mainLoop()
 
 	Uint32 previousTicks = SDL_GetTicks();
 
-
+	
 while (_gameState == GameState::PLAY) 
 {
 	fpsLimiter.start();
@@ -126,7 +149,8 @@ while (_gameState == GameState::PLAY)
 			   // Loop while we still have steps to process.
 	while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
 		// The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
-		float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
+		//float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
+		float deltaTime = (totalDeltaTime < MAX_DELTA_TIME) ? totalDeltaTime : MAX_DELTA_TIME;
 		// Update all physics here and pass in deltaTime
 		updateEntitys();
 		updateBullets();
@@ -190,9 +214,11 @@ void MainGame::updateEntitys()
 	for (size_t i = 0; i < _player.size(); i++)
 		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 
-	for (size_t i = 0; i < _numEnem; i++)
+	for (size_t i = 0; i < _numEnem; i++) {
 		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
-
+		_enemy[i]->setSpeed(2);
+		_enemy[i]->setSpeed(2.4);
+	}
 }
 void MainGame::updateBullets() {
 	//Update and collide with world
@@ -205,23 +231,23 @@ void MainGame::updateBullets() {
 
 			glm::vec2 dir = _projectiles[i].getDirection();
 
-			if (gridPosition.x < 0 || gridPosition.x >= _harta[_curLevel]->getMapData()[0].size()) 
-				_projectiles[i].setDirection(glm::vec2(-dir.x, dir.y));
+		//	if (gridPosition.x < 0 || gridPosition.x >= _harta[_curLevel]->getMapData()[0].size()) 
+	//			_projectiles[i].setDirection(glm::vec2(-dir.x, dir.y));
 			
-			else _projectiles[i].setDirection(glm::vec2(dir.x, -dir.y));
+		//	else _projectiles[i].setDirection(glm::vec2(dir.x, -dir.y));
 
 			
 
 
-		//	_projectiles[i] = _projectiles.back();
-			//_projectiles.pop_back();
+			_projectiles[i] = _projectiles.back();
+			_projectiles.pop_back();
 		}
 		else {
 			i++;
 		}
 	}
+/*
 	bool wasBulletRemoved;
-
 	// Collide with players and enemys
 	for (size_t i = 0; i < _projectiles.size(); i++) {
 		wasBulletRemoved = false;
@@ -231,13 +257,14 @@ void MainGame::updateBullets() {
 			if (_projectiles[i].collideWithEntity(_enemy[j])) {
 
 				// Damage enemy, and kill it if its out of health
-				if (_enemy[j]->applyDamage(_projectiles[i].getDamage())) {
+				if (_enemy[j]->applyDamage(_projectiles[i].getDamage())) 
+				{
 					// If the enemy died, remove him
 					delete _enemy[j];
 					if (!_enemy.empty()) 
 						_enemy[j] = _enemy.back();
 
-						_enemy.pop_back();
+					_enemy.pop_back();
 					_numEnem--;
 
 				}
@@ -257,5 +284,5 @@ void MainGame::updateBullets() {
 				j++;
 			}
 		}
-	}
+	}*/
 }

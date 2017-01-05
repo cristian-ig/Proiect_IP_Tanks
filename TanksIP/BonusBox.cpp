@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include <random>
 #include <ctime>
+#include "FileLoad.h"
 
 BonusBox::BonusBox(float x, float y)
 {
@@ -16,62 +17,94 @@ BonusBox::~BonusBox()
 		delete _bonusBoxes[i];
 }
 
-void BonusBox::spawnBonus(const Harta& harta)
+void BonusBox::spawnBonus(const std::vector<std::string>& harta)
 {
 
 		static std::mt19937 randomEngine(time(nullptr));
 		// For offsetting the coordonates
-		std::uniform_int_distribution<int> randX(0, harta.getWidth());
-		std::uniform_int_distribution<int> randY(0, harta.getHeight());
+		std::uniform_int_distribution<int> randX(0, 11);
+		std::uniform_int_distribution<int> randY(0, 11);
 
 		_bonusBoxes.push_back(new BonusBox(randX(randomEngine), randY(randomEngine)));
 
 }
 
-void BonusBox::spawnBonus(float x, float y, Harta harta)
+void BonusBox::spawnBonus(float x, float y, const std::vector<std::string>& harta)
 {
 	_bonusBoxes.push_back(new BonusBox(x, y));
+	
 }
 
-void BonusBox::drawBox(BonusType bonusType)
+void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch)
 {
+
+	_spriteBatch.begin();
+
+	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glm::vec4 destRect;
+	destRect.x = _posX;
+	destRect.y = _posY;
+	destRect.z = BONUS_BOX_WIDTH;
+	destRect.w = BONUS_BOX_WIDTH;
+
+	Engine::Color color;
+	color.R = 255;
+	color.G = 255;
+	color.B = 255;
+	color.A = 255;
+
 	switch (bonusType)
 	{
 	case BonusType::MAX_HEALTH:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Max_Health.png").id, 0.0f, color);
 		break;
 	case BonusType::HEAL:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Heal.png").id, 0.0f, color);
 		break;
 	case BonusType::HEAL_PLUS:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Heal_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::SPEED:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Speed.png").id, 0.0f, color);
 		break;
 	case BonusType::SPEED_PLUS:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Speed_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::DAMAGE:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Damage.png").id, 0.0f, color);
 		break;
 	case BonusType::DAMAGE_PLUS:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Damage_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::ONE_HIT_KILL:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/OHT.png").id, 0.0f, color);
 		break;
 	case BonusType::SHIELD:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Shield.png").id, 0.0f, color);
 		break;
 	case BonusType::INVULNERABILITY:
 		//draw
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Invulnerability.png").id, 0.0f, color);
 		break;
 	default:
 		//draw random box
+		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Random.png").id, 0.0f, color);
 		break;
 	}
-	return;
+
+	_spriteBatch.end();
+	_spriteBatch.renderBatch();
+
 }
 
 void BonusBox::applyBonus(BonusType bonusType, Entity& entity)

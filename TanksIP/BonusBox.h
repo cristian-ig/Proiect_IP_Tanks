@@ -1,6 +1,7 @@
 #pragma once
 #include "Entity.h"
 #include "Harta.h"
+#include "DrawClass.h"
 
 enum class BonusType
 {
@@ -24,14 +25,14 @@ public:
 	BonusBox(float x, float y);
 	~BonusBox();
 
-	void spawnBonus(const Harta& harta);
-	void spawnBonus(float x, float y, Harta harta);
+	void spawnBonus(const std::vector<std::string>& harta);
+	void spawnBonus(float x, float y, const std::vector<std::string>& harta);
 
 	BonusType getBonusType() const { return _type; }
 	
 	void applyBonus(BonusType bonusType, Entity& entity);
 
-	void drawBox(BonusType bonusType);
+	void drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch);
 
 	void addDamage(float damage, Entity& entity);
 	void addHealth(float health, Entity& entity);
@@ -44,6 +45,8 @@ private:
 	BonusType _type = BonusType::NO_BONUS;
 	std::vector<BonusBox*> _bonusBoxes;
 	Entity *_entity;
+
+	Engine::DrawSprites _spriteBatch;
 
 	float _posX = 0.0f;
 	float _posY = 0.0f;
