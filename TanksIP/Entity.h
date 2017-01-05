@@ -5,6 +5,7 @@
 #include "Defines.h"
 #include "DrawClass.h"
 #include "Artillery.h"
+#include "BonusBox.h"
 
 class Players;
 class Enemys;
@@ -36,6 +37,8 @@ public:
 	bool collideWithMap(const std::vector<std::string>& harta); //returns true if collision
 
 	bool collideWithEntity(Entity* entity); //returns true if collisions
+
+	bool collideWithBonusBox(Entity* entity, const BonusBox& bonusBox);
 
 	//void initGun(Artillery* gun);
 
