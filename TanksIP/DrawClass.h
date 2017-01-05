@@ -23,6 +23,7 @@ public:
 	Vertex bottomLeft;
 	Vertex topRight;
 	Vertex bottomRight;
+
 private:
 	// Rotates a point about (0,0) by angle
 	glm::vec2 rotatePoint(const glm::vec2& pos, float angle);

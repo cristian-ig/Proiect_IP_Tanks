@@ -24,7 +24,7 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 		// Add a new bullet
 		//TODO Add Sound
 		//bullets.emplace_back(position + glm::vec2(BULLET_RADIUS ), direction, _bulletDamage, _bulletSpeed);
-		bullets.emplace_back(position + glm::vec2(BULLET_RADIUS) + glm::vec2(TANK_WIDTH/2, 0)*direction, direction, _bulletDamage, _bulletSpeed);
+		bullets.emplace_back(position + glm::vec2(BULLET_RADIUS) + glm::vec2(TANK_WIDTH/2, TANK_HEIGHT/2)*direction, direction, _bulletDamage, _bulletSpeed);
 	}
 }
 

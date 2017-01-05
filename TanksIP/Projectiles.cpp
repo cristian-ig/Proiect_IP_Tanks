@@ -27,8 +27,8 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 	glm::vec4 destRect;
-	destRect.x = _position.x;
-	destRect.y = _position.y;
+	destRect.x = _position.x - TANK_WIDTH /2 ;
+	destRect.y = _position.y - TANK_HEIGHT/2;
 	destRect.z = BULLET_RADIUS;
 	destRect.w = BULLET_RADIUS;
 
