@@ -8,7 +8,7 @@
 
 
 Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
-	_position(position), _direction(direction), _damage(damage), _speed(speed)
+	_position(position), _direction(direction), _damage(damage), _speed(speed), isFirst(true)
 {
 }
 
@@ -27,8 +27,14 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 	glm::vec4 destRect;
-	destRect.x = _position.x - TANK_WIDTH /2 ;
-	destRect.y = _position.y - TANK_HEIGHT/2;
+	//first draw substrac tank with and height from position for good colision
+	if (isFirst){
+		_position.x -= TANK_WIDTH / 2;
+		_position.y -= TANK_HEIGHT / 2;
+		isFirst = false;
+	}
+	destRect.x = _position.x ;
+	destRect.y = _position.y;
 	destRect.z = BULLET_RADIUS;
 	destRect.w = BULLET_RADIUS;
 
@@ -48,7 +54,10 @@ bool Projectiles::collideWithEntity(Entity* entity)
 	const float MIN_DISTANCE_X = TANK_WIDTH / 4.0f + BULLET_RADIUS;
 	const float MIN_DISTANCE_Y = TANK_HEIGHT / 2.0f+ BULLET_RADIUS;
 
-	glm::vec2 centerPosA = _position;
+
+	//add with and height/2 for better colision
+	glm::vec2 pos(_position.x + TANK_WIDTH/2, _position.y + TANK_HEIGHT/2);
+	glm::vec2 centerPosA = pos;
 	glm::vec2 centerPosB = entity->getPosition() + glm::vec2(TANK_WIDTH / 1.4f, TANK_HEIGHT / 1.4f);
 
 	glm::vec2 distVec = centerPosA - centerPosB;

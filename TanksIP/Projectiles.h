@@ -32,6 +32,7 @@ public:
 	void setDamage(float newDamage) { _damage = newDamage; }
 	void setDirection(glm::vec2 dir) { _direction = dir; }
 
+	bool isFirst;
 private:
 	glm::vec2 rotationPoint(const glm::vec2& pos, float angle);
 	bool collideWithWorld(const std::vector<std::string>& harta);
