@@ -77,8 +77,8 @@ bool Projectiles::collideWithEntity(Entity* entity)
 bool Projectiles::collideWithWorld(const std::vector<std::string>& harta)
 {
 	glm::ivec2 gridPosition;
-	gridPosition.x = floor(_position.x / (float)TILE_WIDTH);
-	gridPosition.y = floor(_position.y / (float)TILE_WIDTH);
+	gridPosition.x = floor((_position.x+2.5) / (float)TILE_WIDTH);
+	gridPosition.y = floor((_position.y+3.5)/ (float)TILE_WIDTH);
 
 	// If we are outside the world, just return
 	if (gridPosition.x < 0 || gridPosition.x >= harta[0].size() ||
