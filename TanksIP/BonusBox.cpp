@@ -3,7 +3,7 @@
 #include <random>
 #include <ctime>
 #include "FileLoad.h"
-
+#include<iostream>
 BonusBox::BonusBox(glm::vec2 position)
 {
 	_position.x = position.x;// *BONUS_BOX_WIDTH;
@@ -40,7 +40,7 @@ void BonusBox::spawnBonus(float x, float y, const std::vector<std::string>& hart
 	return;
 }
 
-void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch)
+void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites&  spriteBatch)
 {
 
 	//_spriteBatch.begin();
@@ -63,46 +63,57 @@ void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch)
 	{
 	case BonusType::MAX_HEALTH:
 		//draw
+		std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Max_Health.png").id, 0.0f, color);
 		break;
 	case BonusType::HEAL:
 		//draw
+		std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Heal.png").id, 0.0f, color);
 		break;
 	case BonusType::HEAL_PLUS:
 		//draw
+		std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Heal_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::SPEED:
 		//draw
+		std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Speed.png").id, 0.0f, color);
 		break;
 	case BonusType::SPEED_PLUS:
+		std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Speed_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::DAMAGE:
+		std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Damage.png").id, 0.0f, color);
 		break;
 	case BonusType::DAMAGE_PLUS:
+		std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Damage_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::ONE_HIT_KILL:
+		std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/OHT.png").id, 0.0f, color);
 		break;
 	case BonusType::SHIELD:
+		std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Shield.png").id, 0.0f, color);
 		break;
 	case BonusType::INVULNERABILITY:
+		std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Invulnerability.png").id, 0.0f, color);
 		break;
 	default:
 		//draw random box
+		std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Random.png").id, 0.0f, color);
 		break;
 	}

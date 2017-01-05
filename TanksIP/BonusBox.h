@@ -35,7 +35,7 @@ public:
 
 	void applyBonus(BonusType bonusType, Entity& entity);
 
-	void drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch);
+	void drawBox(BonusType bonusType, Engine::DrawSprites& spriteBatch);
 
 	void addDamage(float damage, Entity& entity);
 	void addHealth(float health, Entity& entity);
