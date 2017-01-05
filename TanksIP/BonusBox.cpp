@@ -4,47 +4,52 @@
 #include <ctime>
 #include "FileLoad.h"
 
-BonusBox::BonusBox(float x, float y)
+BonusBox::BonusBox(glm::vec2 position)
 {
-	_posX = x * BONUS_BOX_WIDTH;
-	_posY = y * BONUS_BOX_WIDTH;
+	_position.x = position.x;// *BONUS_BOX_WIDTH;
+	_position.y = position.y;// *BONUS_BOX_WIDTH;
 }
-
+BonusBox::BonusBox()
+{
+}
 
 BonusBox::~BonusBox()
 {
-	for (size_t i = 0; i < _bonusBoxes.size(); i++)
-		delete _bonusBoxes[i];
+	//for (size_t i = 0; i < _bonusBoxes.size(); i++)
+	//	delete _bonusBoxes[i];
 }
 
-void BonusBox::spawnBonus(const std::vector<std::string>& harta)
+void BonusBox::spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& _bonuses)
 {
-
+	bonusType = BonusType::RANDOM;
+	glm::vec2 pos;
 		static std::mt19937 randomEngine(time(nullptr));
 		// For offsetting the coordonates
-		std::uniform_int_distribution<int> randX(0, 11);
-		std::uniform_int_distribution<int> randY(0, 11);
-
-		_bonusBoxes.push_back(new BonusBox(randX(randomEngine), randY(randomEngine)));
+		std::uniform_int_distribution<int> randX(0, harta[0].size());
+		std::uniform_int_distribution<int> randY(0, harta.size());
+		pos.x = randX(randomEngine) * 32;
+		pos.y = randY(randomEngine) * 32;
+		_bonuses.push_back(new BonusBox(pos));
+		//return;
 
 }
 
 void BonusBox::spawnBonus(float x, float y, const std::vector<std::string>& harta)
 {
-	_bonusBoxes.push_back(new BonusBox(x, y));
-	
+	//_bonusBoxes.push_back(new BonusBox(x, y));
+	return;
 }
 
 void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch)
 {
 
-	_spriteBatch.begin();
+	//_spriteBatch.begin();
 
 	const glm::vec4 uvRect(0.0f, 0.0f, 1.0f, 1.0f);
 
 	glm::vec4 destRect;
-	destRect.x = _posX;
-	destRect.y = _posY;
+	destRect.x = _position.x;
+	destRect.y = _position.y;
 	destRect.z = BONUS_BOX_WIDTH;
 	destRect.w = BONUS_BOX_WIDTH;
 
@@ -102,8 +107,8 @@ void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch)
 		break;
 	}
 
-	_spriteBatch.end();
-	_spriteBatch.renderBatch();
+	//_spriteBatch.end();
+	//_spriteBatch.renderBatch();
 
 }
 

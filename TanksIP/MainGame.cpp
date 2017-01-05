@@ -74,6 +74,9 @@ void MainGame::init()
 
 	//_bonuses = new BonusBox(22,22);
 	//_bonuses->spawnBonus( _harta[0]->getMapData());
+	
+	_bonuses.push_back(new BonusBox(cameraMij));
+	_bonuses[0]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
 }
 
 void MainGame::draw()
@@ -84,7 +87,6 @@ void MainGame::draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 	
 	_shaders.use();
-	
 
 	GLint textureUniform = _shaders.getUniformLocation("mySampler");
 	glUniform1i(textureUniform, 0);
@@ -108,8 +110,13 @@ void MainGame::draw()
 		_projectiles[i].draw(_drawEntityHandler);
 	}
 	
+	for (size_t i = 0; i < _bonuses.size(); i++) 
+	{
+		_bonuses[i]->drawBox(BonusType::RANDOM, _drawEntityHandler);
+		std::cout << _bonuses[i]->getPosition().x << ", " << _bonuses[i]->getPosition().y << std::endl;
+	}
 
-	//_bonuses[0]->drawBox(BonusType::DAMAGE, _drawEntityHandler);
+
 	//_bonuses->drawBox(BonusType::DAMAGE, _drawEntityHandler);
 	
 	_drawEntityHandler.end();
@@ -118,7 +125,7 @@ void MainGame::draw()
 }
 void MainGame::mainLoop() 
 {
-
+	//semi fixed timesteps
 	// Some helpful constants.
 	const float DESIRED_FPS = 60.0f; // FPS the game is designed to run at
 	const int MAX_PHYSICS_STEPS = 5; // Max number of physics steps per frame
@@ -235,8 +242,6 @@ void MainGame::updateBullets() {
 	//			_projectiles[i].setDirection(glm::vec2(-dir.x, dir.y));
 			
 		//	else _projectiles[i].setDirection(glm::vec2(dir.x, -dir.y));
-
-			
 
 
 			_projectiles[i] = _projectiles.back();

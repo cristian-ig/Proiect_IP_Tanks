@@ -53,8 +53,8 @@ private:
 	std::vector<Enemys*> _enemy;
 	std::vector<Harta*> _harta;
 	std::vector<Projectiles> _projectiles;
-	//std::vector<BonusBox*> _bonuses;
-	BonusBox* _bonuses;
+	std::vector<BonusBox*> _bonuses;
+	//BonusBox* _bonuses;
 
 
 	//Artillery _artilllery;

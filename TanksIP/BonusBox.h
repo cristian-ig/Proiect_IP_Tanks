@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Harta.h"
 #include "DrawClass.h"
+#include "glm/glm.hpp"
 
 enum class BonusType
 {
@@ -22,14 +23,16 @@ enum class BonusType
 class BonusBox
 {
 public:
-	BonusBox(float x, float y);
+	BonusBox(glm::vec2 position);
+	BonusBox();
 	~BonusBox();
 
-	void spawnBonus(const std::vector<std::string>& harta);
+	void spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& _bonuses);
 	void spawnBonus(float x, float y, const std::vector<std::string>& harta);
 
 	BonusType getBonusType() const { return _type; }
-	
+	glm::vec2 getPosition() const { return _position; }
+
 	void applyBonus(BonusType bonusType, Entity& entity);
 
 	void drawBox(BonusType bonusType, Engine::DrawSprites spriteBatch);
@@ -43,13 +46,15 @@ public:
 
 private:
 	BonusType _type = BonusType::NO_BONUS;
-	std::vector<BonusBox*> _bonusBoxes;
+	//std::vector<BonusBox*> _bonusBoxes;
 	Entity *_entity;
 
 	Engine::DrawSprites _spriteBatch;
 
-	float _posX = 0.0f;
-	float _posY = 0.0f;
+	glm::vec2 _position;
+	
+	//float _posX = 0.0f;
+	//float _posY = 0.0f;
 
 };
 
