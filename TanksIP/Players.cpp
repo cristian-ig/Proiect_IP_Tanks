@@ -83,7 +83,7 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 		_guns[0]->update(_input->isKeyDown(SDLK_SPACE),
 			centerPosition,
 			_direction,
-			*_bullets, harta);
+			*_bullets, harta, gamestate);
 		_direction = glm::normalize(_direction);
 	}
 	else
@@ -142,7 +142,7 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 		_guns[0]->update(_input->isKeyDown(SDLK_RSHIFT),
 			centerPosition,
 			_direction,
-			*_bullets, harta);
+			*_bullets, harta, gamestate);
 		_direction = glm::normalize(_direction);
 	}
 

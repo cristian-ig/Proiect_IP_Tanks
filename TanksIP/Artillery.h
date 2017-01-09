@@ -11,7 +11,7 @@ public:
 		float bulletDamage, float bulletSpeed);
 	~Artillery();
 
-	void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta);
+	void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta, GameState gamestate);
 
 	int getFireRate() { return  _fireRate; }
 	int getBPS() { return _bulletsPerShot; }
@@ -21,7 +21,7 @@ public:
 
 private:
 
-	void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta);
+	void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta, GameState gamestate);
 
 	std::string _name;
 

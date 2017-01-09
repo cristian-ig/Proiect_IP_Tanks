@@ -27,7 +27,8 @@
 #define BONUS_DURATION 600.0F // secunde * 60
 //Bullet
 #define BULLET_RADIUS 5.0f
-#define REFLECTIONS 4;
+#define REFLECTIONS 4
+#define BULLET_SPEED 1.8*TANK_SPEED
 //GameState
 
 enum class GameState {

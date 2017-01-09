@@ -81,12 +81,13 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 
 bool Projectiles::collideWithEntity(Entity* entity)
 {
+#if 0
 	const float MIN_DISTANCE_X = TANK_WIDTH / 4.0f + BULLET_RADIUS;
-	const float MIN_DISTANCE_Y = TANK_HEIGHT / 2.0f+ BULLET_RADIUS;
+	const float MIN_DISTANCE_Y = TANK_HEIGHT / 2.0f + BULLET_RADIUS;
 
 
 	//add with and height/2 for better colision
-	glm::vec2 pos(_position.x + TANK_WIDTH/2, _position.y + TANK_HEIGHT/2);
+	glm::vec2 pos(_position.x + TANK_WIDTH / 2, _position.y + TANK_HEIGHT / 2);
 	glm::vec2 centerPosA = pos;
 	glm::vec2 centerPosB = entity->getPosition() + glm::vec2(TANK_WIDTH / 1.4f, TANK_HEIGHT / 1.4f);
 
@@ -98,9 +99,31 @@ bool Projectiles::collideWithEntity(Entity* entity)
 
 	glm::vec2 collisionDepth = glm::vec2(MIN_DISTANCE_X - glm::length(distVec), MIN_DISTANCE_Y - glm::length(distVec));
 	// If collision depth > 0 then we did collide
-	if (xDepth > 0 && yDepth > 0) 
+	if (xDepth > 0 && yDepth > 0)
 		return true;
-	
+
+	return false;
+#endif // 0
+	const float MIN_DISTANCE_X = TANK_WIDTH / 8.0f + BULLET_RADIUS;
+	const float MIN_DISTANCE_Y = TANK_HEIGHT / 2.0f + BULLET_RADIUS;
+
+
+	//add with and height/2 for better colision
+	glm::vec2 pos(_position.x , _position.y + TANK_HEIGHT / 2);
+	glm::vec2 centerPosA = pos;
+	glm::vec2 centerPosB = entity->getPosition() + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 1.4f);
+
+	glm::vec2 distVec = centerPosA - centerPosB;
+
+	float distance = glm::length(distVec);
+	float xDepth = MIN_DISTANCE_X - abs(distVec.x);
+	float yDepth = MIN_DISTANCE_Y - abs(distVec.y);
+
+	glm::vec2 collisionDepth = glm::vec2(MIN_DISTANCE_X - glm::length(distVec), MIN_DISTANCE_Y - glm::length(distVec));
+	// If collision depth > 0 then we did collide
+	if (xDepth > 0 && yDepth > 0)
+		return true;
+
 	return false;
 }
 
