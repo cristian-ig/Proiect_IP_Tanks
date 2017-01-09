@@ -5,10 +5,12 @@
 #include "Players.h"
 #include "Harta.h"
 #include "FileLoad.h"
+#include<random>
 
 
 Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
-	_position(position), _direction(direction), _damage(damage), _speed(speed), isFirst(true)
+	_position(position), _direction(direction), _damage(damage), _speed(speed), isFirst(true), bounced(false),
+	colided(false)
 {
 }
 
@@ -18,8 +20,36 @@ Projectiles::~Projectiles()
 
 bool Projectiles::update(const std::vector<std::string>& harta)
 {
+	
+	if (!colided) {
+		if (collideWithWorld(harta)) {
+
+			glm::ivec2 projPosition = _position;
+			glm::ivec2 fgridPosition = glm::ivec2(floor(projPosition.x / (float)TILE_WIDTH), floor(projPosition.y / (float)TILE_WIDTH));
+			glm::ivec2 cgridPosition = glm::ivec2(ceil(projPosition.x / (float)TILE_WIDTH), ceil(projPosition.y / (float)TILE_WIDTH));
+
+
+		//	std::cout << "projPos " << projPosition.x << " " << projPosition.y << std::endl;
+			//std::cout << "gridPosition " << gridPosition.x << " " << gridPosition.y << std::endl;
+			//std::cout << "gridPositionX32 " << gridPosition.x*TILE_WIDTH << " " << gridPosition.y*TILE_WIDTH << std::endl << std::endl;
+			if ((projPosition.x <= fgridPosition.x * TILE_WIDTH + TILE_WIDTH - BULLET_RADIUS  || projPosition.x >= fgridPosition.x * TILE_WIDTH + BULLET_RADIUS) && (projPosition.x <= cgridPosition.x * TILE_WIDTH + TILE_WIDTH - BULLET_RADIUS || projPosition.x >= cgridPosition.x * TILE_WIDTH + BULLET_RADIUS))
+				_direction = glm::vec2(-_direction.x, _direction.y);
+			if((projPosition.y <= fgridPosition.y * TILE_WIDTH + TILE_WIDTH - BULLET_RADIUS || projPosition.y >= fgridPosition.y * TILE_WIDTH + BULLET_RADIUS) && (projPosition.y <= cgridPosition.y * TILE_WIDTH + TILE_WIDTH - BULLET_RADIUS || projPosition.y >= cgridPosition.y * TILE_WIDTH + BULLET_RADIUS))
+				_direction = glm::vec2(_direction.x, -_direction.y);
+			_position += _direction * _speed;
+			colided = true;
+			return true;
+
+		}
+		
+
+	}
+	else colided = false;
 	_position += _direction * _speed;
-	return collideWithWorld(harta);
+	return false;
+		
+	
+
 }
 
 void Projectiles::draw(Engine::DrawSprites& spriteBatch)
@@ -77,8 +107,8 @@ bool Projectiles::collideWithEntity(Entity* entity)
 bool Projectiles::collideWithWorld(const std::vector<std::string>& harta)
 {
 	glm::ivec2 gridPosition;
-	gridPosition.x = floor((_position.x+2.5) / (float)TILE_WIDTH);
-	gridPosition.y = floor((_position.y+3.5)/ (float)TILE_WIDTH);
+	gridPosition.x = floor((_position.x + BULLET_RADIUS) / (float)TILE_WIDTH);
+	gridPosition.y = floor((_position.y + BULLET_RADIUS) / (float)TILE_WIDTH);
 
 	// If we are outside the world, just return
 	if (gridPosition.x < 0 || gridPosition.x >= harta[0].size() ||

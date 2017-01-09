@@ -25,21 +25,29 @@ public:
 	glm::vec2 getDirection() const { return _direction; };
 	float getSpeed() { return _speed; }
 	float getDamage() { return _damage; }
+	bool isBounced() { return bounced; }
+	
 
 
 	//setters
 	void setSpeed(float newSpeed) { _speed = newSpeed; }
 	void setDamage(float newDamage) { _damage = newDamage; }
 	void setDirection(glm::vec2 dir) { _direction = dir; }
+	void bounce() { bounced = true; }
+	void addDirection() { _position += _direction; }
 
-	bool isFirst;
+	
 private:
 	glm::vec2 rotationPoint(const glm::vec2& pos, float angle);
 	bool collideWithWorld(const std::vector<std::string>& harta);
 	unsigned short _reflections;
+	bool colided;
 
 	glm::vec2 _position = glm::vec2(0.0f, 0.0f);
 	glm::vec2 _direction = glm::vec2(1.0f, 0.0f);
+
+	bool isFirst;
+	bool bounced;
 
 	float _speed = 0.0f; //pixels / frame
 	float _damage = 0.0f; //bullet damage
