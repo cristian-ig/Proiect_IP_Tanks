@@ -17,24 +17,30 @@ Artillery::~Artillery()
 {
 }
 
-void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Projectiles>& bullets)
+void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta)
 {
 	for (int i = 0; i < _bulletsPerShot; i++) 
 	{
 		// Add a new bullet
 		//TODO Add Sound
 		//bullets.emplace_back(position + glm::vec2(BULLET_RADIUS ), direction, _bulletDamage, _bulletSpeed);
-		bullets.emplace_back(position + glm::vec2(BULLET_RADIUS) + glm::vec2(TANK_WIDTH/2, TANK_HEIGHT/2)*direction, direction, _bulletDamage, _bulletSpeed);
+
+		glm::ivec2 gridPosition;
+		gridPosition.x = floor((position.x + 2.5) / (float)TILE_WIDTH);
+		gridPosition.y = floor((position.y + 3.5) / (float)TILE_WIDTH);
+
+		if(harta[gridPosition.y][gridPosition.x] == '.')
+			bullets.emplace_back(position + glm::vec2(BULLET_RADIUS) + glm::vec2(TANK_WIDTH/2, TANK_HEIGHT/2)*direction, direction, _bulletDamage, _bulletSpeed);
 	}
 }
 
-void Artillery::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets)
+void Artillery::update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta)
 {
 	_frameCounter++;
 	// After a certain number of frames has passed we fire our gun
 	if (_frameCounter >= _fireRate && isMouseDown)
 	{
-		fire(direction, position, bullets);
+		fire(direction, position, bullets, harta );
 		_frameCounter = 0;
 	}
 }
