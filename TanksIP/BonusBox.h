@@ -27,11 +27,13 @@ public:
 	BonusBox();
 	~BonusBox();
 
-	void spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& _bonuses);
-	void spawnBonus(float x, float y, const std::vector<std::string>& harta);
+	void spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& bonuses);
+	void spawnBonus(float x, float y, const std::vector<std::string>& harta, std::vector<BonusBox*>& bonuses);
 
 	BonusType getBonusType() const { return _type; }
 	glm::vec2 getPosition() const { return _position; }
+	std::vector<int> getTimers() const { return _timers; }
+
 
 	void applyBonus(BonusType bonusType, Entity& entity);
 
@@ -45,14 +47,15 @@ public:
 	void addSpeed(float speed, Entity& entity);
 
 private:
+	//void deleteBox();
 	BonusType _type = BonusType::RANDOM;
 	//std::vector<BonusBox*> _bonusBoxes;
 	Entity *_entity;
-
+	
 	Engine::DrawSprites _spriteBatch;
 
 	glm::vec2 _position;
-	
+	std::vector<int> _timers;
 	//float _posX = 0.0f;
 	//float _posY = 0.0f;
 

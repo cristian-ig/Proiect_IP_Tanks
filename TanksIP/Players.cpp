@@ -15,6 +15,9 @@ Players::~Players()
 void Players::update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
 	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxess)
 {
+	//if (this->getDamage() > 5.0f)
+		//this->setSpeed(5.0f);
+
 	if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
 	{
 		_position.y += _speed / 2.0f;
@@ -64,7 +67,7 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 	_guns[0]->update(_input->isKeyDown(SDL_BUTTON_LEFT),
 		centerPosition,
 		_direction,
-		*_bullets);
+		*_bullets, harta);
 
 	collideWithMap(harta);
 	
@@ -96,7 +99,38 @@ void Players::drawP(Engine::DrawSprites& spriteBatch)
 	spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/tank.png").id, 0.0f, color, _direction);
 }
 
-void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)
+void Players::initTankTypes(TankType tankType)
+{
+	switch (tankType)
+	{
+	case TankType::DEFAULT:
+		_health = TANK_HEALTH;
+		_speed = TANK_SPEED;
+		_damage = TANK_DAMAGE;
+		_isInvulnerable = false;
+		_isShielded = false;
+		break;
+	case TankType::PANZER:
+		_isInvulnerable = false;
+		_isShielded = false;
+		break;
+	case TankType::SPEEDRUNNER:
+		_isInvulnerable = false;
+		_isShielded = false;
+		break;
+	case TankType::MOTHER_RUSSIA:
+		_isInvulnerable = false;
+		_isShielded = false;
+		break;
+	case TankType::RANDOM:
+		break;
+	default:
+		break;
+	}
+}
+
+void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets,
+	TankType tankType /* = DEFAULT */, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)
 {
 	_speed = speed;
 	_position = position;
@@ -105,7 +139,6 @@ void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* cam
 	_damage = damage;
 	_health = health;
 	_bullets = bullets;
-	//_color = color;
 	_textureID = Engine::FileLoad::getTexture("Assets/tank.png").id;
 
 

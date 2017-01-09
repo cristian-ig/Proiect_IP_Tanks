@@ -51,7 +51,7 @@ bool Entity::applyDamage(float damage)
 			return true;
 	}
 
-	if (damage == BONUS_ONE_HIT_KILL) //invinc se anuleaza cu OHK
+	if (damage >= BONUS_ONE_HIT_KILL) //invinc se anuleaza cu OHK
 		_health -= TANK_DAMAGE;
 
 	return false;
@@ -99,7 +99,7 @@ bool Entity::collideWithMap(const std::vector<std::string>& harta)
 bool Entity::collideWithEntity(Entity* entity)
 {
 	// Center position of this tank
-	glm::vec2 centerPosA = _position + glm::vec2(TANK_WIDTH / 1.8f, TANK_HEIGHT / 2.0f);
+	glm::vec2 centerPosA = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 	// Center position of the parameter tank
 	glm::vec2 centerPosB = entity->getPosition() + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 
@@ -130,6 +130,7 @@ bool Entity::collideWithEntity(Entity* entity)
 
 bool Entity::collideWithBonusBox(Entity* entity, BonusBox* bonusBox)
 {
+
 	glm::vec2 centerPosA = _position + glm::vec2(TANK_WIDTH / 1.8f, TANK_HEIGHT / 2.0f);
 	// Center position of the parameter Bonus
 	glm::vec2 centerPosB = bonusBox->getPosition() + glm::vec2(BONUS_BOX_WIDTH / 2.0f);
@@ -146,9 +147,11 @@ bool Entity::collideWithBonusBox(Entity* entity, BonusBox* bonusBox)
 	glm::vec2 collisionDepth = glm::vec2(MIN_DISTANCE_X - glm::length(distVec), MIN_DISTANCE_Y - glm::length(distVec));
 	// If collision depth > 0 then we did collide
 	if (xDepth > 0 && yDepth > 0) {
-		bonusBox->applyBonus(bonusBox->getBonusType(), *entity);
+		//bonusBox->applyBonus(bonusBox->getBonusType(), *entity);
 		return true;
+		//_appliedBonuses.push_back(bonusBox->getBonusType());
 	}
+	
 	return false;
 }
 

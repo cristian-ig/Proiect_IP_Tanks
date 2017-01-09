@@ -15,28 +15,40 @@ BonusBox::BonusBox()
 
 BonusBox::~BonusBox()
 {
-	//for (size_t i = 0; i < _bonusBoxes.size(); i++)
-	//	delete _bonusBoxes[i];
+// 	for (size_t i = 0; i < _bonusBoxes.size(); i++)
+// 		delete _bonusBoxes[i];
 }
 
-void BonusBox::spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& _bonuses)
+void BonusBox::spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& bonuses)
 {
 	bonusType = BonusType::RANDOM;
 	glm::vec2 pos;
-		static std::mt19937 randomEngine(time(nullptr));
-		// For offsetting the coordonates
-		std::uniform_int_distribution<int> randX(1, harta[0].size()-1);
-		std::uniform_int_distribution<int> randY(0, harta.size()-1);
-		pos.x = randX(randomEngine) * 32;
-		pos.y = randY(randomEngine) * 32;
-		_bonuses.push_back(new BonusBox(pos));
-		//return;
+	static std::mt19937 randomEngine(time(nullptr));
+	// For offsetting the coordonates
+	while (true)
+	{
+	std::uniform_int_distribution<int> randX(1, harta[0].size()-2);
+	std::uniform_int_distribution<int> randY(0, harta.size()-2);
+	pos.x = randX(randomEngine) * TILE_WIDTH;
+	pos.y = randY(randomEngine) * TILE_WIDTH;
+
+	// Get the position of this corner in grid-space
+	glm::vec2 bonusPos = glm::vec2(floor(pos.x / (float)TILE_WIDTH),
+		floor(pos.y / (float)TILE_WIDTH));
+
+	// If this is not an air tile, we should create a bonus on it
+	if (harta[bonusPos.y][bonusPos.x] == '.')
+		break;
+	}
+
+	bonuses.push_back(new BonusBox(pos));
+	
 
 }
 
-void BonusBox::spawnBonus(float x, float y, const std::vector<std::string>& harta)
+void BonusBox::spawnBonus(float x, float y, const std::vector<std::string>& harta, std::vector<BonusBox*>& bonuses)
 {
-	//_bonusBoxes.push_back(new BonusBox(x, y));
+	bonuses.push_back(new BonusBox(glm::vec2(x, y)));
 	return;
 }
 
@@ -175,8 +187,8 @@ void BonusBox::applyBonus(BonusType bonusType, Entity& entity)
 	default:
 		break;
 	}
+	_timers.push_back(BONUS_DURATION);
 	//std::cout << "BONUS APPLYED ! " << (int)bonusType << std::endl;
-	
 }
 
 void BonusBox::addDamage(float damage, Entity& entity)
@@ -197,6 +209,8 @@ void BonusBox::addShield(Entity& entity, float duration)
 void BonusBox::addSpeed(float speed, Entity& entity)
 {
 	entity._speed += speed;
+	if (entity._speed >= TANK_MAX_SPEED)
+		entity.setSpeed(TANK_MAX_SPEED);
 }
 
 void BonusBox::addInvulnerability(Entity& entity, float duration)

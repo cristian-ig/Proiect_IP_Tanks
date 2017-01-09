@@ -45,11 +45,14 @@ public:
 	glm::vec2 getPosition() const { return _position; }
 	float getSpeed() { return _speed; }
 	float getDamage() { return _damage; }
-
+	float getHealth() { return _health; }
+	TankType getTankType() { return _tankType; }
+	//std::vector<std::pair<BonusType, int>> getAppliedBonuses() { return _bonusesTimers; }
 	//setters
 	void setSpeed(float newSpeed) { _speed = newSpeed; }
 	void setDamage(float newDamage) { _damage = newDamage; }
-
+	void setTankType(TankType newTankType) { _tankType = newTankType; }
+	void setHealth(float newHealth) { _health = newHealth; }
 	//bonus related
 	friend class BonusBox;
 	
@@ -63,7 +66,7 @@ protected:
 	void collideWithTile(glm::vec2 tilePos);
 
 	float _maxHlealth = 500.0f;
-	float _maxSpeed = 20.0f;
+	//float _maxSpeed = 20.0f;
 	float _health = 0.0f;
 	float _damage = 0.0f;
 	float _speed  = 0.0f;
@@ -76,6 +79,9 @@ protected:
 	Engine::Color _color = Engine::Color(255,22,255,255);
 	GLuint _textureID;
 
+	TankType _tankType;
+
+	//std::vector<std::pair<BonusType, int>> _bonusesTimers;
 	std::vector<Artillery*> _guns;
 	std::vector<Projectiles>* _bullets;
 	int _currentIndex = -1;

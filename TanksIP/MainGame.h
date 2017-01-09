@@ -40,7 +40,7 @@ private:
 	void processInput();
 	void updateEntitys();
 	void updateBullets();
-
+	void normalizeTanksStats(BonusType boxTime, Entity* entity);
 	Window _window;
 	Input _input;
 	GameState _gameState;
@@ -54,8 +54,10 @@ private:
 	std::vector<Harta*> _harta;
 	std::vector<Projectiles> _projectiles;
 	std::vector<BonusBox*> _bonuses;
+	//std::vector<int*> timer;
+	int _timer = 0;
 	//BonusBox* _bonuses;
-
+	std::vector<std::pair<BonusType, int>> _bonusesTimers;
 
 	//Artillery _artilllery;
 

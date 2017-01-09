@@ -60,6 +60,10 @@ void MainGame::init()
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles);
 	_player[0]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
+
+//	_player.push_back(new Players);
+	//_player[1]->init(glm::vec2(400,400), &_input, &_camera, &_projectiles);
+	//_player[1]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
 	
 	//enemys
 	for (int i = 0; i<_numEnem; i++)
@@ -74,9 +78,11 @@ void MainGame::init()
 
 	//_bonuses = new BonusBox(22,22);
 	//_bonuses->spawnBonus( _harta[0]->getMapData());
-	
+	for (int i = 0; i < 130; i++)
+	{
 	_bonuses.push_back(new BonusBox(cameraMij));
 	_bonuses[0]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
+	}
 }
 
 void MainGame::draw()
@@ -219,6 +225,38 @@ void MainGame::initShaders()
 
 void MainGame::updateEntitys()
 {
+#if 0
+if(_timer){
+		//std::cout << _timer << " " << std::endl;
+		_timer--;
+		if (_timer == 1)
+		{
+			std::cout <<"Danage " << _player[0]->getDamage() << std::endl;
+			std::cout <<"Speed " << _player[0]->getSpeed() << std::endl;
+			std::cout <<"Health " << _player[0]->getHealth() << std::endl;
+		}
+		if (_timer == 0)
+		{
+			_player[0]->initTankTypes(TankType::DEFAULT);
+			std::cout << "time is 0 \n \n";
+			std::cout << "Danage " << _player[0]->getDamage() << std::endl;
+			std::cout << "Speed " << _player[0]->getSpeed() << std::endl;
+			std::cout << "Health " << _player[0]->getHealth() << std::endl;
+		}
+	}
+//apply time
+for (size_t j = 0; j < _player.size(); j++)
+for (size_t i = 0; i < _bonusesTimers.size(); i++)
+{
+	_bonusesTimers[i].second--;
+	if (_bonusesTimers[i].second == 0)
+	{
+		normalizeTanksStats(_bonusesTimers[i].first, _player[j]);
+	}
+}
+#endif
+
+
 	//check collision with world
 	for (size_t i = 0; i < _player.size(); i++)
 		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses);
@@ -250,9 +288,25 @@ void MainGame::updateEntitys()
 		{
 			_player[i]->collideWithEntity(_enemy[j]);
 		}
-
 	}
 
+	for (size_t i = 0; i < _player.size(); i++)
+	{
+		for (size_t j = 0; j < _bonuses.size(); j++)
+			if (_player[i]->collideWithBonusBox(_player[i],_bonuses[j]))
+			{
+				//do collision and apply bonus
+				_bonuses[j]->applyBonus(_bonuses[j]->getBonusType(), *_player[i]);
+				//std::pair<BonusType, int> tmp(_bonuses[j]->getBonusType(), 600);
+			//	_bonusesTimers.push_back(std::make_pair(_bonuses[j]->getBonusType(), 600));
+
+				//hacky way to delete things
+				delete _bonuses[j];
+				_bonuses[j] = _bonuses.back();
+				_bonuses.pop_back();
+
+			}
+	}
 
 
 }
@@ -353,4 +407,9 @@ void MainGame::updateBullets()
 			}
 		}
 	}//*/
+}
+
+void MainGame::normalizeTanksStats(BonusType boxTime, Entity* entity)
+{
+	return;
 }

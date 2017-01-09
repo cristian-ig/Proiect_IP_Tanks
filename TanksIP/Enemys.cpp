@@ -26,9 +26,9 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	//find closest player
 	Players* closestTarget = getNearestPlayer(players);
 	BonusBox* closestBonus = getNearestBonus(bonusBoxes);
-
+	
 	// If we found a player, move towards him
-	 if (pitagoraDistance(closestTarget) < 200.0f)
+	 if (pitagoraDistance(closestTarget) < 200.0f && closestTarget!= nullptr)
 	{
 		// Get the direction vector twoards the player
 		_direction = glm::normalize(closestTarget->getPosition() - _position);
@@ -57,7 +57,7 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 		//std::cout << "direction: " << _direction.x << ", " << _direction.y << std::endl;
 		//_position += _direction * _speed;*/
 	}
-	 else if (pitagoraDistance(closestBonus) < 400.0f)// && pitagoraDistance(closestTarget) <= 200.0f)
+	 else if (pitagoraDistance(closestBonus) < 400.0f && closestBonus != nullptr)// && pitagoraDistance(closestTarget) <= 200.0f)
 	{
 		_direction = glm::normalize(closestBonus->getPosition() - _position);
 	}
@@ -68,7 +68,7 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH /2.0f, TANK_HEIGHT / 2.0f);
 	//_guns[0]->update(true, centerPosition, _direction, *_bullets);
 	//ADD AI
-	collideWithBonusBox(this, closestBonus);
+	//collideWithBonusBox(this, closestBonus);
 	collideWithMap(harta);
 }
 
