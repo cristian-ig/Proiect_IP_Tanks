@@ -25,8 +25,8 @@ void BonusBox::spawnBonus(const std::vector<std::string>& harta, BonusType bonus
 	glm::vec2 pos;
 		static std::mt19937 randomEngine(time(nullptr));
 		// For offsetting the coordonates
-		std::uniform_int_distribution<int> randX(0, harta[0].size());
-		std::uniform_int_distribution<int> randY(0, harta.size());
+		std::uniform_int_distribution<int> randX(1, harta[0].size()-1);
+		std::uniform_int_distribution<int> randY(0, harta.size()-1);
 		pos.x = randX(randomEngine) * 32;
 		pos.y = randY(randomEngine) * 32;
 		_bonuses.push_back(new BonusBox(pos));
@@ -63,57 +63,57 @@ void BonusBox::drawBox(BonusType bonusType, Engine::DrawSprites&  spriteBatch)
 	{
 	case BonusType::MAX_HEALTH:
 		//draw
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Max_Health.png").id, 0.0f, color);
 		break;
 	case BonusType::HEAL:
 		//draw
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Heal.png").id, 0.0f, color);
 		break;
 	case BonusType::HEAL_PLUS:
 		//draw
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Heal_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::SPEED:
 		//draw
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Speed.png").id, 0.0f, color);
 		break;
 	case BonusType::SPEED_PLUS:
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Speed_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::DAMAGE:
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Damage.png").id, 0.0f, color);
 		break;
 	case BonusType::DAMAGE_PLUS:
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Damage_plus.png").id, 0.0f, color);
 		break;
 	case BonusType::ONE_HIT_KILL:
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/OHT.png").id, 0.0f, color);
 		break;
 	case BonusType::SHIELD:
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Shield.png").id, 0.0f, color);
 		break;
 	case BonusType::INVULNERABILITY:
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		//draw
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Invulnerability.png").id, 0.0f, color);
 		break;
 	default:
 		//draw random box
-		std::cout << "bonus" << std::endl;
+		//std::cout << "bonus" << std::endl;
 		spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/Bonus/Random.png").id, 0.0f, color);
 		break;
 	}
@@ -128,43 +128,55 @@ void BonusBox::applyBonus(BonusType bonusType, Entity& entity)
 	//generate a random bonus
 	if (bonusType == BonusType::RANDOM)
 		bonusType = static_cast<BonusType>(rand() % MAX_BONUSES);
-
+	//std::cout << "BONUS ! " << (int)bonusType << std::endl;
 	//apply every bonus possible
 	switch (bonusType)
 	{
 	case BonusType::MAX_HEALTH:
 		addMaxHealth(BONUS_MAX_HEALTH, entity);
+		std::cout << "BONUS APPLYED HEAL! " << std::endl;
 		break;
 	case BonusType::HEAL:
 		addHealth(BONUS_HEAL, entity);
+		std::cout << "BONUS HEAL ! " << std::endl;
 		break;
 	case BonusType::HEAL_PLUS:
 		addHealth(BONUS_HEAL_PLUS, entity);
+		std::cout << "BONUS HEAL_PLUS ! " << std::endl;
 		break;
 	case BonusType::SPEED:
 		addSpeed(BONUS_SPEED, entity);
+		std::cout << "BONUS APPLYED SPEED! " << std::endl;
 		break;
 	case BonusType::SPEED_PLUS:
 		addSpeed(BONUS_SPEED_PLUS, entity);
+		std::cout << "BONUS APPLYED SPEED_PLUS! " << std::endl;
 		break;
 	case BonusType::DAMAGE:
 		addDamage(BONUS_DAMAGE, entity);
+		std::cout << "BONUS APPLYED DAMAGE! " << std::endl;
 		break;
 	case BonusType::DAMAGE_PLUS:
 		addDamage(BONUS_DAMAGE_PLUS, entity);
+		std::cout << "BONUS APPLYED DAMAGE_PLUS! " << std::endl;
 		break;
 	case BonusType::ONE_HIT_KILL:
 		addDamage(BONUS_ONE_HIT_KILL, entity);
+		std::cout << "BONUS APPLYED ONE_HIT_KILL! " << std::endl;
 		break;
 	case BonusType::SHIELD:
 		addShield(entity, BONUS_DURATION);
+		std::cout << "BONUS APPLYED SHIELD! " << std::endl;
 		break;
 	case BonusType::INVULNERABILITY:
 		addInvulnerability(entity, BONUS_DURATION);
+		std::cout << "BONUS APPLYED INVULNERABILITY! " << std::endl;
 		break;
 	default:
 		break;
 	}
+	//std::cout << "BONUS APPLYED ! " << (int)bonusType << std::endl;
+	
 }
 
 void BonusBox::addDamage(float damage, Entity& entity)

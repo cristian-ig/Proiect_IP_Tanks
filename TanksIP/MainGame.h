@@ -39,7 +39,7 @@ private:
 	void draw();
 	void processInput();
 	void updateEntitys();
-	void MainGame::updateBullets();
+	void updateBullets();
 
 	Window _window;
 	Input _input;

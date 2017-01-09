@@ -3,7 +3,7 @@
 #include <iostream>
 #include "FPS.h"
 #include <math.h>
-
+#include "FatError.h"
 using namespace Engine;
 
 MainGame::MainGame() : _gameState(GameState::PLAY)
@@ -65,7 +65,7 @@ void MainGame::init()
 	for (int i = 0; i<_numEnem; i++)
 	{
 		_enemy.push_back(new Enemys);
-		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f), &_projectiles);
+		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f), &_projectiles, TANK_SPEED/1.5f);
 		_enemy[i]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
 	}
 
@@ -101,7 +101,8 @@ void MainGame::draw()
 
 	_player[0]->drawP(_drawEntityHandler);
 
-	for (size_t i = 0; i < _numEnem; i++) {
+	for (size_t i = 0; i < _numEnem; i++) 
+	{
 		if (_enemy[i] != nullptr)
 			_enemy[i]->draw(_drawEntityHandler);
 	}
@@ -113,7 +114,7 @@ void MainGame::draw()
 	for (size_t i = 0; i < _bonuses.size(); i++) 
 	{
 		_bonuses[i]->drawBox(BonusType::RANDOM, _drawEntityHandler);
-		std::cout << _bonuses[i]->getPosition().x << ", " << _bonuses[i]->getPosition().y << std::endl;
+		//std::cout << _bonuses[i]->getPosition().x << ", " << _bonuses[i]->getPosition().y << std::endl;
 	}
 
 
@@ -133,7 +134,7 @@ void MainGame::mainLoop()
 	const float DESIRED_FRAMETIME = MS_PER_SECOND / DESIRED_FPS; // The desired frame time per frame
 	const float MAX_DELTA_TIME = 1.0f; // Maximum size of deltaTime
 
-									   // Used to cap the FPS
+	 // Used to cap the FPS
 	Engine::FPS fpsLimiter;
 	fpsLimiter.init(70.0f);
 
@@ -168,7 +169,7 @@ while (_gameState == GameState::PLAY)
 	}
 
 	_camera.update();
-	_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+	//_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
 	draw();  //draws the game
 
 	fpsLimiter.end();
@@ -215,19 +216,49 @@ void MainGame::initShaders()
 	_shaders.addAttribute("vertexUV");
 	_shaders.linkShaders();
 }
+
 void MainGame::updateEntitys()
 {
 	//check collision with world
 	for (size_t i = 0; i < _player.size(); i++)
-		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses);
 
 	for (size_t i = 0; i < _numEnem; i++) {
-		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
-		_enemy[i]->setSpeed(2);
-		_enemy[i]->setSpeed(2.4);
+		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses);
 	}
+
+	// Update Enemy collisions
+	for (size_t i = 0; i < _enemy.size(); i++) 
+	{
+		for (size_t j = i + 1; j < _enemy.size(); j++)  //so they dont collide with themself or do redudant collision
+		{
+			_enemy[i]->collideWithEntity(_enemy[j]);
+		}
+	}
+
+	// Update Players collisions
+	for (size_t i = 0; i < _player.size(); i++)
+	{
+		for (size_t j = i + 1; j < _player.size(); j++)
+		{
+			_player[i]->collideWithEntity(_player[j]);
+		}
+	}
+	for (size_t i = 0; i < _player.size(); i++)
+	{
+		for (size_t j = 0; j < _enemy.size(); j++)
+		{
+			_player[i]->collideWithEntity(_enemy[j]);
+		}
+
+	}
+
+
+
 }
-void MainGame::updateBullets() {
+
+void MainGame::updateBullets()
+{
 	//Update and collide with world
 	for (size_t i = 0; i < _projectiles.size(); ) {
 		// If update returns true, the bullet collided with a wall
@@ -235,13 +266,11 @@ void MainGame::updateBullets() {
 		{
 			//ricochet
 			glm::ivec2 gridPosition =floor( _projectiles[i].getPosition()/(float)TILE_WIDTH);
-
 			glm::vec2 dir = _projectiles[i].getDirection();
 
-		//	if (gridPosition.x < 0 || gridPosition.x >= _harta[_curLevel]->getMapData()[0].size()) 
-	//			_projectiles[i].setDirection(glm::vec2(-dir.x, dir.y));
-			
-		//	else _projectiles[i].setDirection(glm::vec2(dir.x, -dir.y));
+		   //if (gridPosition.x < 0 || gridPosition.x >= _harta[_curLevel]->getMapData()[0].size()) 
+			  //_projectiles[i].setDirection(glm::vec2(-dir.x, dir.y));
+		  //else _projectiles[i].setDirection(glm::vec2(dir.x, -dir.y));
 
 
 			_projectiles[i] = _projectiles.back();
@@ -271,12 +300,46 @@ void MainGame::updateBullets() {
 
 					_enemy.pop_back();
 					_numEnem--;
-
 				}
 				else {
 					j++;
 				}
+				// Remove the bullet
+				_projectiles[i] = _projectiles.back();
+				_projectiles.pop_back();
+				wasBulletRemoved = true;
+				i--; // Make sure we don't skip a bullet
+					 // Since the bullet died, no need to loop through any more zombies
+				break;
+			}
+			else {
+				j++;
+			}
+		}
+	}//*/
 
+	for (size_t i = 0; i < _projectiles.size(); i++) {
+		wasBulletRemoved = false;
+		// Loop through enemys
+		for (size_t j = 0; j < _player.size(); ) {
+			// Check collision
+			if (_projectiles[i].collideWithEntity(_player[j])) {
+
+				// Damage enemy, and kill it if its out of health
+				if (_player[j]->applyDamage(_projectiles[i].getDamage()))
+				{
+					// If the enemy died, remove him
+					delete _player[j];
+					FatalError("YOU DIEDEDED!"); //dont crash our game
+					if (!_player.empty()) 
+					{
+						_player[j] = _player.back();
+						_player.pop_back();
+					}
+				}
+				else {
+					j++;
+				}
 				// Remove the bullet
 				_projectiles[i] = _projectiles.back();
 				_projectiles.pop_back();

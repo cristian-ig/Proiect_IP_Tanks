@@ -16,8 +16,8 @@ enum class BonusType
 	ONE_HIT_KILL, //5 %
 	SHIELD, //10 % Take less damage for a period of time
 	INVULNERABILITY, //5 % cant be touched ..what happens when ONHITKILL shots an INVULNERABLE tank? Divide by 0 to find out.
-	NO_BONUS,
-	RANDOM //10%
+	//NO_BONUS,
+	RANDOM, //10%
 };
 
 class BonusBox
@@ -45,7 +45,7 @@ public:
 	void addSpeed(float speed, Entity& entity);
 
 private:
-	BonusType _type = BonusType::NO_BONUS;
+	BonusType _type = BonusType::RANDOM;
 	//std::vector<BonusBox*> _bonusBoxes;
 	Entity *_entity;
 

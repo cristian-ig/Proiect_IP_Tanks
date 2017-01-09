@@ -26,9 +26,8 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	virtual void update(const std::vector<std::string>& harta,
-		std::vector<Players*>& players,
-		std::vector<Enemys*>& enemys) = 0;
+	virtual void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
+		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes) = 0;
 
 	void draw(Engine::DrawSprites& _spriteBatch);
 
@@ -38,7 +37,7 @@ public:
 
 	bool collideWithEntity(Entity* entity); //returns true if collisions
 
-	bool collideWithBonusBox(Entity* entity, const BonusBox& bonusBox);
+	bool collideWithBonusBox(Entity* entity, BonusBox* bonusBox);
 
 	//void initGun(Artillery* gun);
 
@@ -55,10 +54,7 @@ public:
 	friend class BonusBox;
 	
 protected:
-
-	//Engine::OpenGLTexture _textureHandler;
-	
-
+	//float getEntityDistance(Entity* entity);
 	void checkTilePosition(const std::vector<std::string>& harta,
 		std::vector<glm::vec2>& collideTilePositions,
 		float x,

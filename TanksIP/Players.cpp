@@ -12,20 +12,45 @@ Players::~Players()
 }
 
 
-void Players::update(const std::vector<std::string>& harta, std::vector<Players*>& players, std::vector<Enemys*>& enemys)
+void Players::update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
+	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxess)
 {
-	if (_input->isKeyDown(SDLK_w))
-		_position.y += _speed;
+	if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
+	{
+		_position.y += _speed / 2.0f;
+		_position.x += _speed / 2.0f;
+		//std::cout << " W S \n" << _speed << std::endl;
+	} 
+	else if(_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_a))
+	{
+		_position.y += _speed / 2.0f;
+		_position.x -= _speed / 2.0f;
+	}
 
-	else if (_input->isKeyDown(SDLK_s))
-		_position.y -= _speed;
+	else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_d))
+	{
+		_position.y -= _speed / 2.0f;
+		_position.x += _speed / 2.0f;
+	}
+	else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_a))
+	{
+		_position.y -= _speed / 2.0f;
+		_position.x -= _speed / 2.0f;
+	} 
+	else 
+	{
+		if (_input->isKeyDown(SDLK_w))
+			_position.y += _speed;
 
-	if (_input->isKeyDown(SDLK_a))
-		_position.x -= _speed;
+		else if (_input->isKeyDown(SDLK_s))
+			_position.y -= _speed;
 
-	else if (_input->isKeyDown(SDLK_d))
-		_position.x += _speed;
+		if (_input->isKeyDown(SDLK_a))
+			_position.x -= _speed;
 
+		else if (_input->isKeyDown(SDLK_d))
+			_position.x += _speed;
+	}
 	
 
 	glm::vec2 mouseCoords = _input->getMouseCoords();

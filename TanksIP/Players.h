@@ -10,7 +10,8 @@ public:
 	Players();
 	~Players();
 
-	void update(const std::vector<std::string>& harta, std::vector<Players*>& players, std::vector<Enemys*>& enemys) override;
+	void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
+		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes) override;
 	
 	void init(glm::vec2 position,Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets, float speed = TANK_SPEED, float damage = TANK_DAMAGE, float health = TANK_HEALTH);
 	void initGun(Artillery* gun);
