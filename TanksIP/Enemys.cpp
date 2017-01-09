@@ -21,7 +21,7 @@ void Enemys::initGun(Artillery* gun)
 		_currentIndex = 0;
 }
 void Enemys::update(const std::vector<std::string>& harta, const std::vector<Players*>& players, 
-	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes)
+	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, GameState gamestate)
 {
 	//find closest player
 	Players* closestTarget = getNearestPlayer(players);
@@ -57,7 +57,7 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 		//std::cout << "direction: " << _direction.x << ", " << _direction.y << std::endl;
 		//_position += _direction * _speed;*/
 	}
-	 else if (pitagoraDistance(closestBonus) < 400.0f && closestBonus != nullptr)// && pitagoraDistance(closestTarget) <= 200.0f)
+	 else if (closestBonus != nullptr && pitagoraDistance(closestBonus) < 400.0f )// && pitagoraDistance(closestTarget) <= 200.0f)
 	{
 		_direction = glm::normalize(closestBonus->getPosition() - _position);
 	}

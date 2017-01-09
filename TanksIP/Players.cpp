@@ -2,8 +2,8 @@
 #include <SDL.h>
 #include<iostream>
 #include "FileLoad.h"
-Players::Players()
-{
+Players::Players(){
+
 }
 
 
@@ -13,61 +13,142 @@ Players::~Players()
 
 
 void Players::update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
-	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxess)
+	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxess, GameState gamestate)
 {
 	//if (this->getDamage() > 5.0f)
 		//this->setSpeed(5.0f);
 
-	if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
-	{
-		_position.y += _speed / 2.0f;
-		_position.x += _speed / 2.0f;
-		//std::cout << " W S \n" << _speed << std::endl;
-	} 
-	else if(_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_a))
-	{
-		_position.y += _speed / 2.0f;
-		_position.x -= _speed / 2.0f;
-	}
-
-	else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_d))
-	{
-		_position.y -= _speed / 2.0f;
-		_position.x += _speed / 2.0f;
-	}
-	else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_a))
-	{
-		_position.y -= _speed / 2.0f;
-		_position.x -= _speed / 2.0f;
-	} 
-	else 
-	{
-		if (_input->isKeyDown(SDLK_w))
-			_position.y += _speed;
-
-		else if (_input->isKeyDown(SDLK_s))
-			_position.y -= _speed;
-
-		if (_input->isKeyDown(SDLK_a))
-			_position.x -= _speed;
-
-		else if (_input->isKeyDown(SDLK_d))
-			_position.x += _speed;
-	}
-	
-
 	glm::vec2 mouseCoords = _input->getMouseCoords();
-	mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
-
 
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
+	
+	
+	if (nPlayer == 1) {
+		if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
+		{
+			_position.y += _speed / 2.0f;
+			_position.x += _speed / 2.0f;
+			_direction = glm::vec2(1.0f, 1.0f);
+			//std::cout << " W S \n" << _speed << std::endl;
+		}
+		else if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_a))
+		{
+			_position.y += _speed / 2.0f;
+			_position.x -= _speed / 2.0f;
+			_direction = glm::vec2(-1.0f, 1.0f);
+		}
 
-	_direction = glm::normalize(mouseCoords - centerPosition);
+		else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_d))
+		{
+			_position.y -= _speed / 2.0f;
+			_position.x += _speed / 2.0f;
+			_direction = glm::vec2(1.0f, -1.0f);
+		}
+		else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_a))
+		{
+			_position.y -= _speed / 2.0f;
+			_position.x -= _speed / 2.0f;
+			_direction = glm::vec2(-1.0f, -1.0f);
+		}
+		else
+		{
+			if (_input->isKeyDown(SDLK_w)) {
+				_position.y += _speed;
+				_direction = glm::vec2(0.0f, 1.0f);
+			}
 
-	_guns[0]->update(_input->isKeyDown(SDL_BUTTON_LEFT),
-		centerPosition,
-		_direction,
-		*_bullets, harta);
+			else if (_input->isKeyDown(SDLK_s)) {
+				_position.y -= _speed;
+				_direction = glm::vec2(0.0f, -1.0f);
+			}
+
+			if (_input->isKeyDown(SDLK_a)) {
+				_position.x -= _speed;
+				_direction = glm::vec2(-1.0f, 0.0f);
+			}
+
+			else if (_input->isKeyDown(SDLK_d)) {
+				_position.x += _speed;
+				_direction = glm::vec2(1.0f, 0.0f);
+
+			}
+		}
+
+		if (gamestate == GameState::SINGLEPLAYER) {
+
+			mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
+			_direction = glm::normalize(mouseCoords - centerPosition);
+
+		}
+		_guns[0]->update(_input->isKeyDown(SDLK_SPACE),
+			centerPosition,
+			_direction,
+			*_bullets, harta);
+		_direction = glm::normalize(_direction);
+	}
+	else
+	{
+		if (_input->isKeyDown(SDLK_UP) && _input->isKeyDown(SDLK_RIGHT))
+		{
+			_position.y += _speed / 2.0f;
+			_position.x += _speed / 2.0f;
+			_direction = glm::vec2(1.0f, 1.0f);
+			//std::cout << " W S \n" << _speed << std::endl;
+		}
+		else if (_input->isKeyDown(SDLK_UP) && _input->isKeyDown(SDLK_LEFT))
+		{
+			_position.y += _speed / 2.0f;
+			_position.x -= _speed / 2.0f;
+			_direction = glm::vec2(-1.0f, 1.0f);
+		}
+
+		else if (_input->isKeyDown(SDLK_DOWN) && _input->isKeyDown(SDLK_RIGHT))
+		{
+			_position.y -= _speed / 2.0f;
+			_position.x += _speed / 2.0f;
+			_direction = glm::vec2(1.0f, -1.0f);
+		}
+		else if (_input->isKeyDown(SDLK_DOWN) && _input->isKeyDown(SDLK_LEFT))
+		{
+			_position.y -= _speed / 2.0f;
+			_position.x -= _speed / 2.0f;
+			_direction = glm::vec2(-1.0f, -1.0f);
+		}
+		else
+		{
+			if (_input->isKeyDown(SDLK_UP)) {
+				_position.y += _speed;
+				_direction = glm::vec2(0.0f, 1.0f);
+			}
+
+
+			else if (_input->isKeyDown(SDLK_DOWN)) {
+				_position.y -= _speed;
+				_direction = glm::vec2(0.0f, -1.0f);
+			}
+
+			if (_input->isKeyDown(SDLK_LEFT)) {
+				_position.x -= _speed;
+				_direction = glm::vec2(-1.0f,0.0f);
+			}
+
+			else if (_input->isKeyDown(SDLK_RIGHT)) {
+				_position.x += _speed;
+				_direction = glm::vec2(1.0f, 0.0f);
+			}
+		}
+
+	
+		_guns[0]->update(_input->isKeyDown(SDLK_RSHIFT),
+			centerPosition,
+			_direction,
+			*_bullets, harta);
+		_direction = glm::normalize(_direction);
+	}
+
+	//_direction = glm::normalize(_direction);
+
+	
 
 	collideWithMap(harta);
 	
@@ -134,6 +215,7 @@ void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* cam
 {
 	_speed = speed;
 	_position = position;
+	_direction = glm::vec2(1.0f, 0.0f);
 	_input = input;
 	_camera = camera;
 	_damage = damage;

@@ -11,7 +11,7 @@
 #define TANK_HEIGHT 18.0f
 #define TANK_SPEED 1.5f
 #define TANK_DAMAGE 100.0f
-#define TANK_HEALTH 500.0f
+#define TANK_HEALTH 5555500.0f
 #define TANK_MAX_SPEED 7.0f
 //Bonus Boxes
 #define MAX_BONUSES 10 //number of bonuses
@@ -28,3 +28,11 @@
 //Bullet
 #define BULLET_RADIUS 5.0f
 #define REFLECTIONS 4;
+//GameState
+
+enum class GameState {
+	MENU,
+	SINGLEPLAYER,
+	MULTYPLAYER,
+	EXIT
+};

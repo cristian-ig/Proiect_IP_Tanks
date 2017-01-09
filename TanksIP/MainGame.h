@@ -18,10 +18,7 @@
 
 using namespace Engine;
 
-enum class GameState {
-	PLAY,
-	EXIT
-};
+
 
 
 class MainGame {
@@ -42,6 +39,7 @@ private:
 	void updateBullets();
 	void normalizeTanksStats(BonusType boxTime, Entity* entity);
 	Window _window;
+	
 	Input _input;
 	GameState _gameState;
 	Camera _camera;
@@ -64,7 +62,7 @@ private:
 	int _curLevel = -1;
 
 	char _numEnem = 3;
-	char _numPlayers = 1;
+	char _numPlayers = 2;
 	
 	
 	

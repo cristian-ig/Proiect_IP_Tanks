@@ -27,7 +27,7 @@ public:
 	virtual ~Entity();
 
 	virtual void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
-		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes) = 0;
+		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, GameState gamestate) = 0;
 
 	void draw(Engine::DrawSprites& _spriteBatch);
 
@@ -57,6 +57,7 @@ public:
 	friend class BonusBox;
 	
 protected:
+
 	//float getEntityDistance(Entity* entity);
 	void checkTilePosition(const std::vector<std::string>& harta,
 		std::vector<glm::vec2>& collideTilePositions,

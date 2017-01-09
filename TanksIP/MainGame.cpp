@@ -6,7 +6,7 @@
 #include "FatError.h"
 using namespace Engine;
 
-MainGame::MainGame() : _gameState(GameState::PLAY)
+MainGame::MainGame() : _gameState(GameState::MULTYPLAYER)
 {
 }
 
@@ -59,11 +59,13 @@ void MainGame::init()
 	//player
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles);
+	_player[0]->setNumPlayer(1);
 	_player[0]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
 
-//	_player.push_back(new Players);
-	//_player[1]->init(glm::vec2(400,400), &_input, &_camera, &_projectiles);
-	//_player[1]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
+	_player.push_back(new Players);
+	_player[1]->init(glm::vec2(400,400), &_input, &_camera, &_projectiles);
+	_player[1]->setNumPlayer(2);
+	_player[1]->initGun(new Artillery(20, 1, 100, TANK_SPEED));
 	
 	//enemys
 	for (int i = 0; i<_numEnem; i++)
@@ -78,7 +80,7 @@ void MainGame::init()
 
 	//_bonuses = new BonusBox(22,22);
 	//_bonuses->spawnBonus( _harta[0]->getMapData());
-	for (int i = 0; i < 130; i++)
+	for (int i = 0; i < 2; i++)
 	{
 	_bonuses.push_back(new BonusBox(cameraMij));
 	_bonuses[0]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
@@ -106,6 +108,7 @@ void MainGame::draw()
 	_harta[_curLevel]->draw();
 
 	_player[0]->drawP(_drawEntityHandler);
+	_player[1]->drawP(_drawEntityHandler);
 
 	for (size_t i = 0; i < _numEnem; i++) 
 	{
@@ -147,7 +150,7 @@ void MainGame::mainLoop()
 	Uint32 previousTicks = SDL_GetTicks();
 
 	
-while (_gameState == GameState::PLAY) 
+while (_gameState != GameState::EXIT) 
 {
 	fpsLimiter.start();
 					// Calculate the frameTime in milliseconds
@@ -259,10 +262,10 @@ for (size_t i = 0; i < _bonusesTimers.size(); i++)
 
 	//check collision with world
 	for (size_t i = 0; i < _player.size(); i++)
-		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses);
+		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _gameState);
 
 	for (size_t i = 0; i < _numEnem; i++) {
-		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses);
+	//	_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _gameState);
 	}
 
 	// Update Enemy collisions
@@ -334,7 +337,8 @@ void MainGame::updateBullets()
 			i++;
 		}
 	}
-///*
+//
+/*
 	bool wasBulletRemoved;
 	// Collide with players and enemys
 	for (size_t i = 0; i < _projectiles.size(); i++) {
@@ -370,7 +374,8 @@ void MainGame::updateBullets()
 				j++;
 			}
 		}
-	}//*/
+	}//
+	
 
 	for (size_t i = 0; i < _projectiles.size(); i++) {
 		wasBulletRemoved = false;

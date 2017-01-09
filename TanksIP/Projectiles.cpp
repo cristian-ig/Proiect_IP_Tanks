@@ -9,7 +9,7 @@
 
 
 Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
-	_position(position), _direction(direction), _damage(damage), _speed(speed), isFirst(true), bounced(false),
+	_position(position), _direction(direction), _damage(damage), _speed(speed), _isFirst(true),
 	colided(false)
 {
 }
@@ -58,10 +58,10 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 
 	glm::vec4 destRect;
 	//first draw substrac tank with and height from position for good colision
-	if (isFirst){
+	if (_isFirst){
 		_position.x -= TANK_WIDTH / 2;
 		_position.y -= TANK_HEIGHT / 2;
-		isFirst = false;
+		_isFirst = false;
 	}
 	destRect.x = _position.x ;
 	destRect.y = _position.y;
