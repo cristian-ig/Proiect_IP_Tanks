@@ -28,7 +28,7 @@
 //Bullet
 #define BULLET_RADIUS 5.0f
 #define REFLECTIONS 4
-#define BULLET_SPEED 1.8*TANK_SPEED
+#define BULLET_SPEED 1.5*TANK_SPEED
 //GameState
 
 enum class GameState {

@@ -10,7 +10,7 @@
 
 Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
 	_position(position), _direction(direction), _damage(damage), _speed(speed), _isFirst(true),
-	colided(false)
+	colided(false), acceleration(2.0f)
 {
 }
 
@@ -36,7 +36,9 @@ bool Projectiles::update(const std::vector<std::string>& harta)
 				_direction = glm::vec2(-_direction.x, _direction.y);
 			if((projPosition.y <= fgridPosition.y * TILE_WIDTH + TILE_WIDTH - BULLET_RADIUS || projPosition.y >= fgridPosition.y * TILE_WIDTH + BULLET_RADIUS) && (projPosition.y <= cgridPosition.y * TILE_WIDTH + TILE_WIDTH - BULLET_RADIUS || projPosition.y >= cgridPosition.y * TILE_WIDTH + BULLET_RADIUS))
 				_direction = glm::vec2(_direction.x, -_direction.y);
-			_position += _direction * _speed;
+			_position += _direction * _speed*acceleration;
+			if (acceleration > 0.5f)
+				acceleration -= 0.0005f;
 			colided = true;
 			return true;
 
@@ -45,7 +47,9 @@ bool Projectiles::update(const std::vector<std::string>& harta)
 
 	}
 	else colided = false;
-	_position += _direction * _speed;
+	_position += _direction * _speed*acceleration;
+	if (acceleration > 1.0f)
+		acceleration -= 0.02f;
 	return false;
 		
 	
@@ -59,8 +63,8 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 	glm::vec4 destRect;
 	//first draw substrac tank with and height from position for good colision
 	if (_isFirst){
-		_position.x -= TANK_WIDTH / 2;
-		_position.y -= TANK_HEIGHT / 2;
+	//	_position.x -= TANK_WIDTH / 2;
+		//_position.y -= TANK_HEIGHT / 2;
 		_isFirst = false;
 	}
 	destRect.x = _position.x ;
@@ -74,7 +78,7 @@ void Projectiles::draw(Engine::DrawSprites& spriteBatch)
 	color.B = 255;
 	color.A = 255;
 
-	spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/bullet.png").id, 0.0f, color);
+	spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/bullet.png").id, 0.0f, color,_direction);
 
 	return;
 }

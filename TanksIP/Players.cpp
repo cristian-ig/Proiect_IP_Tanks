@@ -21,8 +21,8 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 	glm::vec2 mouseCoords = _input->getMouseCoords();
 
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
-	
-	
+
+
 	if (nPlayer == 1) {
 		if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
 		{
@@ -50,42 +50,60 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 			_position.x -= _speed / 2.0f;
 			_direction = glm::vec2(-1.0f, -1.0f);
 		}
-		else
+		if (_input->isKeyDown(SDLK_w))
 		{
-			if (_input->isKeyDown(SDLK_w)) {
+			if (gamestate == GameState::SINGLEPLAYER)
+			{
+				_position += _direction*_speed;
+			}
+			else 
+			{
 				_position.y += _speed;
 				_direction = glm::vec2(0.0f, 1.0f);
 			}
+		}
+		else if (_input->isKeyDown(SDLK_s))
+		{
 
-			else if (_input->isKeyDown(SDLK_s)) {
+			if (gamestate == GameState::SINGLEPLAYER)
+			{
+				_position.y -= _speed / 2.0f;
+
+			}
+			else
+			{
 				_position.y -= _speed;
 				_direction = glm::vec2(0.0f, -1.0f);
 			}
-
-			if (_input->isKeyDown(SDLK_a)) {
-				_position.x -= _speed;
+		}
+		else if (_input->isKeyDown(SDLK_a))
+		{
+			_position.x -= _speed;
+			if (gamestate == GameState::MULTYPLAYER)
 				_direction = glm::vec2(-1.0f, 0.0f);
-			}
-
-			else if (_input->isKeyDown(SDLK_d)) {
-				_position.x += _speed;
+		}
+		else if (_input->isKeyDown(SDLK_d))
+		{
+			_position.x += _speed;
+			if (gamestate == GameState::MULTYPLAYER)
 				_direction = glm::vec2(1.0f, 0.0f);
-
-			}
 		}
+	
 
-		if (gamestate == GameState::SINGLEPLAYER) {
+	if (gamestate == GameState::SINGLEPLAYER) {
 
-			mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
-			_direction = glm::normalize(mouseCoords - centerPosition);
+		mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
+		_direction = glm::normalize(mouseCoords - centerPosition);
 
-		}
-		_guns[0]->update(_input->isKeyDown(SDLK_SPACE),
-			centerPosition,
-			_direction,
-			*_bullets, harta, gamestate);
-		_direction = glm::normalize(_direction);
 	}
+
+	_guns[0]->update(_input->isKeyDown(SDLK_SPACE),
+		centerPosition,
+		_direction,
+		*_bullets, harta, gamestate);
+	_direction = glm::normalize(_direction);
+
+}
 	else
 	{
 		if (_input->isKeyDown(SDLK_UP) && _input->isKeyDown(SDLK_RIGHT))
@@ -145,7 +163,7 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 			*_bullets, harta, gamestate);
 		_direction = glm::normalize(_direction);
 	}
-
+	
 	//_direction = glm::normalize(_direction);
 
 	
