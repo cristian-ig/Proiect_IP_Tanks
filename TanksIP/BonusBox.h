@@ -38,7 +38,7 @@ public:
 	void applyBonus(BonusType bonusType, Entity& entity);
 
 	void drawBox(BonusType bonusType, Engine::DrawSprites& spriteBatch);
-
+	bool update(float timeElapsed);
 	void addDamage(float damage, Entity& entity);
 	void addHealth(float health, Entity& entity);
 	void addMaxHealth(float addmaxHealth, Entity& entity);
@@ -56,6 +56,7 @@ private:
 
 	glm::vec2 _position;
 	std::vector<int> _timers;
+	float _timeElapsed = 0;
 	//float _posX = 0.0f;
 	//float _posY = 0.0f;
 

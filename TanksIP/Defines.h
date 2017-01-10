@@ -24,7 +24,8 @@
 #define BONUS_SPEED 1.0f
 #define BONUS_SPEED_PLUS 3.0f
 #define BONUS_ONE_HIT_KILL 9999.0f
-#define BONUS_DURATION 600.0F // secunde * 60
+#define BONUS_DURATION 600.0f // secunde * 60
+#define BONUS_LIFE_TIME 100.0f
 //Bullet
 #define BULLET_RADIUS 5.0f
 #define REFLECTIONS 4

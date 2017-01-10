@@ -222,3 +222,9 @@ void BonusBox::addMaxHealth(float addmaxHealth, Entity& entity)
 {
 	entity._maxHlealth += addmaxHealth;
 }
+
+bool BonusBox::update(float timeElapsed) {
+	_timeElapsed += timeElapsed;
+
+	return (_timeElapsed > BONUS_LIFE_TIME);
+}
