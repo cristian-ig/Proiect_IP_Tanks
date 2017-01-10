@@ -1,7 +1,6 @@
 ﻿  MainGame.cpp
-e:\coding\c++ games\tankrep\branches\graphic-debug\tanksip\maingame.cpp(102): warning C4018: '<': signed/unsigned mismatch
-e:\coding\c++ games\tankrep\branches\graphic-debug\tanksip\maingame.cpp(189): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
-e:\coding\c++ games\tankrep\branches\graphic-debug\tanksip\maingame.cpp(222): warning C4018: '<': signed/unsigned mismatch
-e:\coding\c++ games\tankrep\branches\graphic-debug\tanksip\maingame.cpp(225): warning C4305: 'argument': truncation from 'double' to 'float'
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\branches\graphic-debug\TanksIP\Debug\TanksIP.exe
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\branches\graphic-debug\TanksIP\Debug\TanksIP.pdb (Partial PDB)
+d:\facultate\ip\repo_project_ip\branches\graphic-debug\tanksip\maingame.cpp(115): warning C4018: '<': signed/unsigned mismatch
+d:\facultate\ip\repo_project_ip\branches\graphic-debug\tanksip\maingame.cpp(209): warning C4244: 'argument': conversion from 'Sint32' to 'float', possible loss of data
+d:\facultate\ip\repo_project_ip\branches\graphic-debug\tanksip\maingame.cpp(275): warning C4018: '<': signed/unsigned mismatch
+  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\branches\graphic-debug\TanksIP\Debug\TanksIP.exe
+  TanksIP.vcxproj -> D:\Facultate\IP\Repo_Project_IP\branches\graphic-debug\TanksIP\Debug\TanksIP.pdb (Partial PDB)
