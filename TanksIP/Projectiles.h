@@ -37,6 +37,7 @@ public:
 
 	 
 private:
+	float acceleration;
 	glm::vec2 rotationPoint(const glm::vec2& pos, float angle);
 	bool collideWithWorld(const std::vector<std::string>& harta);
 	unsigned short _reflections;
