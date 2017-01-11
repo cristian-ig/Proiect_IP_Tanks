@@ -20,9 +20,10 @@ Menu::Menu()
 
 	//camera
 	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
-	const float CAMERA_SCALE = 1.0f / 1.0f;
+	const float CAMERA_SCALE = 1.0f / 2.9f;
 	_camera.offsetScale(CAMERA_SCALE);
-	_camera.setPosition(glm::vec2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2));
+	_camera.setPosition(glm::vec2(SCREEN_WIDTH/2.2, SCREEN_HEIGHT/1.495));
+	glMatrixMode(GL_MODELVIEW);
 
 }
 
@@ -30,12 +31,62 @@ Menu::Menu()
 Menu::~Menu()
 {
 }
+void Menu::init() {
+
+	//main menu buttons
+
+	MainMenuButtons.resize(3);
+	float mainMenuOffset = 42.0f;
+	float firstX = 500.0;
+	float firstY = 334.0f;
+	float mainMenuSize_w = 564.0f;
+	float mainMenuSize_h = 132.0f;
+
+
+	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu1.png").id);
+	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu2.png").id);
+	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu3.png").id);
+
+	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu1.png").id);
+	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu2.png").id);
+	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu3.png").id);
+
+	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu1.png").id);
+	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu2.png").id);
+	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu3.png").id);
+
+	for (size_t i = 0; i < 3; i++) {
+		
+		MainMenuButtons[i].quad = glm::vec4(firstX, firstY + (i*(mainMenuOffset + mainMenuSize_h)), mainMenuSize_w,mainMenuSize_h);
+		MainMenuButtons[i].texture = MainMenuButtons[i].textureID[0];
+	}
+	
+
+
+
+}
+void Menu::updateButtons() {
+
+	if(_menuState == MenuState::MAIN_MENU)
+		for (size_t i = 0; i < 3; i++) {
+
+			MainMenuButtons[i].ButtonState(_input.getMouseCoords(), isMouseDown);
+		}
+
+}
 
 void Menu::menuLoop() {
 
+	init();
+
 	while (_menuState != MenuState::EXIT) {
 
+		_input.update();
+		proccesInput();
+		updateButtons();
+
 		if (_gamestate == GameState::SINGLEPLAYER) {
+
 			_mainGame.setGameState(_gamestate);
 			_mainGame.start(_window);
 		}
@@ -43,10 +94,11 @@ void Menu::menuLoop() {
 			_mainGame.setGameState(_gamestate);
 			_mainGame.start(_window);
 		}
-		_input.update();
-		proccesInput();
+		
 		if (_menuState == MenuState::MAIN_MENU)
 			drawMain();
+		
+		_camera.update();
 
 		_window->swapBuffer();
 
@@ -81,10 +133,12 @@ void Menu::proccesInput() {
 			_input.releaseKey(newEvent.key.keysym.sym); //keep track if the key is released
 			break;
 		case SDL_MOUSEBUTTONDOWN:
+			mousePressed();
 			_input.pressKey(newEvent.button.button);  //keep track if the mouse buttons are held down
-			_gamestate = GameState::SINGLEPLAYER;
+			//_gamestate = GameState::SINGLEPLAYER;
 			break;
 		case SDL_MOUSEBUTTONUP:
+			mouseReleased();
 			_input.releaseKey(newEvent.button.button); //release mouse buttons
 			break;
 		}
@@ -95,11 +149,30 @@ void Menu::proccesInput() {
 
 void Menu::drawMain() {
 
+	_shaders.use();
+	_drawHandler.begin();
 	glClearDepth(1.0);
 	// Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(213, 122, 13,255);
 
+	_shaders.use();
+
+	GLint textureUniform = _shaders.getUniformLocation("mySampler");
+	glUniform1i(textureUniform, 0);
+
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+	GLint pUniform = _shaders.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	_drawHandler.begin();
+
+	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
+	for (size_t i = 0; i < 3; i++) {
+		_drawHandler.draw(MainMenuButtons[i].quad, uvCoords, MainMenuButtons[i].texture, 0, Engine::Color(122, 122, 122, 255));
+	}
+	_drawHandler.end();
+	_drawHandler.renderBatch();
+	_shaders.unuse();
 
 }
 void Menu::drawSingleplayer() {

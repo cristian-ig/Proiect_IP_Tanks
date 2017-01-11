@@ -5,6 +5,7 @@
 #include"DrawClass.h"
 #include<SDL.h>
 #include"Window.h"
+#include"FileLoad.h"
 
 
 enum class MenuState {
@@ -15,8 +16,26 @@ enum class MenuState {
 };
 class Button {
 
+public:
 	glm::vec4 quad;
-	GLuint textureID;
+	GLuint texture;
+	std::vector<GLuint> textureID;
+	bool isHovered = false;
+	bool isPressed = false;
+	void ButtonState(glm::vec2 pos, bool isMousePressed) {
+		if (pos.x > quad.x && pos.x<quad.x + quad.z && pos.y > quad.y &&pos.y < quad.y + quad.w && !isMousePressed) {
+			texture = textureID[1];
+		}
+		else if (isMousePressed && pos.x > quad.x && pos.x  < quad.x + quad.z && pos.y > quad.y &&pos.y < quad.y + quad.w) {
+			texture = textureID[2];
+		}
+		else {
+			texture = textureID[0];
+		}
+
+	}
+
+
 
 };
 class Menu
@@ -35,12 +54,16 @@ public:
 	void drawMultiplayerMapSelection();
 	void drawMultiplayerTankSelection();
 	void drawMultiplayer();
+	void updateButtons();
+	void mousePressed() { isMouseDown = true; isMouseReleased = false; updateButtons(); }
+	void mouseReleased() { isMouseDown = false; isMouseReleased = true; updateButtons(); isMouseReleased = false; }
 	Window *_window;
 
 	
 
 private:
-
+	bool isMouseDown;
+	bool isMouseReleased;
 	std::vector<Button> MainMenuButtons;
 	std::vector<Button> SinglePlayerMenuButtons;
 	std::vector<Button> MultiplayerMenuButtons;
