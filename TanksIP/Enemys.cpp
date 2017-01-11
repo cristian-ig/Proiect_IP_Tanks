@@ -5,6 +5,8 @@
 #include <iostream>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <algorithm>
+
 Enemys::Enemys()
 {
 }
@@ -23,7 +25,9 @@ void Enemys::initGun(Artillery* gun)
 void Enemys::update(const std::vector<std::string>& harta, const std::vector<Players*>& players, 
 	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, GameState gamestate)
 {
-	//find closest player
+
+#if 0
+//find closest player
 	Players* closestTarget = getNearestPlayer(players);
 	BonusBox* closestBonus = getNearestBonus(bonusBoxes);
 	
@@ -60,6 +64,27 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	 else if (closestBonus != nullptr && pitagoraDistance(closestBonus) < 400.0f )// && pitagoraDistance(closestTarget) <= 200.0f)
 	{
 		_direction = glm::normalize(closestBonus->getPosition() - _position);
+	}
+
+#endif
+	Players* closestTarget = getNearestPlayer(players);
+
+	glm::ivec2 closestPlayerPos = closestTarget->getPosition() / TANK_WIDTH;
+	glm::ivec2 start = this->getPosition() / TANK_WIDTH;
+	_path = findPath(start, closestPlayerPos, harta);
+
+		if (_path.size())
+		{
+			glm::ivec2 vectorPath = _path.back()->tile ;
+			if (_position.x < vectorPath.x) _direction.x = 1.0f;
+			if (_position.x > vectorPath.x) _direction.x = -1.0f;
+			if (_position.y < vectorPath.y) _direction.y = 1.0f;
+			if (_position.y < vectorPath.y) _direction.y = -1.0f;
+		}
+	
+	else
+	{
+		//add second AI
 	}
 
 
@@ -147,3 +172,116 @@ float Enemys::pitagoraDistance(BonusBox* BB)
 
 	return sqrt((distX * distX) + (distY * distY)); //pitagora ftw
 }
+
+float Enemys::vectorDistance(glm::vec2 vector1, glm::vec2 vector2)
+{
+	float Xdist = vector1.x - vector2.x;
+	float Ydist = vector1.y - vector2.y;
+	return sqrt(Xdist * Xdist + Ydist * Ydist);
+
+}
+
+int Enemys::nodSorter(nod *n0, nod *n1)
+{
+	if (n1->fCost < n0->fCost) return 1;
+	if (n1->fCost > n0->fCost) return -1;
+	return 0;
+}
+
+void listSorter(std::list<nod*>& alist)
+{
+	std::list<nod*>::iterator it;
+	for each (auto it in alist)
+	{
+		if (it + 1 != nullptr) {
+			float first = it->fCost;
+			float second = (it + 1)->fCost;
+			if (first > second) {
+				float aux = first;
+				first = second;
+				second = aux;
+			}
+		}
+	}
+}
+
+bool Enemys::isInList(const std::list<nod*>& list, const glm::ivec2& vector)
+{
+	for (nod* n : list)
+		if (n->tile == vector)
+			return true;
+
+	return false;
+}
+
+ std::list<nod*> Enemys::findPath(glm::ivec2 start, glm::ivec2 goal, const std::vector<std::string>& harta)
+ {
+	 std::list<nod*> closedList; //tileuri 
+	 std::list<nod*> openList; //tileuri pe care ne am deplasat spre goal
+	
+	float HC = vectorDistance(start, goal);
+	//static_cast<float>(HC = glm::distance(start, goal));
+
+	nod* current = new nod(start, nullptr, 0.0f, HC);
+	openList.push_back(current);
+
+	while (openList.size() > 0)
+	{
+		current = openList.back();
+	    listSorter(openList);
+		if (current->tile == goal)
+		{
+			std::cout << "happened";
+			std::list<nod*> path;
+
+			while (current->parent != nullptr)
+			{
+				path.push_back(current);
+				current = current->parent;
+			}
+
+			openList.clear();
+			closedList.clear();
+			return path;
+		}
+		openList.remove(current);
+		closedList.push_back(current);
+
+		for (int i = 0; i < 9; i++)
+		{
+			if (i == 4) continue;
+
+			int x = current->tile.x;
+			int y = current->tile.y;
+
+			int xi = (i % 3) - 1; //values on the x axes -1 0 1
+			int yi = (i / 3) - 1; //values on the y axes -1 0 1
+
+								  /*auto charTile = Harta::getMapTile(glm::ivec2((x + xi) * TILE_WIDTH, (y + yi) * TILE_WIDTH));*/
+			//std::cout << harta[2][1];
+			//std::cout <<  harta[(x + xi )/ TILE_WIDTH][(y + yi ) / TILE_WIDTH];
+			char verifTile = harta[(x + xi) / TILE_WIDTH][(y + yi) / TILE_WIDTH];
+			//glm::ivec2 verifyingTile = glm::ivec2(verifTile, 0); //x is for tile, use this later ofr player pos
+			if (verifTile == NULL) continue;
+			if (verifTile == 'W' || verifTile == 'E') continue;
+			//TODO: ADD IF VERIFYIUNG TILE IS A PLAYER
+			//for( entity : Entity) //for each entity in Entity
+			//tankPos == entity.getposition();
+			//if(verifyingtile == tankPos[i]
+
+
+			glm::ivec2 a = glm::vec2(((x + xi) * TILE_WIDTH) , ((y + yi) * TILE_WIDTH) );
+			float gCost = current->gCost + vectorDistance(current->tile, a); //distance between tiles (1 or sqrt 2 ..~1.4) 
+			float hCost = vectorDistance(a, goal);
+			
+			nod* n = new nod(a, current, gCost, hCost);
+			if (isInList(closedList, a) && gCost >= n->gCost) continue;
+			if (!isInList(closedList, a) || gCost < n->gCost)
+				openList.push_back(n);
+		}
+
+	}
+	return _path;
+ }
+
+

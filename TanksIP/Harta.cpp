@@ -92,4 +92,5 @@ Harta::~Harta()
 void Harta::draw()
 {
 	_spriteBatch.renderBatch();
+	//std::cout << getMapTile(glm::ivec2(112, 229)) << std::endl;
 }

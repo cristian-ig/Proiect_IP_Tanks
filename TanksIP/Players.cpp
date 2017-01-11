@@ -24,174 +24,88 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 
 
 	if (nPlayer == 1) {
-
-		if (_input->isKeyDown(SDLK_q)) {
-			//cadran 1
-			if (_direction.x >= 0 && _direction.y >= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 2
-			else if (_direction.x <= 0 && _direction.y >= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 3
-			else if (_direction.x <= 0 && _direction.y <= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 4
-			else if (_direction.x >= 0 && _direction.y <= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-		}
-		else if (_input->isKeyDown(SDLK_e)) {
-			//cadran 1
-			if (_direction.x >= 0 && _direction.y >= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 2
-			else if (_direction.x <= 0 && _direction.y >= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 3
-			else if (_direction.x <= 0 && _direction.y <= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 4
-			else if (_direction.x >= 0 && _direction.y <= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-		}else if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
+		if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
 		{
 			_position.y += _speed / 2.0f;
 			_position.x += _speed / 2.0f;
-			if (gamestate == GameState::MULTYPLAYER)
-				_direction = glm::vec2(1.0f, 1.0f);
+			_direction = glm::vec2(1.0f, 1.0f);
 			//std::cout << " W S \n" << _speed << std::endl;
 		}
 		else if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_a))
 		{
 			_position.y += _speed / 2.0f;
 			_position.x -= _speed / 2.0f;
-			if (gamestate == GameState::MULTYPLAYER)
-				_direction = glm::vec2(-1.0f, 1.0f);
+			_direction = glm::vec2(-1.0f, 1.0f);
 		}
 
 		else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_d))
 		{
 			_position.y -= _speed / 2.0f;
 			_position.x += _speed / 2.0f;
-			if (gamestate == GameState::MULTYPLAYER)
-				_direction = glm::vec2(1.0f, -1.0f);
+			_direction = glm::vec2(1.0f, -1.0f);
 		}
 		else if (_input->isKeyDown(SDLK_s) && _input->isKeyDown(SDLK_a))
 		{
 			_position.y -= _speed / 2.0f;
 			_position.x -= _speed / 2.0f;
-			if (gamestate == GameState::MULTYPLAYER)
-				_direction = glm::vec2(-1.0f, -1.0f);
+			_direction = glm::vec2(-1.0f, -1.0f);
 		}
-		else
+		if (_input->isKeyDown(SDLK_w))
 		{
-			if (_input->isKeyDown(SDLK_w)) {
-				if (gamestate == GameState::SINGLEPLAYER)
-				{
-					_position += _direction*_speed;
-				}
-				else
-				{
-					_position.y += _speed;
-					if (gamestate == GameState::MULTYPLAYER)
-						_direction = glm::vec2(0.0f, 1.0f);
-				}
+			if (gamestate == GameState::SINGLEPLAYER)
+			{
+				_position += _direction*_speed;
 			}
+			else 
+			{
+				_position.y += _speed;
+				_direction = glm::vec2(0.0f, 1.0f);
+			}
+		}
+		else if (_input->isKeyDown(SDLK_s))
+		{
 
+			if (gamestate == GameState::SINGLEPLAYER)
+			{
+				_position.y -= _speed / 2.0f;
 
-			else if (_input->isKeyDown(SDLK_s)) {
+			}
+			else
+			{
 				_position.y -= _speed;
 				_direction = glm::vec2(0.0f, -1.0f);
 			}
-
-			if (_input->isKeyDown(SDLK_a)) {
-				_position.x -= _speed;
-				if (gamestate == GameState::MULTYPLAYER)
-					_direction = glm::vec2(-1.0f, 0.0f);
-			}
-
-			else if (_input->isKeyDown(SDLK_d)) {
-				_position.x += _speed;
-				if(gamestate == GameState::MULTYPLAYER)
-					_direction = glm::vec2(1.0f, 0.0f);
-			}
 		}
-
-
-		_direction = glm::normalize(_direction);
-		_guns[0]->update(_input->isKeyDown(SDLK_SPACE),
-			centerPosition,
-			_direction,
-			*_bullets, harta, gamestate);
-	
-
-		if (gamestate == GameState::SINGLEPLAYER) {
-			mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
-			_direction = glm::normalize(mouseCoords - centerPosition);
+		else if (_input->isKeyDown(SDLK_a))
+		{
+			_position.x -= _speed;
+			if (gamestate == GameState::MULTYPLAYER)
+				_direction = glm::vec2(-1.0f, 0.0f);
+		}
+		else if (_input->isKeyDown(SDLK_d))
+		{
+			_position.x += _speed;
+			if (gamestate == GameState::MULTYPLAYER)
+				_direction = glm::vec2(1.0f, 0.0f);
 		}
 	
+
+	if (gamestate == GameState::SINGLEPLAYER) {
+
+		mouseCoords = _camera->convertToWorldCoordonates(mouseCoords);
+		_direction = glm::normalize(mouseCoords - centerPosition);
+
 	}
+
+	_guns[0]->update(_input->isKeyDown(SDLK_SPACE),
+		centerPosition,
+		_direction,
+		*_bullets, harta, gamestate);
+	_direction = glm::normalize(_direction);
+
+}
 	else
 	{
-		if (_input->isKeyDown(SDLK_KP_1)) {
-			//cadran 1
-			if (_direction.x >= 0 && _direction.y >= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 2
-			else if (_direction.x <= 0 && _direction.y >= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 3
-			else if (_direction.x <= 0 && _direction.y <= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 4
-			else if (_direction.x >= 0 && _direction.y <= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-		}
-		else if (_input->isKeyDown(SDLK_KP_3)) {
-			//cadran 1
-			if (_direction.x >= 0 && _direction.y >= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 2
-			else if (_direction.x <= 0 && _direction.y >= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x += players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 3
-			else if (_direction.x <= 0 && _direction.y <= 0) {
-				_direction.y += players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-			//cadran 4
-			else if (_direction.x >= 0 && _direction.y <= 0) {
-				_direction.y -= players[0]->getSpeed() / 100.0f;
-				_direction.x -= players[0]->getSpeed() / 100.0f;
-			}
-		}else
 		if (_input->isKeyDown(SDLK_UP) && _input->isKeyDown(SDLK_RIGHT))
 		{
 			_position.y += _speed / 2.0f;
@@ -233,7 +147,7 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 
 			if (_input->isKeyDown(SDLK_LEFT)) {
 				_position.x -= _speed;
-				_direction = glm::vec2(-1.0f, 0.0f);
+				_direction = glm::vec2(-1.0f,0.0f);
 			}
 
 			else if (_input->isKeyDown(SDLK_RIGHT)) {
@@ -242,13 +156,12 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 			}
 		}
 
-
-		_direction = glm::normalize(_direction);
-		_guns[0]->update(_input->isKeyDown(SDLK_KP_2),
+	
+		_guns[0]->update(_input->isKeyDown(SDLK_RSHIFT),
 			centerPosition,
 			_direction,
 			*_bullets, harta, gamestate);
-
+		_direction = glm::normalize(_direction);
 	}
 	
 	//_direction = glm::normalize(_direction);

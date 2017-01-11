@@ -15,6 +15,7 @@
 #include"Artillery.h"
 #include "DrawClass.h"
 #include "BonusBox.h"
+#include "AudioManager.h"
 
 using namespace Engine;
 
@@ -27,8 +28,7 @@ public:
 	MainGame();
 	~MainGame();
 
-	void start(Window * window);
-	void setGameState(GameState gamestate) { _gameState = gamestate; }
+	void start();
 private:
 	void initShaders();
 	void init();
@@ -39,7 +39,7 @@ private:
 	void updateEntitys();
 	void updateBullets();
 	void normalizeTanksStats(BonusType boxTime, Entity* entity);
-	Window *_window;
+	Window _window;
 	
 	Input _input;
 	GameState _gameState;
@@ -47,6 +47,7 @@ private:
 	FPS _frameTimer;
 	GLSL _shaders;
 	DrawSprites _drawEntityHandler;
+	AudioManager _audioManager;
 
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;
@@ -55,7 +56,6 @@ private:
 	std::vector<BonusBox*> _bonuses;
 	//std::vector<int*> timer;
 	int _timer = 0;
-	int _bonusTime = 0;
 	//BonusBox* _bonuses;
 	std::vector<std::pair<BonusType, int>> _bonusesTimers;
 

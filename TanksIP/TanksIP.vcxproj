@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Artillery.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="BonusBox.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DrawClass.cpp" />
@@ -131,7 +132,6 @@
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="Menu.cpp" />
     <ClCompile Include="OpenGlTexture.h" />
     <ClCompile Include="Players.cpp" />
     <ClCompile Include="Projectiles.cpp" />
@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Artillery.h" />
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="BonusBox.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Defines.h" />
@@ -152,7 +153,6 @@
     <ClInclude Include="FPS.h" />
     <ClInclude Include="GLSL.h" />
     <ClInclude Include="Harta.h" />
-    <ClInclude Include="Menu.h" />
     <ClInclude Include="picoPNG.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="MainGame.h" />
