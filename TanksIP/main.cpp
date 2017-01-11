@@ -1,12 +1,13 @@
 #include <iostream>
 #include "MainGame.h"
+#include "Menu.h"
 
 using namespace Engine;
 
 int main(int argc, char** argv) {
 
-	MainGame maingame;
-	maingame.start();
+	Menu maingame;
+	maingame.menuLoop();
 	return 0;
 }
 

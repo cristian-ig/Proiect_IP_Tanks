@@ -28,18 +28,20 @@ public:
 	MainGame();
 	~MainGame();
 
-	void start();
+	void start(Window * window);
+	void setGameState(GameState gamestate) { _gameState = gamestate; }
 private:
 	void initShaders();
 	void init();
 	//void initMap();
 	void mainLoop();
 	void draw();
+	
 	void processInput();
 	void updateEntitys();
 	void updateBullets();
 	void normalizeTanksStats(BonusType boxTime, Entity* entity);
-	Window _window;
+	Window *_window;
 	
 	Input _input;
 	GameState _gameState;

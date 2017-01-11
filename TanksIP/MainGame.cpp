@@ -22,8 +22,9 @@ MainGame::~MainGame()
 		delete _enemy[i];
 }
 
-void MainGame::start() 
+void MainGame::start(Window * window) 
 {
+	_window = window;
 	//inits
 	init();
 
@@ -38,7 +39,7 @@ void MainGame::start()
 void MainGame::init() 
 {
 	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
-	_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
+	//_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
 
 	//shaders
 	initShaders();
@@ -172,6 +173,14 @@ while (_gameState != GameState::EXIT)
 	_input.update();
 	processInput(); //gets input
 
+	if (rand() % 302 == 0)
+		if (_bonuses.size() != 0)
+			_bonuses[0]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
+		else {
+			_bonuses.push_back(new BonusBox(glm::vec2(-100, -100)));
+			_bonuses[_bonuses.size() - 1]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
+		}
+
 	int i = 0; // This counter makes sure we don't spiral to death!
 			   // Loop while we still have steps to process.
 	while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
@@ -193,7 +202,7 @@ while (_gameState != GameState::EXIT)
 
 	fpsLimiter.end();
 
-	_window.swapBuffer();
+	_window->swapBuffer();
 }
 }
 void MainGame::processInput() {

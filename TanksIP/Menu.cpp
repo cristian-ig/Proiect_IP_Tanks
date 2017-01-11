@@ -135,7 +135,7 @@ void Menu::proccesInput() {
 		case SDL_MOUSEBUTTONDOWN:
 			mousePressed();
 			_input.pressKey(newEvent.button.button);  //keep track if the mouse buttons are held down
-			//_gamestate = GameState::SINGLEPLAYER;
+			_gamestate = GameState::SINGLEPLAYER;
 			break;
 		case SDL_MOUSEBUTTONUP:
 			mouseReleased();
