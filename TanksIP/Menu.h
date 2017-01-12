@@ -12,6 +12,10 @@ enum class MenuState {
 	MAIN_MENU,
 	SINGLEPLAYER_MENU,
 	MULTYPLAYER_MENU,
+	TANK_SELECTION_SINGLEPLAYER,
+	TANK_SELECTION_MULTIPLAYER,
+	MAP_SELECTION_SINGLEPLAYER,
+	MAP_SELECTION_MULTIPLAYER,
 	EXIT
 };
 class Button {
@@ -20,18 +24,12 @@ public:
 	glm::vec4 quad;
 	GLuint texture;
 	std::vector<GLuint> textureID;
-	bool isHovered = false;
-	bool isPressed = false;
-	void ButtonState(glm::vec2 pos, bool isMousePressed) {
-		if (pos.x > quad.x && pos.x<quad.x + quad.z && pos.y > quad.y &&pos.y < quad.y + quad.w && !isMousePressed) {
+	bool isSelected = false;
+	void ButtonState() {
+		
+		if (isSelected)
 			texture = textureID[1];
-		}
-		else if (isMousePressed && pos.x > quad.x && pos.x  < quad.x + quad.z && pos.y > quad.y &&pos.y < quad.y + quad.w) {
-			texture = textureID[2];
-		}
-		else {
-			texture = textureID[0];
-		}
+		else texture = textureID[0];
 
 	}
 
@@ -49,27 +47,25 @@ public:
 	void proccesInput();
 	void drawMain();
 	void drawSingleplayer();
-	void drawSinglePlayerMapSelection();
-	void drawSinglePlayerTankSelection();
-	void drawMultiplayerMapSelection();
-	void drawMultiplayerTankSelection();
+	void drawTankSelection();
+	void drawMapSelection();
 	void drawMultiplayer();
 	void updateButtons();
-	void mousePressed() { isMouseDown = true; isMouseReleased = false; updateButtons(); }
-	void mouseReleased() { isMouseDown = false; isMouseReleased = true; updateButtons(); isMouseReleased = false; }
+	void arrowPressed();
 	Window *_window;
 
 	
 
 private:
+	int buttonIndex = 2;
+	int player = 1;
 	bool isMouseDown;
 	bool isMouseReleased;
 	std::vector<Button> MainMenuButtons;
 	std::vector<Button> SinglePlayerMenuButtons;
 	std::vector<Button> MultiplayerMenuButtons;
 	std::vector<Button> MapSelectionButtons;
-	std::vector<Button> SinglePlayerTankSelectionButtons;
-	std::vector<Button> MultiplayerTankSelectionButtons;
+	std::vector<Button> TankSelectionButtons;
 	MainGame _mainGame;
 	Engine::DrawSprites _drawHandler;
 	Engine::GLSL _shaders;
