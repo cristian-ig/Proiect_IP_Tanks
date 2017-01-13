@@ -25,6 +25,50 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 
 
 	if (nPlayer == 1) {
+		if (_input->isKeyDown(SDLK_q)) {
+			//cadran 1
+			if (_direction.x >= 0 && _direction.y >= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 2
+			else if (_direction.x <= 0 && _direction.y >= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 3
+			else if (_direction.x <= 0 && _direction.y <= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 4
+			else if (_direction.x >= 0 && _direction.y <= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+		}
+		else if (_input->isKeyDown(SDLK_e)) {
+			//cadran 1
+			if (_direction.x >= 0 && _direction.y >= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 2
+			else if (_direction.x <= 0 && _direction.y >= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 3
+			else if (_direction.x <= 0 && _direction.y <= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 4
+			else if (_direction.x >= 0 && _direction.y <= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+		}else
 		if (_input->isKeyDown(SDLK_w) && _input->isKeyDown(SDLK_d))
 		{
 			_position.y += _speed / 2.0f;
@@ -107,6 +151,51 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 }
 	else
 	{
+		if (_input->isKeyDown(SDLK_KP_1)) {
+			//cadran 1
+			if (_direction.x >= 0 && _direction.y >= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 2
+			else if (_direction.x <= 0 && _direction.y >= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 3
+			else if (_direction.x <= 0 && _direction.y <= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 4
+			else if (_direction.x >= 0 && _direction.y <= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+		}else if(_input->isKeyDown(SDLK_KP_3)) {
+			//cadran 1
+			if (_direction.x >= 0 && _direction.y >= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 2
+			else if (_direction.x <= 0 && _direction.y >= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x += players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 3
+			else if (_direction.x <= 0 && _direction.y <= 0) {
+				_direction.y += players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+			//cadran 4
+			else if (_direction.x >= 0 && _direction.y <= 0) {
+				_direction.y -= players[0]->getSpeed() / 100.0f;
+				_direction.x -= players[0]->getSpeed() / 100.0f;
+			}
+		}
+		else
+
 		if (_input->isKeyDown(SDLK_UP) && _input->isKeyDown(SDLK_RIGHT))
 		{
 			_position.y += _speed / 2.0f;
@@ -158,7 +247,7 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 		}
 
 	
-		_guns[0]->update(_input->isKeyDown(SDLK_RSHIFT),
+		_guns[0]->update(_input->isKeyDown(SDLK_KP_2),
 			centerPosition,
 			_direction,
 			*_bullets, harta, gamestate);
