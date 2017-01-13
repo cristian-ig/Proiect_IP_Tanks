@@ -4,10 +4,14 @@
 #include "FPS.h"
 #include <math.h>
 #include "FatError.h"
+
 using namespace Engine;
 
 MainGame::MainGame() : _gameState(GameState::MULTYPLAYER)
 {
+	
+	
+
 }
 
 MainGame::~MainGame()
@@ -32,6 +36,18 @@ void MainGame::start(Window * window)
 	Music music = _audioManager.loadMusic("Assets/Audio/battle_music.mp3");
 	music.play(-1);
 
+	resume.textureID.push_back(FileLoad::getTexture("Assets/resume1.png").id);
+	resume.textureID.push_back(FileLoad::getTexture("Assets/resume2.png").id);
+
+	quit.textureID.push_back(FileLoad::getTexture("Assets/quit1.png").id);
+	quit.textureID.push_back(FileLoad::getTexture("Assets/quit2.png").id);
+
+	resume.quad = glm::vec4(110, 230, 564, 100);
+	resume.texture = resume.textureID[0];
+
+	quit.quad = glm::vec4(110, 100, 564, 100);
+	quit.texture = quit.textureID[0];
+
 	//loop
 	mainLoop();
 
@@ -46,6 +62,7 @@ void MainGame::init()
 
 	//render
 	_drawEntityHandler.init();
+	drawHandler.init();
 	
 	//map
 	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
@@ -173,34 +190,37 @@ while (_gameState != GameState::EXIT)
 	float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
 	_input.update();
 	processInput(); //gets input
+	if (state == GameState::MENU)
+		drawMenu();
+	else {
+		if (rand() % 302 == 0)
+			if (_bonuses.size() != 0)
+				_bonuses[0]->spawnBonus(_harta[0]->getMapData(), (BonusType)(rand() % 9), _bonuses);
+			else {
+				_bonuses.push_back(new BonusBox(glm::vec2(-1000, -1000)));
+				_bonuses[_bonuses.size() - 1]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
+			}
 
-	if (rand() % 302 == 0)
-		if (_bonuses.size() != 0)
-			_bonuses[0]->spawnBonus(_harta[0]->getMapData(), (BonusType)(rand()%9), _bonuses);
-		else {
-			_bonuses.push_back(new BonusBox(glm::vec2(-100, -100)));
-			_bonuses[_bonuses.size() - 1]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
-		}
+			int i = 0; // This counter makes sure we don't spiral to death!
+					   // Loop while we still have steps to process.
+			while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
+				// The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
+				//float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
+				float deltaTime = (totalDeltaTime < MAX_DELTA_TIME) ? totalDeltaTime : MAX_DELTA_TIME;
+				// Update all physics here and pass in deltaTime
+				updateEntitys();
+				updateBullets();
+				// Since we just took a step that is length deltaTime, subtract from totalDeltaTime
+				totalDeltaTime -= deltaTime;
+				// Increment our frame counter so we can limit steps to MAX_PHYSICS_STEPS
+				i++;
+			}
 
-	int i = 0; // This counter makes sure we don't spiral to death!
-			   // Loop while we still have steps to process.
-	while (totalDeltaTime > 0.0f && i < MAX_PHYSICS_STEPS) {
-		// The deltaTime should be the the smaller of the totalDeltaTime and MAX_DELTA_TIME
-		//float deltaTime = std::min(totalDeltaTime, MAX_DELTA_TIME);
-		float deltaTime = (totalDeltaTime < MAX_DELTA_TIME) ? totalDeltaTime : MAX_DELTA_TIME;
-		// Update all physics here and pass in deltaTime
-		updateEntitys();
-		updateBullets();
-		// Since we just took a step that is length deltaTime, subtract from totalDeltaTime
-		totalDeltaTime -= deltaTime;
-		// Increment our frame counter so we can limit steps to MAX_PHYSICS_STEPS
-		i++;
+			_camera.update();
+			//_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
+		
+			 draw();  //draws the game
 	}
-
-	_camera.update();
-	//_player[0]->update(_harta[_curLevel]->getMapData(), _player, _enemy);
-	draw();  //draws the game
-
 	fpsLimiter.end();
 
 	_window->swapBuffer();
@@ -222,6 +242,7 @@ void MainGame::processInput() {
 			break;
 		case SDL_KEYDOWN:
 			_input.pressKey(newEvent.key.keysym.sym); //keep track if the key is held down
+			isKeyPressed();
 			break;
 		case SDL_KEYUP:
 			_input.releaseKey(newEvent.key.keysym.sym); //keep track if the key is released
@@ -235,6 +256,78 @@ void MainGame::processInput() {
 		}
 
 	}
+}
+
+void MainGame::isKeyPressed() {
+	
+	if (_input.isKeyPressed(SDLK_ESCAPE)) {
+
+		state = GameState::MENU;
+		resume.isSelected = true;
+		resume.ButtonState();
+
+	}
+	if (state == GameState::MENU) {
+		if (_input.isKeyPressed(SDLK_RETURN)) {
+			if (resume.isSelected) {
+				state = GameState::SINGLEPLAYER;
+			}
+			if (quit.isSelected) {
+				_gameState = GameState::EXIT;
+			}
+		}
+		if (_input.isKeyPressed(SDLK_DOWN)) {
+			if (currButton == 1) {
+				resume.isSelected = false;
+				resume.ButtonState();
+				currButton++;
+				quit.isSelected = true;
+				quit.ButtonState();
+			}
+		}
+		if (_input.isKeyPressed(SDLK_UP)) {
+			if (currButton == 2) {
+				resume.isSelected = true;
+				resume.ButtonState();
+				currButton--;
+				quit.isSelected = false;
+				quit.ButtonState();
+			}
+		}
+
+	}
+	
+
+}
+void MainGame::drawMenu() {
+
+	_shaders.use();
+	drawHandler.begin();
+	glClearDepth(1.0);
+	// Clear the color and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	_shaders.use();
+
+	GLint textureUniform = _shaders.getUniformLocation("mySampler");
+	glUniform1i(textureUniform, 0);
+
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+	GLint pUniform = _shaders.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	drawHandler.begin();
+
+	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
+	
+	drawHandler.draw(resume.quad, uvCoords, resume.texture, 0, Engine::Color(255, 255, 255, 255));
+	drawHandler.draw(quit.quad, uvCoords, quit.texture, 0, Engine::Color(255, 255, 255, 255));
+
+
+	drawHandler.end();
+	drawHandler.renderBatch();
+	_shaders.unuse();
+
 }
 void MainGame::initShaders()
 {

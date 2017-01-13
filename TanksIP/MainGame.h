@@ -16,13 +16,29 @@
 #include "DrawClass.h"
 #include "BonusBox.h"
 #include "AudioManager.h"
-#include "Menu.h"
+#include "FileLoad.h"
 
 
 using namespace Engine;
 
+class Butt {
+
+public:
+	glm::vec4 quad;
+	GLuint texture;
+	std::vector<GLuint> textureID;
+	bool isSelected = false;
+	void ButtonState() {
+
+		if (isSelected)
+			texture = textureID[1];
+		else texture = textureID[0];
+
+	}
 
 
+
+};
 
 class MainGame {
 
@@ -33,12 +49,14 @@ public:
 	void start(Window * window);
 	void setGameState(GameState gamestate) { _gameState = gamestate; }
 	void setTankType(TankType player1, TankType player2);
+	void isKeyPressed();
 private:
 	void initShaders();
 	void init();
 	//void initMap();
 	void mainLoop();
 	void draw();
+	void drawMenu();
 	
 	void processInput();
 	void updateEntitys();
@@ -47,16 +65,19 @@ private:
 	Window *_window;
 	
 	Input _input;
-	GameState _gameState;
+	GameState _gameState,state =GameState::SINGLEPLAYER;
 	Camera _camera;
 	FPS _frameTimer;
 	GLSL _shaders;
 	DrawSprites _drawEntityHandler;
+	DrawSprites drawHandler;
 	AudioManager _audioManager;
+	
 
 	TankType pl1;
 	TankType pl2;
-
+	Butt resume, quit;
+	int currButton = 1;
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;
 	std::vector<Harta*> _harta;
