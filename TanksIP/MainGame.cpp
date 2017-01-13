@@ -319,7 +319,7 @@ void MainGame::isKeyPressed() {
 				state = GameState::SINGLEPLAYER;
 			}
 			if (quit.isSelected) {
-				_gameState = GameState::EXIT;
+				_gameState = GameState::MAIN;
 			}
 		}
 		if (_input.isKeyPressed(SDLK_DOWN)) {
@@ -424,7 +424,6 @@ for (size_t i = 0; i < _bonusesTimers.size(); i++)
 		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
 	
 	for (size_t i = 0; i < _numEnem; i++) {
-		if(!_enemy.empty())
 			_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
 	}
 
@@ -531,18 +530,15 @@ void MainGame::updateBullets()
 					{
 						// If the enemy died, remove him
 						
-						delete _enemy[j];
-						if (!(_enemy.size())) {
-							_enemy[j] = _enemy.back();
-							std::cout << (int)_numEnem <<"num enem"<< std::endl;
-						}
-						else if (_gameState == GameState::SINGLEPLAYER) {
-								finish.texture = FileLoad::getTexture("Assets/youwon.png").id;
-								_fin = 1;
-								
-							}
+						delete _enemy[j];		
+						_enemy[j] = _enemy.back();
 						_enemy.pop_back();
-						_numEnem--;
+						_numEnem--; 
+						if (_gameState == GameState::SINGLEPLAYER && _numEnem ==0) {
+							finish.texture = FileLoad::getTexture("Assets/youwon.png").id;
+							_fin = 1;
+
+						}
 					}
 					else {
 						j++;
