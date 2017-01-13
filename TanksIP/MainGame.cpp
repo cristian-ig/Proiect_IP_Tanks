@@ -122,12 +122,12 @@ void MainGame::init()
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles , pl1);
 	_player[0]->setNumPlayer(1);
-	_player[0]->initGun(new Artillery(_player[0]->getFireSpeed(), 1, 100, BULLET_SPEED, true, _SEffect));
+	_player[0]->initGun(new Artillery(_player[0]->getFireSpeed(), 1, 100, BULLET_SPEED, true));
 	if (GameState::MULTYPLAYER == _gameState) {
 		_player.push_back(new Players);
 		_player[1]->init(_harta[_curLevel]->getPlayerStartPos()[1], &_input, &_camera, &_projectiles,pl2);
 		_player[1]->setNumPlayer(2);
-		_player[1]->initGun(new Artillery(_player[1]->getFireSpeed(), 1, 100, BULLET_SPEED, true, _SEffect));
+		_player[1]->initGun(new Artillery(_player[1]->getFireSpeed(), 1, 100, BULLET_SPEED, true));
 	}
 	//enemys
 	_numEnem = _harta[_curLevel]->getNumEnemy();
@@ -135,7 +135,7 @@ void MainGame::init()
 	{
 		_enemy.push_back(new Enemys);
 		_enemy[i]->init(_harta[_curLevel]->getEnemysStartPos()[i], &_projectiles, TANK_SPEED/1.5f);
-		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, false, _SEffect));
+		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, false));
 	}
 
 	//timer
