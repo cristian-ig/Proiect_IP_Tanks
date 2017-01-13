@@ -226,6 +226,7 @@ void Menu::menuLoop() {
 			if (_mainGame.start(_window) == GameState::EXIT)
 				_menuState = MenuState::EXIT;
 			else {
+				_mainGame = new MainGame;
 				_gamestate = GameState::MENU;
 				_menuState = MenuState::MAIN_MENU;
 				buttonIndex = 2;

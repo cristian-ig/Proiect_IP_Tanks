@@ -69,7 +69,7 @@ private:
 	std::vector<Button> MultiplayerMenuButtons;
 	std::vector<Button> MapSelectionButtons;
 	std::vector<Button> TankSelectionButtons;
-	MainGame _mainGame;
+	MainGame * _mainGame = new MainGame;
 	Engine::DrawSprites _drawHandler;
 	Engine::GLSL _shaders;
 	Engine::Camera _camera;
