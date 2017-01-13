@@ -62,8 +62,9 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 
 	static std::mt19937 randomEngine(time(nullptr));
-	static std::uniform_real_distribution<float> randRotate(-60.0f, 60.0f);
+	static std::uniform_real_distribution<float> randRotate(-120.0f, 120.0f);
 
+	bool doMove = true;
 
 	if ((closestBullet != nullptr) && pitagoraDistance(closestBullet) < 50.0f && _doDoge == false)
 	{
@@ -80,19 +81,32 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	{
 	
 	// If we found a player, move towards him
-	if (closestTarget != nullptr && pitagoraDistance(closestTarget) < 200.0f)
+	if (closestTarget != nullptr ) /*  pitagoraDistance(closestTarget) < 200.0f ||  */
 	{
-		// Get the direction vector twoards the player
-	//	_direction = glm::normalize(closestTarget->getPosition() - _position);
-		_guns[0]->update(true, centerPosition, _direction, *_bullets, harta, gamestate);
+		if (pitagoraDistance(closestTarget) > 200.0f && closestBonus != nullptr && pitagoraDistance(closestBonus) > 220.0f)
+		{
+			// Get the direction vector twoards the player
+			_direction = glm::normalize(closestTarget->getPosition() - _position);
+			_guns[0]->update(true, centerPosition, _direction, *_bullets, harta, gamestate);
+		}
+		else
+		{
+			//_direction = glm::normalize(closestTarget->getPosition() - _position);
+			//_guns[0]->update(true, centerPosition, _direction, *_bullets, harta, gamestate);
+			//bool doMove = false;
+		}
 	}
-	else if (closestBonus != nullptr && pitagoraDistance(closestBonus) < 400.0f)// && pitagoraDistance(closestTarget) <= 200.0f)
+	else if (closestBonus != nullptr && pitagoraDistance(closestBonus) < 300.0f)// && pitagoraDistance(closestTarget) <= 200.0f)
 	{
 		// Get the direction vector twoards the bonusBox
 		_direction = glm::normalize(closestBonus->getPosition() - _position);
 
 	}
-	bool OK = false;
+	
+
+	
+
+	bool OK = false; //not collided with other tank
 	for (size_t i = 0; i < players.size(); i++)
 	{
 		if (this->collideWithEntity(players[i]))
@@ -113,6 +127,7 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	if (collideWithMap(harta) )
 	{
 		_direction = glm::rotate(_direction, randRotate(randomEngine));
+		_timer = 0;
 	}
 	else if (_timer >= 300)
 	{
@@ -121,6 +136,13 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	}
 		_timer++;
 	}
+	
+	if (closestTarget != nullptr && pitagoraDistance(closestTarget) < 80.0f)
+	{
+		_direction = glm::normalize(closestTarget->getPosition() - _position);
+		_direction = glm::rotate(_direction, 180.0f);
+	}
+
 
 	//std::cout << _timer << std::endl;
 
@@ -130,16 +152,18 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	if ((angle > 0.1f) && (angle < 1.30f) || (angle > 1.7f) && (angle < 3.1f) || (angle < -0.1f) && (angle > -1.30f) || (angle < -1.7f) && (angle > -3.10f))
 	{
 		collideWithMap(harta);
+		if(doMove)
 		_position += _direction * _speed / 2.0f;
 	}
 	else
 	{
 		collideWithMap(harta);
+		if (doMove)
 		_position += _direction * _speed;
 	}
 
 	//_guns[0]->update(true, centerPosition, _direction, *_bullets);
-	//ADD AI
+
 	
 }
 
@@ -237,7 +261,6 @@ float Enemys::pitagoraDistance(Players* player)
 
 	return sqrt((distX * distX) + (distY * distY)); //pitagora ftw
 }
-
 float Enemys::pitagoraDistance(BonusBox* BB)
 {
 	float distX = this->getPosition().x - BB->getPosition().x;
@@ -245,9 +268,6 @@ float Enemys::pitagoraDistance(BonusBox* BB)
 
 	return sqrt((distX * distX) + (distY * distY)); //pitagora ftw
 }
-
-
-
 float Enemys::pitagoraDistance(Projectiles* bullet)
 {
 	float distX = this->getPosition().x - bullet->getPosition().x;
@@ -263,6 +283,8 @@ float Enemys::vectorDistance(glm::vec2 vector1, glm::vec2 vector2)
 	return sqrt(Xdist * Xdist + Ydist * Ydist);
 
 }
+
+
 #if 0
 int Enemys::nodSorter(nod *n0, nod *n1)
 {
