@@ -195,7 +195,7 @@ void Players::drawP(Engine::DrawSprites& spriteBatch)
 	color.B = 255;
 	color.A = 255;
 
-	spriteBatch.draw(destRect, uvRect, Engine::FileLoad::getTexture("Assets/tank.png").id, 0.0f, color, _direction);
+	spriteBatch.draw(destRect, uvRect, _textureID, 0.0f, color, _direction);
 }
 
 void Players::initTankTypes(TankType tankType)
@@ -208,18 +208,31 @@ void Players::initTankTypes(TankType tankType)
 		_damage = TANK_DAMAGE;
 		_isInvulnerable = false;
 		_isShielded = false;
+		_textureID = Engine::FileLoad::getTexture("Assets/default.png").id;
 		break;
 	case TankType::PANZER:
+		_health = TANK_HEALTH + 100;
+		_speed = TANK_SPEED/1.2f;
+		_damage = TANK_DAMAGE+20;
 		_isInvulnerable = false;
 		_isShielded = false;
+		_textureID = Engine::FileLoad::getTexture("Assets/panzer.png").id;
 		break;
 	case TankType::SPEEDRUNNER:
+		_health = TANK_HEALTH/3.0f;
+		_speed = TANK_SPEED*2.0f;
+		_damage = TANK_DAMAGE*1.5f;
 		_isInvulnerable = false;
 		_isShielded = false;
+		_textureID = Engine::FileLoad::getTexture("Assets/speedrunner.png").id;
 		break;
 	case TankType::MOTHER_RUSSIA:
+		_health = TANK_HEALTH*2.0f;
+		_speed = TANK_SPEED/3.0f;
+		_damage = TANK_DAMAGE - 20;
 		_isInvulnerable = false;
 		_isShielded = false;
+		_textureID = Engine::FileLoad::getTexture("Assets/motherrussia.png").id;
 		break;
 	case TankType::RANDOM:
 		break;
@@ -229,17 +242,19 @@ void Players::initTankTypes(TankType tankType)
 }
 
 void Players::init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets,
-	TankType tankType /* = DEFAULT */, float speed /*= TANK_SPEED*/, float damage /*= TANK_DAMAGE*/, float health /*= TANK_HEALTH*/)
+	TankType tankType /* = DEFAULT */)
 {
-	_speed = speed;
+	initTankTypes(tankType);
+//	_speed = speed;
 	_position = position;
 	_direction = glm::vec2(1.0f, 0.0f);
 	_input = input;
 	_camera = camera;
-	_damage = damage;
-	_health = health;
+	//_damage = damage;
+	//_health = health;
 	_bullets = bullets;
-	_textureID = Engine::FileLoad::getTexture("Assets/tank.png").id;
+	
+	//_textureID = Engine::FileLoad::getTexture("Assets/panzer.png").id;
 
 
 }

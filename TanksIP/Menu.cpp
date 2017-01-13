@@ -213,11 +213,12 @@ void Menu::menuLoop() {
 		updateButtons();
 
 		if (_gamestate == GameState::SINGLEPLAYER) {
-
+			_mainGame.setTankType(_player1, _player2);
 			_mainGame.setGameState(_gamestate);
 			_mainGame.start(_window);
 		}
 		if (_gamestate == GameState::MULTYPLAYER) {
+			_mainGame.setTankType(_player1, _player2);
 			_mainGame.setGameState(_gamestate);
 			_mainGame.start(_window);
 		}

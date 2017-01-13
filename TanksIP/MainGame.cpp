@@ -65,12 +65,12 @@ void MainGame::init()
 
 	//player
 	_player.push_back(new Players);
-	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles);
+	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles , pl1);
 	_player[0]->setNumPlayer(1);
 	_player[0]->initGun(new Artillery(20, 1, 100, BULLET_SPEED));
 	if (GameState::MULTYPLAYER == _gameState) {
 		_player.push_back(new Players);
-		_player[1]->init(glm::vec2(400, 400), &_input, &_camera, &_projectiles);
+		_player[1]->init(glm::vec2(400, 400), &_input, &_camera, &_projectiles,pl2);
 		_player[1]->setNumPlayer(2);
 		_player[1]->initGun(new Artillery(20, 1, 100, BULLET_SPEED));
 	}
@@ -454,4 +454,14 @@ void MainGame::updateBullets()
 void MainGame::normalizeTanksStats(BonusType boxTime, Entity* entity)
 {
 	return;
+}
+void MainGame::setTankType(TankType player1, TankType player2) {
+
+	if (_gameState == GameState::SINGLEPLAYER)
+		pl1 = player1;
+	else if (_gameState == GameState::MULTYPLAYER)
+	{
+		pl1 = player1;
+		pl2 = player2;
+	}
 }

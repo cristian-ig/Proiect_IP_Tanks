@@ -30,6 +30,7 @@ public:
 
 	void start(Window * window);
 	void setGameState(GameState gamestate) { _gameState = gamestate; }
+	void setTankType(TankType player1, TankType player2);
 private:
 	void initShaders();
 	void init();
@@ -50,6 +51,9 @@ private:
 	GLSL _shaders;
 	DrawSprites _drawEntityHandler;
 	AudioManager _audioManager;
+
+	TankType pl1;
+	TankType pl2;
 
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;

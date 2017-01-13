@@ -15,7 +15,7 @@ public:
 		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, GameState gamestate) override;
 
 	void init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets,
-		TankType tankType = TankType::DEFAULT, float speed = TANK_SPEED, float damage = TANK_DAMAGE, float health = TANK_HEALTH);
+		TankType tankType);
 	void initGun(Artillery* gun);
 
 	void drawP(Engine::DrawSprites& spriteBatch);
