@@ -17,16 +17,19 @@ public:
 	~Enemys();
 
 	void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
-		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, GameState gamestate) override;
+		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes,
+		const std::vector<Projectiles>& bullets, GameState gamestate) override;
 
 	void init(glm::vec2 position, std::vector<Projectiles>* bullets, float speed = TANK_SPEED, float damage = TANK_DAMAGE, float health = TANK_HEALTH);
-	void initGun(Artillery* gun);
+	void initGun(Artillery* gun, bool isFromPlayer = false);
 private:
-	Players* getNearestPlayer(std::vector<Players*> players);
-	BonusBox* getNearestBonus(std::vector<BonusBox*> bonusBoxes);
+	Players* getNearestPlayer(const std::vector<Players*>& players);
+	BonusBox* getNearestBonus(const std::vector<BonusBox*>& bonusBoxes);
+	Projectiles* getNearestProjectile(const std::vector<Projectiles>& bullet);
 	void dogeBullet(); // or we can make a bool and if returns true, score ++ :~)
 	float pitagoraDistance(Players* players);
 	float pitagoraDistance(BonusBox* BB);
+	float pitagoraDistance(Projectiles* bullet);
 #if 0
 
 	//A*

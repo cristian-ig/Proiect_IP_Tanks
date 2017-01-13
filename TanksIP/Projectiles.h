@@ -11,7 +11,7 @@ class Enemy;
 class Projectiles
 {
 public:
-	Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed);
+	Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed, bool isFromPlayer);
 	~Projectiles();
 
 	bool update(const std::vector<std::string>& harta); //delete the bullet if returns true
@@ -20,6 +20,8 @@ public:
 
 	bool collideWithEntity(Entity* entity);
 
+	void setSource(bool isfromPlayer) { _isFromPlayer = isfromPlayer; }
+	bool getSource() { return _isFromPlayer; }
 
 	//getters
 	glm::vec2 getPosition() const { return _position; }
@@ -41,8 +43,8 @@ private:
 	glm::vec2 rotationPoint(const glm::vec2& pos, float angle);
 	bool collideWithWorld(const std::vector<std::string>& harta);
 	unsigned short _reflections;
-	bool colided;
-
+	bool _colided;
+	bool _isFromPlayer = true;
 	glm::vec2 _position = glm::vec2(0.0f, 0.0f);
 	glm::vec2 _direction = glm::vec2(1.0f, 0.0f);
 

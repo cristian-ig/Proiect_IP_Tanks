@@ -4,12 +4,13 @@
 
 
 Artillery::Artillery(int fireRate, int bulletsPerShot,
-	 float bulletDamage, float bulletSpeed) :
+	 float bulletDamage, float bulletSpeed, bool isFromPlayer) :
 	_fireRate(fireRate),
 	_bulletsPerShot(bulletsPerShot),
 	_bulletDamage(bulletDamage),
 	_bulletSpeed(bulletSpeed),
-	_frameCounter(0.0f)
+	_frameCounter(0.0f),
+	_isFromPlayer(isFromPlayer)
 {
 }
 
@@ -58,7 +59,8 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 
 			newpos += position;
 
-			bullets.emplace_back(newpos, direction, _bulletDamage, _bulletSpeed);
+			bullets.emplace_back(newpos, direction, _bulletDamage, _bulletSpeed, _isFromPlayer);
+			std::cout << _isFromPlayer << std::endl;
 	//	}else
 	//		if (gamestate == GameState::MULTYPLAYER) {
 	//			//right
@@ -101,6 +103,7 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 	//		}
 
 	//
+			
 	}
 }
 

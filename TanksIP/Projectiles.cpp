@@ -8,9 +8,9 @@
 #include<random>
 
 
-Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed) :
+Projectiles::Projectiles(glm::vec2 position, glm::vec2 direction, float damage, float speed, bool isFromPlayer) :
 	_position(position), _direction(direction), _damage(damage), _speed(speed), _isFirst(true),
-	colided(false), acceleration(2.0f)
+	_colided(false), acceleration(2.0f), _isFromPlayer(isFromPlayer)
 {
 }
 
@@ -21,7 +21,7 @@ Projectiles::~Projectiles()
 bool Projectiles::update(const std::vector<std::string>& harta)
 {
 	
-	if (!colided) {
+	if (!_colided) {
 		if (collideWithWorld(harta)) {
 
 			glm::ivec2 projPosition = _position;
@@ -39,14 +39,14 @@ bool Projectiles::update(const std::vector<std::string>& harta)
 			_position += _direction * _speed*acceleration;
 			if (acceleration > 0.5f)
 				acceleration -= 0.0005f;
-			colided = true;
+			_colided = true;
 			return true;
 
 		}
 		
 
 	}
-	else colided = false;
+	else _colided = false;
 	_position += _direction * _speed*acceleration;
 	if (acceleration > 1.0f)
 		acceleration -= 0.02f;

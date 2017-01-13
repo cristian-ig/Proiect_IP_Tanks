@@ -8,7 +8,7 @@ class Artillery
 {
 public:
 	Artillery(int fireRate, int bulletsPerShot,
-		float bulletDamage, float bulletSpeed);
+		float bulletDamage, float bulletSpeed, bool isFromPlayer);
 	~Artillery();
 
 	void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta, GameState gamestate);
@@ -18,6 +18,8 @@ public:
 	void setFireRate(int newFireRate) { _fireRate = newFireRate; }
 	void setBPS(int newBPS) { _bulletsPerShot = newBPS; }
 
+	bool getSource() { return _isFromPlayer; }
+
 
 private:
 
@@ -25,17 +27,19 @@ private:
 
 	std::string _name;
 
-	int _fireRate; ///< Fire rate in terms of frames
+	int _fireRate; // Fire rate in terms of frames
 
-	int _bulletsPerShot; ///< How many bullets are fired at at time
+	int _bulletsPerShot; // How many bullets are fired at at time
 
-	//float _spread; ///< Accuracy
+	//float _spread; // Accuracy
 
 	float _bulletSpeed;
 
+	bool _isFromPlayer;
+
 	int _bulletDamage;
 
-	float _frameCounter; ///< Counts frames so we know when to shoot bullets
+	float _frameCounter; // Counts frames so we know when to shoot bullets
 
 };
 

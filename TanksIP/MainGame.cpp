@@ -67,19 +67,19 @@ void MainGame::init()
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles , pl1);
 	_player[0]->setNumPlayer(1);
-	_player[0]->initGun(new Artillery(20, 1, 100, BULLET_SPEED));
+	_player[0]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, true));
 	if (GameState::MULTYPLAYER == _gameState) {
 		_player.push_back(new Players);
 		_player[1]->init(glm::vec2(400, 400), &_input, &_camera, &_projectiles,pl2);
 		_player[1]->setNumPlayer(2);
-		_player[1]->initGun(new Artillery(20, 1, 100, BULLET_SPEED));
+		_player[1]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, true));
 	}
 	//enemys
 	for (int i = 0; i<_numEnem; i++)
 	{
 		_enemy.push_back(new Enemys);
 		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f), &_projectiles, TANK_SPEED/1.5f);
-		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED));
+		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, false));
 	}
 
 	//timer
@@ -281,10 +281,10 @@ for (size_t i = 0; i < _bonusesTimers.size(); i++)
 
 	//check collision with world
 	for (size_t i = 0; i < _player.size(); i++)
-		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _gameState);
-
+		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
+	
 	for (size_t i = 0; i < _numEnem; i++) {
-		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _gameState);
+		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
 	}
 
 	// Update Enemy collisions
