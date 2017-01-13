@@ -376,79 +376,80 @@ void MainGame::updateBullets()
 	}
 //
 
-	//bool wasBulletRemoved;
-	//// Collide with players and enemys
-	//for (size_t i = 0; i < _projectiles.size(); i++) {
-	//	wasBulletRemoved = false;
-	//	// Loop through enemys
-	//	for (size_t j = 0; j < _enemy.size(); ) {
-	//		// Check collision
-	//		if (_projectiles[i].collideWithEntity(_enemy[j])) {
+	bool wasBulletRemoved;
+	// Collide with players and enemys
+	for (size_t i = 0; i < _projectiles.size(); i++) {
+		wasBulletRemoved = false;
+		// Loop through enemys
+		for (size_t j = 0; j < _enemy.size(); ) {
+			// Check collision
+			if (_projectiles[i].collideWithEntity(_enemy[j])) {
 
-	//			// Damage enemy, and kill it if its out of health
-	//			if (_enemy[j]->applyDamage(_projectiles[i].getDamage())) 
-	//			{
-	//				// If the enemy died, remove him
-	//				delete _enemy[j];
-	//				if (!_enemy.empty()) 
-	//					_enemy[j] = _enemy.back();
+				if (_projectiles[i].getSource() == true) {
+					if (_enemy[j]->applyDamage(_projectiles[i].getDamage()))
+					{
+						// If the enemy died, remove him
+						delete _enemy[j];
+						if (!_enemy.empty())
+							_enemy[j] = _enemy.back();
 
-	//				_enemy.pop_back();
-	//				_numEnem--;
-	//			}
-	//			else {
-	//				j++;
-	//			}
-	//			// Remove the bullet
-	//			_projectiles[i] = _projectiles.back();
-	//			_projectiles.pop_back();
-	//			wasBulletRemoved = true;
-	//			i--; // Make sure we don't skip a bullet
-	//				 // Since the bullet died, no need to loop through any more zombies
-	//			break;
-	//		}
-	//		else {
-	//			j++;
-	//		}
-	//	}
-	//}
-	//
+						_enemy.pop_back();
+						_numEnem--;
+					}
+					else {
+						j++;
+					}
+				}
+				// Remove the bullet
+				_projectiles[i] = _projectiles.back();
+				_projectiles.pop_back();
+				wasBulletRemoved = true;
+				i--; // Make sure we don't skip a bullet
+					 // Since the bullet died, no need to loop through any more zombies
+				break;
+			}
+			else {
+				j++;
+			}
+		}
+	}
+	
 
-	//for (size_t i = 0; i < _projectiles.size(); i++) {
-	//	wasBulletRemoved = false;
-	//	// Loop through enemys
-	//	for (size_t j = 0; j < _player.size(); ) {
-	//		// Check collision
-	//		if (_projectiles[i].collideWithEntity(_player[j])) {
+	for (size_t i = 0; i < _projectiles.size(); i++) {
+		wasBulletRemoved = false;
+		// Loop through enemys
+		for (size_t j = 0; j < _player.size(); ) {
+			// Check collision
+			if (_projectiles[i].collideWithEntity(_player[j])) {
 
-	//			// Damage enemy, and kill it if its out of health
-	//			if (_player[j]->applyDamage(_projectiles[i].getDamage()))
-	//			{
-	//				// If the enemy died, remove him
-	//				delete _player[j];
-	//				FatalError("YOU DIEDEDED!"); //dont crash our game
-	//				if (!_player.empty()) 
-	//				{
-	//					_player[j] = _player.back();
-	//					_player.pop_back();
-	//				}
-	//			}
-	//			else {
-	//				j++;
-	//			}
-	//			// Remove the bullet
-	//			_projectiles[i] = _projectiles.back();
-	//			_projectiles.pop_back();
-	//			wasBulletRemoved = true;
-	//			i--; // Make sure we don't skip a bullet
-	//				 // Since the bullet died, no need to loop through any more zombies
-	//			break;
-	//		}
-	//		else {
-	//			j++;
-	//		}
-	//	}
-	//}
+				// Damage enemy, and kill it if its out of health
+				if (_player[j]->applyDamage(_projectiles[i].getDamage()))
+				{
+					// If the enemy died, remove him
+					delete _player[j];
+					FatalError("YOU DIEDEDED!"); //dont crash our game
+					if (!_player.empty()) 
+					{
+						_player[j] = _player.back();
+						_player.pop_back();
+					}
+				}
+				else {
+					j++;
+				}
+				// Remove the bullet
+				_projectiles[i] = _projectiles.back();
+				_projectiles.pop_back();
+				wasBulletRemoved = true;
+				i--; // Make sure we don't skip a bullet
+					 // Since the bullet died, no need to loop through any more zombies
+				break;
+			}
+			else {
+				j++;
+			}
+		}
+	}
 }
 
 void MainGame::normalizeTanksStats(BonusType boxTime, Entity* entity)

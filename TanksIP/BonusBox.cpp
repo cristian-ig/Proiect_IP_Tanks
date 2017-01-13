@@ -157,11 +157,11 @@ void BonusBox::applyBonus(BonusType bonusType, Entity& entity)
 		std::cout << "BONUS HEAL_PLUS ! " << std::endl;
 		break;
 	case BonusType::SPEED:
-		addSpeed(BONUS_SPEED, entity);
+		//addSpeed(BONUS_SPEED, entity);
 		std::cout << "BONUS APPLYED SPEED! " << std::endl;
 		break;
 	case BonusType::SPEED_PLUS:
-		addSpeed(BONUS_SPEED_PLUS, entity);
+	//	addSpeed(BONUS_SPEED_PLUS, entity);
 		std::cout << "BONUS APPLYED SPEED_PLUS! " << std::endl;
 		break;
 	case BonusType::DAMAGE:

@@ -18,18 +18,27 @@ public:
 
 	void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
 		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes,
-		const std::vector<Projectiles>& bullets, GameState gamestate) override;
+		 std::vector<Projectiles>& bullets, GameState gamestate) override;
 
 	void init(glm::vec2 position, std::vector<Projectiles>* bullets, float speed = TANK_SPEED, float damage = TANK_DAMAGE, float health = TANK_HEALTH);
 	void initGun(Artillery* gun, bool isFromPlayer = false);
 private:
 	Players* getNearestPlayer(const std::vector<Players*>& players);
 	BonusBox* getNearestBonus(const std::vector<BonusBox*>& bonusBoxes);
-	Projectiles* getNearestProjectile(const std::vector<Projectiles>& bullet);
-	void dogeBullet(); // or we can make a bool and if returns true, score ++ :~)
+	Projectiles* getNearestProjectile( std::vector<Projectiles>& bullet);
+	void dogeBullet(glm::vec2 bulletDir); // or we can make a bool and if returns true, score ++ :~)
 	float pitagoraDistance(Players* players);
 	float pitagoraDistance(BonusBox* BB);
 	float pitagoraDistance(Projectiles* bullet);
+	float vectorDistance(glm::vec2 vector1, glm::vec2 vector2);
+	bool _doDoge = false;
+
+
+	std::vector<Artillery*> _guns;
+	std::vector<Projectiles>* _bullets;
+	 
+	int _timer = 0;
+};
 #if 0
 
 	//A*
@@ -38,13 +47,7 @@ private:
 	bool isInList(const std::list<nod*>& list, const glm::ivec2& vector);
 	std::list<nod*> _path;
 #endif
-	float vectorDistance(glm::vec2 vector1, glm::vec2 vector2);
-
-	std::vector<Artillery*> _guns;
-	std::vector<Projectiles>* _bullets;
-	 
-	int _timer = 0;
-};
+#if 0
 
 struct nod
 {
@@ -63,3 +66,4 @@ struct nod
 	}
 
 };
+#endif

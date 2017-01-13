@@ -28,7 +28,7 @@ public:
 
 	virtual void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
 		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes,
-		const std::vector<Projectiles>& bullets, GameState gamestate) = 0;
+		 std::vector<Projectiles>& bullets, GameState gamestate) = 0;
 
 	void draw(Engine::DrawSprites& _spriteBatch);
 

@@ -14,7 +14,7 @@ Players::~Players()
 
 void Players::update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
 	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxess, 
-	const std::vector<Projectiles>& bullets, GameState gamestate)
+	 std::vector<Projectiles>& bullets, GameState gamestate)
 {
 	//if (this->getDamage() > 5.0f)
 		//this->setSpeed(5.0f);

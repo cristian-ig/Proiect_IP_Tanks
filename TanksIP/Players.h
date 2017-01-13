@@ -13,7 +13,7 @@ public:
 
 	void update(const std::vector<std::string>& harta, const std::vector<Players*>& players,
 		const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, 
-		const std::vector<Projectiles>& bullets, GameState gamestate) override;
+		 std::vector<Projectiles>& bullets, GameState gamestate) override;
 
 	void init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets,
 		TankType tankType);

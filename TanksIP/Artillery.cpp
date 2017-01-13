@@ -45,7 +45,7 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 
 			if (direction.y < 0)angle = -angle;
 
-			std::cout << angle << std::endl;
+			//std::cout << angle << std::endl;
 
 			float s = sin(angle);
 			float c = cos(angle);
@@ -60,7 +60,7 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 			newpos += position;
 
 			bullets.emplace_back(newpos, direction, _bulletDamage, _bulletSpeed, _isFromPlayer);
-			std::cout << _isFromPlayer << std::endl;
+			//std::cout << _isFromPlayer << std::endl;
 	//	}else
 	//		if (gamestate == GameState::MULTYPLAYER) {
 	//			//right

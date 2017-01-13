@@ -27,7 +27,7 @@ void Enemys::initGun(Artillery* gun, bool isFromPlayer)
 }
 void Enemys::update(const std::vector<std::string>& harta, const std::vector<Players*>& players, 
 	const std::vector<Enemys*>& enemys, const std::vector<BonusBox*>& bonusBoxes, 
-	const std::vector<Projectiles>& bullets, GameState gamestate)
+	 std::vector<Projectiles>& bullets, GameState gamestate)
 {
 
 #if 0
@@ -64,6 +64,21 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	static std::mt19937 randomEngine(time(nullptr));
 	static std::uniform_real_distribution<float> randRotate(-60.0f, 60.0f);
 
+
+	if ((closestBullet != nullptr) && pitagoraDistance(closestBullet) < 50.0f && _doDoge == false)
+	{
+		glm::vec2 bulletDir = closestBullet->getDirection();
+		dogeBullet(bulletDir);
+		_doDoge = true;
+		
+		std::cout << closestBullet->getSource() << std::endl;
+	}
+	if ((closestBullet != nullptr) && pitagoraDistance(closestBullet) > 50.0f)
+		_doDoge = false;
+	
+	if (!_doDoge)
+	{
+	
 	// If we found a player, move towards him
 	if (closestTarget != nullptr && pitagoraDistance(closestTarget) < 200.0f)
 	{
@@ -105,7 +120,7 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 		_timer = 0;
 	}
 		_timer++;
-		
+	}
 
 	//std::cout << _timer << std::endl;
 
@@ -114,10 +129,12 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 	//smooth moviment
 	if ((angle > 0.1f) && (angle < 1.30f) || (angle > 1.7f) && (angle < 3.1f) || (angle < -0.1f) && (angle > -1.30f) || (angle < -1.7f) && (angle > -3.10f))
 	{
+		collideWithMap(harta);
 		_position += _direction * _speed / 2.0f;
 	}
 	else
 	{
+		collideWithMap(harta);
 		_position += _direction * _speed;
 	}
 
@@ -157,7 +174,6 @@ Players* Enemys::getNearestPlayer(const std::vector<Players*>& players)
 
 	return closestPlayer;
 }
-
 BonusBox* Enemys::getNearestBonus(const std::vector<BonusBox*>& bonusBoxes)
 {
 	BonusBox* closestBonus = nullptr;
@@ -179,15 +195,15 @@ BonusBox* Enemys::getNearestBonus(const std::vector<BonusBox*>& bonusBoxes)
 
 	return closestBonus;
 }
-
-
-Projectiles* Enemys::getNearestProjectile(const std::vector<Projectiles>& bullets)
+Projectiles* Enemys::getNearestProjectile( std::vector<Projectiles>& bullets)
 {
 	Projectiles* closestProjectile = nullptr;
 	float minDist = 999999999.0f;
 
 	//AI
 	for (size_t i = 0; i < bullets.size(); i++) {
+		if (bullets[i].getSource())
+		{
 		// Get the direction vector
 		glm::vec2 distVec = bullets[i].getPosition() - _position;
 		// Get distance
@@ -196,16 +212,22 @@ Projectiles* Enemys::getNearestProjectile(const std::vector<Projectiles>& bullet
 		// If this person is closer than the closest person, this is the new closest
 		if (distance < minDist) {
 			minDist = distance;
-			closestProjectile = (Projectiles*)&bullets[i];
+			closestProjectile = &bullets[i];
+		}
 		}
 	}
 
 	return closestProjectile;
 }
 
-void Enemys::dogeBullet()
+void Enemys::dogeBullet(glm::vec2 bulletDir)
 {
-	return;
+	if(bulletDir.x > _direction.x || bulletDir.y > _direction.y)
+	_direction = glm::rotate(_direction, 90.0f);
+	else
+		_direction = glm::rotate(_direction, -90.0f);
+	//_doDoge = true;
+	//return;
 }
 
 float Enemys::pitagoraDistance(Players* player)
