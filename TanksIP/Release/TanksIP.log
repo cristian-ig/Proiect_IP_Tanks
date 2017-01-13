@@ -1,5 +1,43 @@
-﻿  Generating code
-  All 1750 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
-  Finished generating code
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Release\TanksIP.exe
-  TanksIP.vcxproj -> E:\Coding\C++ Games\TankRep\trunk\TanksIP\Release\TanksIP.pdb (Full PDB)
+﻿  Artillery.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Artillery.h(3): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  AudioManager.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\AudioManager.h(2): fatal error C1083: Cannot open include file: 'SDL_mixer.h': No such file or directory
+  BonusBox.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Entity.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Camera.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Camera.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  DrawClass.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\DrawClass.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  Enemys.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Entity.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Entity.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Entity.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  FatError.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\FatError.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  FileLoad.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\OpenGLTexture.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  FPS.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\FPS.h(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  GLSL.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\GLSL.h(3): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+  Harta.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Harta.h(4): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Input.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Input.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  main.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\MainGame.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  MainGame.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\MainGame.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Menu.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\MainGame.h(3): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory
+  Players.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Entity.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Projectiles.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Projectiles.h(2): fatal error C1083: Cannot open include file: 'glm/glm.hpp': No such file or directory
+  Sprite.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Vertex.h(2): fatal error C1083: Cannot open include file: 'gl/glew.h': No such file or directory
+  TextureCache.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\OpenGLTexture.h(2): fatal error C1083: Cannot open include file: 'GL/glew.h': No such file or directory
+  Compiling...
+  Window.cpp
+d:\coding\c++ games\tankrep\trunk\tanksip\Window.h(2): fatal error C1083: Cannot open include file: 'SDL.h': No such file or directory

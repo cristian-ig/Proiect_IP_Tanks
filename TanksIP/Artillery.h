@@ -9,7 +9,7 @@ class Artillery
 {
 public:
 	Artillery(int fireRate, int bulletsPerShot,
-		float bulletDamage, float bulletSpeed, bool isFromPlayer, Engine::SoundEffect fireEffect);
+		float bulletDamage, float bulletSpeed, bool isFromPlayer);
 	~Artillery();
 
 	void update(bool isMouseDown, const glm::vec2& position, const glm::vec2& direction, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta, GameState gamestate);
@@ -36,8 +36,6 @@ private:
 	//float _spread; // Accuracy
 
 	float _bulletSpeed;
-
-	Engine::SoundEffect _fireEffect;
 
 	bool _isFromPlayer;
 
