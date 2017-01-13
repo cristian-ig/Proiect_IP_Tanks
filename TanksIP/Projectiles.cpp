@@ -144,6 +144,6 @@ bool Projectiles::collideWithWorld(const std::vector<std::string>& harta)
 		return true;
 	}
 
-	return (harta[gridPosition.y][gridPosition.x] != '.' && harta[gridPosition.y][gridPosition.x] != 's' && harta[gridPosition.y][gridPosition.x] != 'l');
+	return (harta[gridPosition.y][gridPosition.x] != '.' && harta[gridPosition.y][gridPosition.x] != 's' && harta[gridPosition.y][gridPosition.x] != 'l'&& harta[gridPosition.y][gridPosition.x] != 'd');
 
 }
