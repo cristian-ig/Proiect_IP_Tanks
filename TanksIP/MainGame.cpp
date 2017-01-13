@@ -330,6 +330,24 @@ for (size_t i = 0; i < _bonusesTimers.size(); i++)
 			}
 	}
 
+	for (size_t i = 0; i < _enemy.size(); i++)
+	{
+		for (size_t j = 0; j < _bonuses.size(); j++)
+			if (_enemy[i]->collideWithBonusBox(_enemy[i], _bonuses[j]))
+			{
+				//do collision and apply bonus
+				_bonuses[j]->applyBonus(_bonuses[j]->getBonusType(), *_enemy[i]);
+				//std::pair<BonusType, int> tmp(_bonuses[j]->getBonusType(), 600);
+				//	_bonusesTimers.push_back(std::make_pair(_bonuses[j]->getBonusType(), 600));
+
+				//hacky way to delete things
+				delete _bonuses[j];
+				_bonuses[j] = _bonuses.back();
+				_bonuses.pop_back();
+
+			}
+	}
+
 
 }
 
