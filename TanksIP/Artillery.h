@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 #include "Projectiles.h"
 #include "Harta.h"
+#include"AudioManager.h"
 
 class Artillery
 {
@@ -24,7 +25,8 @@ public:
 private:
 
 	void fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta, GameState gamestate);
-
+	Engine::AudioManager _audioManager;
+	Engine::Music music = _audioManager.loadMusic("Assets/Audio/tank_fire.mp3");
 	std::string _name;
 
 	int _fireRate; // Fire rate in terms of frames

@@ -32,7 +32,8 @@ GameState MainGame::start(Window * window)
 {
 	_window = window;
 	//inits
-	init();
+	
+		init();
 
 	//make it rain
     music = _audioManager.loadMusic("Assets/Audio/battle_music.mp3");
@@ -50,6 +51,8 @@ GameState MainGame::start(Window * window)
 	quit.quad = glm::vec4(110, 100, 564, 100);
 	quit.texture = quit.textureID[0];
 
+	finish.quad = glm::vec4(200, 200, 500, 200);
+
 	//loop
 	return mainLoop();
 
@@ -58,7 +61,7 @@ void MainGame::init()
 {
 	//0 normal, 2 fs, 4 borderlass, 8 resizalbe 
 	//_window.init("Tanks", SCREEN_WIDTH, SCREEN_HEIGHT, 0); 
-
+	
 	//shaders
 	initShaders();
 
@@ -111,6 +114,7 @@ void MainGame::init()
 	_camera.setPosition(cameraMij);
 	
 	//Audio
+	if(!inited)
 	_audioManager.init();
 
 
@@ -118,12 +122,12 @@ void MainGame::init()
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles , pl1);
 	_player[0]->setNumPlayer(1);
-	_player[0]->initGun(new Artillery(_player[0]->getFireSpeed(), 1, 100, BULLET_SPEED, true));
+	_player[0]->initGun(new Artillery(_player[0]->getFireSpeed(), 1, 100, BULLET_SPEED, true, _SEffect));
 	if (GameState::MULTYPLAYER == _gameState) {
 		_player.push_back(new Players);
 		_player[1]->init(_harta[_curLevel]->getPlayerStartPos()[1], &_input, &_camera, &_projectiles,pl2);
 		_player[1]->setNumPlayer(2);
-		_player[1]->initGun(new Artillery(_player[1]->getFireSpeed(), 1, 100, BULLET_SPEED, true));
+		_player[1]->initGun(new Artillery(_player[1]->getFireSpeed(), 1, 100, BULLET_SPEED, true, _SEffect));
 	}
 	//enemys
 	_numEnem = _harta[_curLevel]->getNumEnemy();
@@ -131,7 +135,7 @@ void MainGame::init()
 	{
 		_enemy.push_back(new Enemys);
 		_enemy[i]->init(_harta[_curLevel]->getEnemysStartPos()[i], &_projectiles, TANK_SPEED/1.5f);
-		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, false));
+		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, false, _SEffect));
 	}
 
 	//timer
@@ -145,7 +149,7 @@ void MainGame::init()
 	_bonuses[0]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
 	}
 
-
+	inited = true;
 
 }
 
@@ -166,7 +170,8 @@ void MainGame::draw()
 	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
 	
 	_drawEntityHandler.begin();
-
+	if(_fin ==1)
+		_drawEntityHandler.draw(finish.quad, glm::vec4(0, 0, 1, 1), finish.texture, 0, Engine::Color(255, 255, 255, 255));
 	_harta[_curLevel]->draw();
 
 	_player[0]->drawP(_drawEntityHandler);
@@ -213,7 +218,7 @@ GameState MainGame::mainLoop()
 	Uint32 previousTicks = SDL_GetTicks();
 
 	
-while (_gameState != GameState::EXIT) 
+while (_gameState != GameState::EXIT && _gameState!=GameState::MAIN) 
 {
 	fpsLimiter.start();
 					// Calculate the frameTime in milliseconds
@@ -224,6 +229,10 @@ while (_gameState != GameState::EXIT)
 	float totalDeltaTime = frameTime / DESIRED_FRAMETIME;
 	_input.update();
 	processInput(); //gets input
+	if (_fin == 1) {
+		_finTime++;
+	}
+	if (_finTime > 100) _gameState = GameState::MAIN;
 	if (state == GameState::MENU)
 		drawMenu();
 	else {
@@ -259,6 +268,8 @@ while (_gameState != GameState::EXIT)
 
 	_window->swapBuffer();
 }
+music.stop();
+
 return _gameState;
 }
 void MainGame::processInput() {
@@ -413,7 +424,8 @@ for (size_t i = 0; i < _bonusesTimers.size(); i++)
 		_player[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
 	
 	for (size_t i = 0; i < _numEnem; i++) {
-		_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
+		if(!_enemy.empty())
+			_enemy[i]->update(_harta[_curLevel]->getMapData(), _player, _enemy, _bonuses, _projectiles, _gameState);
 	}
 
 	// Update Enemy collisions
@@ -481,7 +493,7 @@ for (size_t i = 0; i < _bonusesTimers.size(); i++)
 }
 
 void MainGame::updateBullets()
-{
+{	
 	//Update and collide with world
 	for (size_t i = 0; i < _projectiles.size(); ) {
 		// If update returns true, the bullet collided with a wall
@@ -518,10 +530,17 @@ void MainGame::updateBullets()
 					if (_enemy[j]->applyDamage(_projectiles[i].getDamage()))
 					{
 						// If the enemy died, remove him
+						
 						delete _enemy[j];
-						if (!_enemy.empty())
+						if (!(_enemy.size())) {
 							_enemy[j] = _enemy.back();
-
+							std::cout << (int)_numEnem <<"num enem"<< std::endl;
+						}
+						else if (_gameState == GameState::SINGLEPLAYER) {
+								finish.texture = FileLoad::getTexture("Assets/youwon.png").id;
+								_fin = 1;
+								
+							}
 						_enemy.pop_back();
 						_numEnem--;
 					}
@@ -555,13 +574,23 @@ void MainGame::updateBullets()
 				if (_player[j]->applyDamage(_projectiles[i].getDamage()))
 				{
 					// If the enemy died, remove him
-					delete _player[j];
-					FatalError("YOU DIEDEDED!"); //dont crash our game
-					if (!_player.empty()) 
-					{
-						_player[j] = _player.back();
-						_player.pop_back();
+					if (_player[j]->getNumPlayer() == 1 && _gameState == GameState::SINGLEPLAYER) {
+						finish.texture = FileLoad::getTexture("Assets/youlose.png").id;
+						_fin = 1;
+					}if (_player[j]->getNumPlayer() == 1 && _gameState == GameState::MULTYPLAYER) {
+						finish.texture = FileLoad::getTexture("Assets/playertwowon.png").id;
+						_fin = 1;
+					}if (_player[j]->getNumPlayer() == 2 && _gameState == GameState::MULTYPLAYER) {
+						finish.texture = FileLoad::getTexture("Assets/player1won.png").id;
+						_fin = 1;
 					}
+					//delete _player[j];
+					//FatalError("YOU DIEDEDED!"); //dont crash our game
+					//if (!_player.empty()) 
+					//{
+					//	_player[j] = _player.back();
+					//	_player.pop_back();
+					//}
 				}
 				else {
 					j++;

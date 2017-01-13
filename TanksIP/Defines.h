@@ -33,6 +33,7 @@
 
 enum class GameState {
 	MENU,
+	MAIN,
 	SINGLEPLAYER,
 	MULTYPLAYER,
 	EXIT

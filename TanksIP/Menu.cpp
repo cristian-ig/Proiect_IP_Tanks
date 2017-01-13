@@ -222,7 +222,7 @@ void Menu::menuLoop() {
 		if (_gamestate == GameState::SINGLEPLAYER) {
 			_mainGame.setLevel(map_x);
 			_mainGame.setTankType(_player1, _player2);
-			_mainGame.setGameState(_gamestate);
+			_mainGame.setGameState(GameState::SINGLEPLAYER);
 			if (_mainGame.start(_window) == GameState::EXIT)
 				_menuState = MenuState::EXIT;
 			else {
@@ -239,7 +239,7 @@ void Menu::menuLoop() {
 			if (_gamestate == GameState::MULTYPLAYER) {
 				_mainGame.setLevel(map_x);
 				_mainGame.setTankType(_player1, _player2);
-				_mainGame.setGameState(_gamestate);
+				_mainGame.setGameState(GameState::MULTYPLAYER);
 				if (_mainGame.start(_window) == GameState::EXIT)
 				_menuState = MenuState::EXIT;
 

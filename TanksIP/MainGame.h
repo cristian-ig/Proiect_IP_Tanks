@@ -74,11 +74,12 @@ private:
 	DrawSprites _drawEntityHandler;
 	DrawSprites drawHandler;
 	AudioManager _audioManager;
-	
+	SoundEffect _SEffect;
 
 	TankType pl1;
 	TankType pl2;
-	Butt resume, quit;
+	Butt resume, quit, finish;
+	int _fin ,_finTime=0;
 	int currButton = 1;
 	std::vector<Players*> _player;
 	std::vector<Enemys*> _enemy;
@@ -91,7 +92,7 @@ private:
 	std::vector<std::pair<BonusType, int>> _bonusesTimers;
 
 	//Artillery _artilllery;
-
+	bool inited = false;
 	int _curLevel = -1;
 
 	char _numEnem = 3;

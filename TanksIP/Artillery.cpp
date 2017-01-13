@@ -24,6 +24,7 @@ Artillery::~Artillery()
 
 void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std::vector<Projectiles>& bullets, const std::vector<std::string>& harta, GameState gamestate)
 {
+	music.play(1);
 	for (int i = 0; i < _bulletsPerShot; i++) 
 	{
 		// Add a new bullet
