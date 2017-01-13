@@ -6,6 +6,9 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 #include <algorithm>
+#include <ctime>
+#include <random>
+#include <glm/gtx/rotate_vector.hpp>
 
 Enemys::Enemys()
 {
@@ -29,72 +32,95 @@ void Enemys::update(const std::vector<std::string>& harta, const std::vector<Pla
 #if 0
 //find closest player
 	Players* closestTarget = getNearestPlayer(players);
-	BonusBox* closestBonus = getNearestBonus(bonusBoxes);
 	
-	// If we found a player, move towards him
-	 if (pitagoraDistance(closestTarget) < 200.0f && closestTarget!= nullptr)
-	{
-		// Get the direction vector twoards the player
-		_direction = glm::normalize(closestTarget->getPosition() - _position);
-		/*
-		const glm::vec2 right(1.0f, 0.0f);
-		float angle = acos(glm::dot(right, _direction));
-		if (_direction.y < 0.0f) angle = -angle;
-		//std::cout << angle << std::endl;
+	 glm::ivec2 closestPlayerPos = closestTarget->getPosition() / TANK_WIDTH;
+	 glm::ivec2 start = this->getPosition() / TANK_WIDTH;
+	 _path = findPath(start, closestPlayerPos, harta);
 
-		if ((angle > 0.1f) && (angle < 1.30f) || (angle > 1.7f) && (angle < 3.1f) || (angle < -0.1f) && (angle > -1.30f) || (angle < -1.7f) && (angle > -3.10f))
-		{
-		_position += _direction * _speed / 2.0f;
-		} 
-		else
-		{
-		_position += _direction * _speed;
-		}
-		
-		if (angle == 0.0f || angle == (float)M_PI_2 || angle == (float)M_PI || angle == (float)-M_PI_2)
-		{
-		} 
-		else
-		{
-			_position += _direction * _speed / 2.0f;
-		}
-		//std::cout << "direction: " << _direction.x << ", " << _direction.y << std::endl;
-		//_position += _direction * _speed;*/
-	}
-	 else if (closestBonus != nullptr && pitagoraDistance(closestBonus) < 400.0f )// && pitagoraDistance(closestTarget) <= 200.0f)
-	{
-		_direction = glm::normalize(closestBonus->getPosition() - _position);
-	}
+	 if (_path.size())
+	 {
+		 glm::ivec2 vectorPath = _path.back()->tile;
+		 if (_position.x < vectorPath.x) _direction.x = 1.0f;
+		 if (_position.x > vectorPath.x) _direction.x = -1.0f;
+		 if (_position.y < vectorPath.y) _direction.y = 1.0f;
+		 if (_position.y < vectorPath.y) _direction.y = -1.0f;
+	 }
+
+	 else
+	 {
+		 //add second AI
+	 }
 
 #endif
 	Players* closestTarget = getNearestPlayer(players);
+	BonusBox* closestBonus = getNearestBonus(bonusBoxes);
+	const glm::vec2 right(1.0f, 0.0f);
+	float angle = acos(glm::dot(right, _direction));
+	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH / 2.0f, TANK_HEIGHT / 2.0f);
 
-	glm::ivec2 closestPlayerPos = closestTarget->getPosition() / TANK_WIDTH;
-	glm::ivec2 start = this->getPosition() / TANK_WIDTH;
-	_path = findPath(start, closestPlayerPos, harta);
+	static std::mt19937 randomEngine(time(nullptr));
+	static std::uniform_real_distribution<float> randRotate(-60.0f, 60.0f);
 
-		if (_path.size())
-		{
-			glm::ivec2 vectorPath = _path.back()->tile ;
-			if (_position.x < vectorPath.x) _direction.x = 1.0f;
-			if (_position.x > vectorPath.x) _direction.x = -1.0f;
-			if (_position.y < vectorPath.y) _direction.y = 1.0f;
-			if (_position.y < vectorPath.y) _direction.y = -1.0f;
-		}
-	
-	else
+	// If we found a player, move towards him
+	if (closestTarget != nullptr && pitagoraDistance(closestTarget) < 200.0f)
 	{
-		//add second AI
+		// Get the direction vector twoards the player
+	//	_direction = glm::normalize(closestTarget->getPosition() - _position);
+		_guns[0]->update(true, centerPosition, _direction, *_bullets, harta, gamestate);
+	}
+	else if (closestBonus != nullptr && pitagoraDistance(closestBonus) < 400.0f)// && pitagoraDistance(closestTarget) <= 200.0f)
+	{
+		// Get the direction vector twoards the bonusBox
+		_direction = glm::normalize(closestBonus->getPosition() - _position);
+
+	}
+	bool OK = false;
+	for (size_t i = 0; i < players.size(); i++)
+	{
+		if (this->collideWithEntity(players[i]))
+			 OK = true;
 	}
 
+	for (size_t i = 0; i < enemys.size(); i++)
+	{
+		if (this != enemys[i] && this->collideWithEntity(enemys[i]))
+			OK = true;
+	}
+	if (OK && _timer >= 200)
+	{
+		_direction = glm::rotate(_direction, randRotate(randomEngine));
+		_timer = 0;
+	}
 
-	_position += _direction * _speed;
+	if (collideWithMap(harta) )
+	{
+		_direction = glm::rotate(_direction, randRotate(randomEngine));
+	}
+	else if (_timer >= 300)
+	{
+		_direction = glm::rotate(_direction, randRotate(randomEngine));
+		_timer = 0;
+	}
+		_timer++;
+		
 
-	glm::vec2 centerPosition = _position + glm::vec2(TANK_WIDTH /2.0f, TANK_HEIGHT / 2.0f);
+	std::cout << _timer << std::endl;
+
+	if (_direction.y < 0.0f) angle = -angle;
+	//std::cout << angle << std::endl;
+	//smooth moviment
+	if ((angle > 0.1f) && (angle < 1.30f) || (angle > 1.7f) && (angle < 3.1f) || (angle < -0.1f) && (angle > -1.30f) || (angle < -1.7f) && (angle > -3.10f))
+	{
+		_position += _direction * _speed / 2.0f;
+	}
+	else
+	{
+		_position += _direction * _speed;
+	}
+
 	//_guns[0]->update(true, centerPosition, _direction, *_bullets);
 	//ADD AI
-	//collideWithBonusBox(this, closestBonus);
-	collideWithMap(harta);
+	
 }
 
 void Enemys::init(glm::vec2 position, std::vector<Projectiles>* bullets, float speed, float damage, float health)
@@ -180,7 +206,7 @@ float Enemys::vectorDistance(glm::vec2 vector1, glm::vec2 vector2)
 	return sqrt(Xdist * Xdist + Ydist * Ydist);
 
 }
-
+#if 0
 int Enemys::nodSorter(nod *n0, nod *n1)
 {
 	if (n1->fCost < n0->fCost) return 1;
@@ -285,3 +311,4 @@ bool Enemys::isInList(const std::list<nod*>& list, const glm::ivec2& vector)
  }
 
 
+#endif

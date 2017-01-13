@@ -27,12 +27,14 @@ private:
 	void dogeBullet(); // or we can make a bool and if returns true, score ++ :~)
 	float pitagoraDistance(Players* players);
 	float pitagoraDistance(BonusBox* BB);
+#if 0
 
 	//A*
 	std::list<nod*> findPath(glm::ivec2 start, glm::ivec2 goal, const std::vector<std::string>& harta);
 	int nodSorter(nod *n1, nod *n2); //sorting nodes by distance from goal
 	bool isInList(const std::list<nod*>& list, const glm::ivec2& vector);
 	std::list<nod*> _path;
+#endif
 	float vectorDistance(glm::vec2 vector1, glm::vec2 vector2);
 
 	std::vector<Artillery*> _guns;
