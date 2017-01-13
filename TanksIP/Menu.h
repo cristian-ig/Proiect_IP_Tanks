@@ -58,6 +58,7 @@ public:
 
 private:
 	int buttonIndex = 2;
+	int map_x =6, map_y = 1;
 	int player = 1;
 	bool isMouseDown;
 	bool isMouseReleased;

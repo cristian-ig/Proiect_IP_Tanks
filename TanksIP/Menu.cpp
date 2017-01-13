@@ -20,9 +20,13 @@ Menu::Menu()
 
 	//camera
 	_camera.init(SCREEN_WIDTH, SCREEN_HEIGHT);
+	//const float CAMERA_SCALE = 0.0000000001f;
+
 	const float CAMERA_SCALE = 1.0f / 2.9f;
 	_camera.offsetScale(CAMERA_SCALE);
 	_camera.setPosition(glm::vec2(SCREEN_WIDTH/2.2, SCREEN_HEIGHT/1.495));
+	//_camera.setPosition(glm::vec2(SCREEN_WIDTH / 2.2, SCREEN_HEIGHT / 8));
+
 	glMatrixMode(GL_MODELVIEW);
 
 }
@@ -37,6 +41,7 @@ void Menu::init() {
 
 	MainMenuButtons.resize(3);
 	TankSelectionButtons.resize(6);
+	MapSelectionButtons.resize(13);
 	MainMenuButtons[2].isSelected = true;
 	//main menu
 	float mainMenuOffset = 42.0f;
@@ -98,9 +103,81 @@ void Menu::init() {
 		TankSelectionButtons[i].texture = TankSelectionButtons[i].textureID[0];
 	}
 
+	// map selection
+
+	float x1 = 225;
+	float y1 = 600;
+	float mapSelection_w = 120;
+	float mapSelection_h = 120;
+	float buttonOffset_x = 60;
+	float buttonOffset_y = 45;
+
+
+
+	//MapSelectionButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/TankSelectionBack1.png").id);
+	//MapSelectionButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/TankSelectionBack2.png").id);
+
+	MapSelectionButtons[6].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection1_1.png").id);
+	MapSelectionButtons[6].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection1_2.png").id);
+
+
+	MapSelectionButtons[7].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection2_1.png").id);
+	MapSelectionButtons[7].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection2_2.png").id);
+
+
+	MapSelectionButtons[8].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection3_1.png").id);
+	MapSelectionButtons[8].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection3_2.png").id);
+
+
+	MapSelectionButtons[9].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection4_1.png").id);
+	MapSelectionButtons[9].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection4_2.png").id);
+
+
+	MapSelectionButtons[10].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection5_1.png").id);
+	MapSelectionButtons[10].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection5_2.png").id);
+
+
+	MapSelectionButtons[11].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection6_1.png").id);
+	MapSelectionButtons[11].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection6_2.png").id);
+
+
+	MapSelectionButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection7_1.png").id);
+	MapSelectionButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection7_2.png").id);
+
+
+	MapSelectionButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection8_1.png").id);
+	MapSelectionButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection8_2.png").id);
+
+
+	MapSelectionButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection9_1.png").id);
+	MapSelectionButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection9_2.png").id);
+
+
+	MapSelectionButtons[3].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection10_1.png").id);
+	MapSelectionButtons[3].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection10_2.png").id);
+
+
+	MapSelectionButtons[4].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection11_1.png").id);
+	MapSelectionButtons[4].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection11_2.png").id);
+
+
+	MapSelectionButtons[5].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection12_1.png").id);
+	MapSelectionButtons[5].textureID.push_back(Engine::FileLoad::getTexture("Assets/MapSelection12_2.png").id);
 	
 
+	MapSelectionButtons[12].textureID.push_back(Engine::FileLoad::getTexture("Assets/TankSelectionBack1.png").id);
+	MapSelectionButtons[12].textureID.push_back(Engine::FileLoad::getTexture("Assets/TankSelectionBack2.png").id);
 
+	for (size_t i = 0; i < 2; i++) {
+		for (size_t j = 0; j < 6; j++) {
+			
+			MapSelectionButtons[(i*6)+j].quad=glm::vec4(x1 +(j*(buttonOffset_x + mapSelection_w)), y1 + (i*(buttonOffset_y + mapSelection_h)), mapSelection_w, mapSelection_h);
+			MapSelectionButtons[(i*6)+j].texture = MapSelectionButtons[(i*6) + j].textureID[0];
+		}
+	}
+
+	MapSelectionButtons[12].quad = glm::vec4(450, 350, 579, 101);
+	MapSelectionButtons[12].texture = MapSelectionButtons[12].textureID[0];
 
 }
 void Menu::updateButtons() {
@@ -118,6 +195,10 @@ void Menu::updateButtons() {
 
 		}
 	}
+	if(_menuState == MenuState::MAP_SELECTION_SINGLEPLAYER || _menuState == MenuState::MAP_SELECTION_MULTIPLAYER)
+		for (size_t i = 0; i < 13; i++) {
+			MapSelectionButtons[i].ButtonState();
+		}
 
 }
 
@@ -147,7 +228,11 @@ void Menu::menuLoop() {
 			drawTankSelection();
 		if (_menuState == MenuState::TANK_SELECTION_MULTIPLAYER)
 			drawTankSelection();
-		
+		if (_menuState == MenuState::MAP_SELECTION_SINGLEPLAYER)
+			drawMapSelection();
+		if (_menuState == MenuState::MAP_SELECTION_MULTIPLAYER)
+			drawMapSelection();
+
 		_camera.update();
 
 		_window->swapBuffer();
@@ -234,7 +319,30 @@ void Menu::drawMultiplayer() {
 
 }
 void Menu::drawMapSelection() {
+	_shaders.use();
+	_drawHandler.begin();
+	glClearDepth(1.0);
+	// Clear the color and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	_shaders.use();
+
+	GLint textureUniform = _shaders.getUniformLocation("mySampler");
+	glUniform1i(textureUniform, 0);
+
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+	GLint pUniform = _shaders.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	_drawHandler.begin();
+
+	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
+	for (size_t i = 0; i < 13; i++) {
+		_drawHandler.draw(MapSelectionButtons[i].quad, uvCoords, MapSelectionButtons[i].texture, 0, Engine::Color(122, 122, 122, 255));
+	}
+	_drawHandler.end();
+	_drawHandler.renderBatch();
+	_shaders.unuse();
 
 
 }
@@ -374,6 +482,9 @@ void Menu::arrowPressed() {
 				_player1 = TankType::PANZER;
 				TankSelectionButtons[1].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_SINGLEPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 
 			}
 			if (TankSelectionButtons[2].isSelected) {
@@ -381,30 +492,43 @@ void Menu::arrowPressed() {
 				_player1 = TankType::MOTHER_RUSSIA;
 				TankSelectionButtons[2].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_SINGLEPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 			}
 			if (TankSelectionButtons[3].isSelected) {
 
 				_player1 = TankType::SPEEDRUNNER;
 				TankSelectionButtons[3].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_SINGLEPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 			}
 			if (TankSelectionButtons[4].isSelected) {
 
 				_player1 = TankType::RANDOM;
 				TankSelectionButtons[4].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_SINGLEPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 			}
 			if (TankSelectionButtons[5].isSelected) {
 
 				_player1 = TankType::DEFAULT;
 				TankSelectionButtons[5].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_SINGLEPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 			}
 		}
 		//single player end
 
 		//multyplayer
 		else if (_menuState == MenuState::TANK_SELECTION_MULTIPLAYER) {
+			//back
 			if (TankSelectionButtons[0].isSelected && player == 1) {
 				_menuState = MenuState::MAIN_MENU;
 				TankSelectionButtons[0].isSelected = false;
@@ -419,7 +543,8 @@ void Menu::arrowPressed() {
 				buttonIndex = 5;
 				TankSelectionButtons[buttonIndex].isSelected = true;
 			}
-			
+			//back end
+			//panzer
 			if (TankSelectionButtons[1].isSelected && player == 1) {
 
 				_player1 = TankType::PANZER;
@@ -432,11 +557,15 @@ void Menu::arrowPressed() {
 				_player2 = TankType::PANZER;
 				TankSelectionButtons[1].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_MULTIPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 
 				//index
 
 			}
-
+			//panzer end
+			//mo9ther russia
 			if (TankSelectionButtons[2].isSelected && player == 1) {
 
 				_player1 = TankType::MOTHER_RUSSIA;
@@ -449,12 +578,76 @@ void Menu::arrowPressed() {
 				_player2 = TankType::MOTHER_RUSSIA;
 				TankSelectionButtons[2].isSelected = false;
 				_menuState = MenuState::MAP_SELECTION_MULTIPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
 
 				//index
 
 			}
+			//motherrussia end
+			//speed runner
+			if (TankSelectionButtons[3].isSelected && player == 1) {
+
+				_player1 = TankType::SPEEDRUNNER;
+				player++;
+				TankSelectionButtons[3].isSelected = false;
+				buttonIndex = 5;
+				TankSelectionButtons[buttonIndex].isSelected = true;
+			}
+			else if (TankSelectionButtons[3].isSelected && player == 2) {
+				_player2 = TankType::SPEEDRUNNER;
+				TankSelectionButtons[3].isSelected = false;
+				_menuState = MenuState::MAP_SELECTION_MULTIPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
+			}
+			//speedrunner end
+			//random
+			if (TankSelectionButtons[4].isSelected && player == 1) {
+
+				_player1 = TankType::RANDOM;
+				player++;
+				TankSelectionButtons[4].isSelected = false;
+				buttonIndex = 5;
+				TankSelectionButtons[buttonIndex].isSelected = true;
+			}
+			else if (TankSelectionButtons[4].isSelected && player == 2) {
+				_player2 = TankType::RANDOM;
+				TankSelectionButtons[4].isSelected = false;
+				_menuState = MenuState::MAP_SELECTION_MULTIPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
+			}
+			//random end
+			//default
+			if (TankSelectionButtons[5].isSelected && player == 1) {
+
+				_player1 = TankType::DEFAULT;
+				player++;
+				TankSelectionButtons[5].isSelected = false;
+				buttonIndex = 5;
+				TankSelectionButtons[buttonIndex].isSelected = true;
+			}
+			else if (TankSelectionButtons[5].isSelected && player == 2) {
+				_player2 = TankType::DEFAULT;
+				TankSelectionButtons[5].isSelected = false;
+				_menuState = MenuState::MAP_SELECTION_MULTIPLAYER;
+				map_x = 6;
+				map_y = 1;
+				MapSelectionButtons[map_x].isSelected = true;
+			}
+			//default end
 		}
 		//multyplayer end
+
+		//map selection
+
+
+
+		//map end
 	}
 }
 
