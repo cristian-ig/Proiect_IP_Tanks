@@ -220,12 +220,13 @@ void Menu::menuLoop() {
 		updateButtons();
 
 		if (_gamestate == GameState::SINGLEPLAYER) {
-			_mainGame.setLevel(map_x);
-			_mainGame.setTankType(_player1, _player2);
-			_mainGame.setGameState(GameState::SINGLEPLAYER);
-			if (_mainGame.start(_window) == GameState::EXIT)
+			_mainGame->setLevel(map_x);
+			_mainGame->setTankType(_player1, _player2);
+			_mainGame->setGameState(GameState::SINGLEPLAYER);
+			if (_mainGame->start(_window) == GameState::EXIT)
 				_menuState = MenuState::EXIT;
 			else {
+				delete _mainGame;
 				_mainGame = new MainGame;
 				_gamestate = GameState::MENU;
 				_menuState = MenuState::MAIN_MENU;
@@ -238,13 +239,15 @@ void Menu::menuLoop() {
 		}
 
 			if (_gamestate == GameState::MULTYPLAYER) {
-				_mainGame.setLevel(map_x);
-				_mainGame.setTankType(_player1, _player2);
-				_mainGame.setGameState(GameState::MULTYPLAYER);
-				if (_mainGame.start(_window) == GameState::EXIT)
+				_mainGame->setLevel(map_x);
+				_mainGame->setTankType(_player1, _player2);
+				_mainGame->setGameState(GameState::MULTYPLAYER);
+				if (_mainGame->start(_window) == GameState::EXIT)
 				_menuState = MenuState::EXIT;
 
 				else {
+					delete _mainGame;
+					_mainGame = new MainGame;
 					_gamestate = GameState::MENU;
 					_menuState = MenuState::MAIN_MENU;
 					buttonIndex = 2;
