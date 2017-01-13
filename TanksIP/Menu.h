@@ -50,6 +50,7 @@ public:
 	void drawMapSelection();
 	void updateButtons();
 	void arrowPressed();
+	void drawBG();
 	Window *_window;
 
 	
@@ -59,6 +60,7 @@ private:
 	int map_x =6, map_y = 1;
 	int player = 1;
 	int _map =1;
+	Button background;
 	std::vector<Button> MainMenuButtons;
 	std::vector<Button> SinglePlayerMenuButtons;
 	std::vector<Button> MultiplayerMenuButtons;

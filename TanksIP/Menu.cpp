@@ -26,8 +26,14 @@ Menu::Menu()
 	_camera.offsetScale(CAMERA_SCALE);
 	_camera.setPosition(glm::vec2(SCREEN_WIDTH/2.2, SCREEN_HEIGHT/1.495));
 	//_camera.setPosition(glm::vec2(SCREEN_WIDTH / 2.2, SCREEN_HEIGHT / 8));
+	glDisable(GL_LIGHTING);
+	glDisable(GL_BLEND);
+	glDisable(GL_FOG);
+	glDisable(GL_COLOR_MATERIAL);
+	glShadeModel(GL_FLAT);
 
-	glMatrixMode(GL_MODELVIEW);
+	//glMatrixMode(GL_MODELVIEW);
+	//glClearColor(188, 203, 255, 180);
 
 }
 
@@ -43,24 +49,29 @@ void Menu::init() {
 	TankSelectionButtons.resize(6);
 	MapSelectionButtons.resize(13);
 	MainMenuButtons[2].isSelected = true;
+
+	background.quad = glm::vec4(0, 0, 1920, 1080);
+	background.texture = Engine::FileLoad::getTexture("Assets/background.png").id;
+
 	//main menu
 	float mainMenuOffset = 42.0f;
 	float firstX1 = 500.0;
 	float firstY1 = 334.0f;
 	float mainMenuSize_w = 564.0f;
 	float mainMenuSize_h = 132.0f;
-
-
-	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu1.png").id);
-	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu2.png").id);
 	
 
-	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu1.png").id);
-	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu2.png").id);
+
+	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/quit1.png").id);
+	MainMenuButtons[0].textureID.push_back(Engine::FileLoad::getTexture("Assets/quit2.png").id);
+	
+
+	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/multiplayer1.png").id);
+	MainMenuButtons[1].textureID.push_back(Engine::FileLoad::getTexture("Assets/multiplayer2.png").id);
 
 
-	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu1.png").id);
-	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/mainMenu2.png").id);
+	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/SinglePlayer1.png").id);
+	MainMenuButtons[2].textureID.push_back(Engine::FileLoad::getTexture("Assets/SinglePlayer2.png").id);
 
 
 	for (size_t i = 0; i < 3; i++) {
@@ -305,12 +316,40 @@ void Menu::drawMain() {
 
 	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
 	for (size_t i = 0; i < 3; i++) {
-		_drawHandler.draw(MainMenuButtons[i].quad, uvCoords, MainMenuButtons[i].texture, 0, Engine::Color(122, 122, 122, 255));
+		_drawHandler.draw(MainMenuButtons[i].quad, uvCoords, MainMenuButtons[i].texture, 0, Engine::Color(255, 255, 255, 255));
 	}
+	_drawHandler.draw(background.quad, uvCoords, background.texture, 0, Engine::Color(255, 255, 255, 255));
 	_drawHandler.end();
 	_drawHandler.renderBatch();
 	_shaders.unuse();
 
+}
+
+void Menu::drawBG() {
+
+	_shaders.use();
+	_drawHandler.begin();
+	glClearDepth(1.0);
+	// Clear the color and depth buffer
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	_shaders.use();
+
+	GLint textureUniform = _shaders.getUniformLocation("mySampler");
+	glUniform1i(textureUniform, 0);
+
+	glm::mat4 projectionMatrix = _camera.getCameraMatrix();
+	GLint pUniform = _shaders.getUniformLocation("P");
+	glUniformMatrix4fv(pUniform, 1, GL_FALSE, &projectionMatrix[0][0]);
+
+	_drawHandler.begin();
+
+	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
+	
+	_drawHandler.draw(background.quad, uvCoords, background.texture, 0, Engine::Color(255, 255, 255, 255));
+	_drawHandler.end();
+	_drawHandler.renderBatch();
+	_shaders.unuse();
 }
 
 void Menu::drawMapSelection() {
@@ -333,8 +372,10 @@ void Menu::drawMapSelection() {
 
 	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
 	for (size_t i = 0; i < 13; i++) {
-		_drawHandler.draw(MapSelectionButtons[i].quad, uvCoords, MapSelectionButtons[i].texture, 0, Engine::Color(122, 122, 122, 255));
+		_drawHandler.draw(MapSelectionButtons[i].quad, uvCoords, MapSelectionButtons[i].texture, 0, Engine::Color(255, 255, 255, 255));
 	}
+	_drawHandler.draw(background.quad, uvCoords, background.texture, 0, Engine::Color(255, 255, 255, 255));
+
 	_drawHandler.end();
 	_drawHandler.renderBatch();
 	_shaders.unuse();
@@ -363,8 +404,10 @@ void Menu::drawTankSelection() {
 
 	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
 	for (size_t i = 0; i < 6; i++) {
-		_drawHandler.draw(TankSelectionButtons[i].quad, uvCoords, TankSelectionButtons[i].texture, 0, Engine::Color(122, 122, 122, 255));
+		_drawHandler.draw(TankSelectionButtons[i].quad, uvCoords, TankSelectionButtons[i].texture, 0, Engine::Color(255, 255, 255, 255));
 	}
+	_drawHandler.draw(background.quad, uvCoords, background.texture, 0, Engine::Color(255, 255, 255, 255));
+
 	_drawHandler.end();
 	_drawHandler.renderBatch();
 	_shaders.unuse();
