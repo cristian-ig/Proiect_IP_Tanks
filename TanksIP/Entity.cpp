@@ -168,7 +168,7 @@ void Entity::checkTilePosition(const std::vector<std::string>& harta, std::vecto
 	}
 
 	// If this is not an air tile, we should collide with it
-	if (harta[gridPos.y][gridPos.x] != '.') {
+	if (harta[gridPos.y][gridPos.x] != '.' && harta[gridPos.y][gridPos.x] != 'l' &&  harta[gridPos.y][gridPos.x] != 's') {
 		collideTilePositions.push_back(gridPos * (float)TILE_WIDTH + glm::vec2((float)TILE_WIDTH / 1.9f));
 	}
 }

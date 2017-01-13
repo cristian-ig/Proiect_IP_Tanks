@@ -301,7 +301,9 @@ void Players::initTankTypes(TankType tankType)
 		_isInvulnerable = false;
 		_isShielded = false;
 		_textureID = Engine::FileLoad::getTexture("Assets/default.png").id;
+		fireSpeed =30;
 		break;
+		
 	case TankType::PANZER:
 		_health = TANK_HEALTH + 100;
 		_speed = TANK_SPEED/1.2f;
@@ -309,6 +311,7 @@ void Players::initTankTypes(TankType tankType)
 		_isInvulnerable = false;
 		_isShielded = false;
 		_textureID = Engine::FileLoad::getTexture("Assets/panzer.png").id;
+		fireSpeed = 30;
 		break;
 	case TankType::SPEEDRUNNER:
 		_health = TANK_HEALTH/3.0f;
@@ -317,6 +320,7 @@ void Players::initTankTypes(TankType tankType)
 		_isInvulnerable = false;
 		_isShielded = false;
 		_textureID = Engine::FileLoad::getTexture("Assets/speedrunner.png").id;
+		fireSpeed = 30;
 		break;
 	case TankType::MOTHER_RUSSIA:
 		_health = TANK_HEALTH*2.0f;
@@ -325,8 +329,11 @@ void Players::initTankTypes(TankType tankType)
 		_isInvulnerable = false;
 		_isShielded = false;
 		_textureID = Engine::FileLoad::getTexture("Assets/motherrussia.png").id;
+		fireSpeed = 40;
 		break;
 	case TankType::RANDOM:
+		_tankType = (TankType)( rand() % 5);
+		initTankTypes(_tankType);
 		break;
 	default:
 		break;

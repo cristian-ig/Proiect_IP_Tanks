@@ -42,7 +42,7 @@ private:
 	float acceleration;
 	glm::vec2 rotationPoint(const glm::vec2& pos, float angle);
 	bool collideWithWorld(const std::vector<std::string>& harta);
-	unsigned short _reflections;
+	unsigned short _reflections =2;
 	bool _colided;
 	bool _isFromPlayer = true;
 	glm::vec2 _position = glm::vec2(0.0f, 0.0f);

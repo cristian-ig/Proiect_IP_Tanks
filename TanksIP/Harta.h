@@ -16,13 +16,14 @@ public:
 	void draw();
 	const std::vector<std::string>& getMapData() { return _mapData; }
 	const std::vector<glm::vec2>& getPlayerStartPos() const { return _playerStartPos; }
-	const std::vector<glm::vec2>& getEnemysStartPos() const { return _enemyStartPos; }
+    const std::vector<glm::vec2>& getEnemysStartPos() const { return _enemyStartPos; }
 
 	//getters
 	int getWidth()		const { return _mapData[0].size(); }
 	int getHeight()		const { return _mapData.size(); }
 	int getEntitys()	const { return _numEntitys; }
 	int getEnemysLeft() const { return _numEnemyLeft; }
+	int getNumEnemy() const { return _numEnem; }
 	char32_t getMapTile(glm::ivec2 position) { return (getMapData()[floor(position.y / float(TILE_WIDTH))][(position.x / float(TILE_WIDTH))]); }
 	glm::vec2 getCameraCenter() { return _cameraPos; }
 
@@ -30,7 +31,7 @@ public:
 private:
 	int _numEntitys = 0;
 	int _numEnemyLeft = 0;
-
+	int _numEnem=0;
 	std::vector<std::string> _mapData;
 	
 	std::vector<glm::vec2> _playerStartPos;

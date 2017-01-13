@@ -26,11 +26,7 @@ Menu::Menu()
 	_camera.offsetScale(CAMERA_SCALE);
 	_camera.setPosition(glm::vec2(SCREEN_WIDTH/2.2, SCREEN_HEIGHT/1.495));
 	//_camera.setPosition(glm::vec2(SCREEN_WIDTH / 2.2, SCREEN_HEIGHT / 8));
-	glDisable(GL_LIGHTING);
-	glDisable(GL_BLEND);
-	glDisable(GL_FOG);
-	glDisable(GL_COLOR_MATERIAL);
-	glShadeModel(GL_FLAT);
+	
 
 	//glMatrixMode(GL_MODELVIEW);
 	//glClearColor(188, 203, 255, 180);

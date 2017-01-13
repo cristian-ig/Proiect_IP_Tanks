@@ -40,8 +40,9 @@ bool Projectiles::update(const std::vector<std::string>& harta)
 			if (acceleration > 0.5f)
 				acceleration -= 0.0005f;
 			_colided = true;
+			if(_reflections == 1)
 			return true;
-
+			else _reflections--;
 		}
 		
 
@@ -143,6 +144,6 @@ bool Projectiles::collideWithWorld(const std::vector<std::string>& harta)
 		return true;
 	}
 
-	return (harta[gridPosition.y][gridPosition.x] != '.');
+	return (harta[gridPosition.y][gridPosition.x] != '.' && harta[gridPosition.y][gridPosition.x] != 's' && harta[gridPosition.y][gridPosition.x] != 'l');
 
 }

@@ -16,7 +16,7 @@ public:
 		 std::vector<Projectiles>& bullets, GameState gamestate) override;
 
 	void init(glm::vec2 position, Engine::Input* input, Engine::Camera* camera, std::vector<Projectiles>* bullets,
-		TankType tankType);
+		TankType  tankType);
 	void initGun(Artillery* gun);
 
 	void drawP(Engine::DrawSprites& spriteBatch);
@@ -24,12 +24,12 @@ public:
 	void initTankTypes(TankType tankType);
 	//set num player
 	void setNumPlayer(unsigned char numPlayer) { nPlayer = numPlayer; }
-
+	int getFireSpeed() const { return fireSpeed; }
 	unsigned char getNumPlayer() { return nPlayer; }
 private:
 	Engine::Input* _input;
 	Engine::Camera* _camera;
-
+	int fireSpeed;
 	int _currentIndex = -1;
 	bool _shootPerClick;
 	unsigned char nPlayer;

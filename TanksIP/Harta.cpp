@@ -48,22 +48,19 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 			case '@':
 				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
 				_mapData[y][x] = '.'; //so we dont collide with the tile later on
-				if (numPlayers > 0)
-				{
+			
 					_playerStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
 					_numEntitys++;
 					numPlayers--;
-				}
 				break;
 			case 'E':
 				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
 				_mapData[y][x] = '.';//so we dont collide with the tile later on
-				if (numEnemys > 0)
-				{
+				
 					_enemyStartPos.emplace_back(x * TILE_WIDTH, y * TILE_WIDTH);
+					_numEnem++;
 					_numEntitys++;
 					numEnemys--;
-				}
 				break;
 			case 'c':
 				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
@@ -73,6 +70,15 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				break;
 			case '.':
 				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
+				break;
+			case 's':
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/Sand.PNG").id, 0.0f, color);
+				break;
+			case 'd':
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/Dirt.PNG").id, 0.0f, color);
+				break;
+			case 'l':
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/Leaves.png").id, 0.0f, color);
 				break;
 			default:
 				std::printf("Unexpected symbol %c at (%d,%d)", tile, x, y);

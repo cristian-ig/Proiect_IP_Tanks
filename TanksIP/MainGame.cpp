@@ -67,18 +67,19 @@ void MainGame::init()
 	_player.push_back(new Players);
 	_player[0]->init(_harta[_curLevel]->getPlayerStartPos()[0], &_input, &_camera, &_projectiles , pl1);
 	_player[0]->setNumPlayer(1);
-	_player[0]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, true));
+	_player[0]->initGun(new Artillery(_player[0]->getFireSpeed(), 1, 100, BULLET_SPEED, true));
 	if (GameState::MULTYPLAYER == _gameState) {
 		_player.push_back(new Players);
-		_player[1]->init(glm::vec2(400, 400), &_input, &_camera, &_projectiles,pl2);
+		_player[1]->init(_harta[_curLevel]->getPlayerStartPos()[1], &_input, &_camera, &_projectiles,pl2);
 		_player[1]->setNumPlayer(2);
-		_player[1]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, true));
+		_player[1]->initGun(new Artillery(_player[1]->getFireSpeed(), 1, 100, BULLET_SPEED, true));
 	}
 	//enemys
-	for (int i = 0; i<_numEnem; i++)
+	_numEnem = _harta[_curLevel]->getNumEnemy();
+	for (int i = 0; i< _numEnem ; i++)
 	{
 		_enemy.push_back(new Enemys);
-		_enemy[i]->init(glm::vec2(i*25+250.0f, i*25+250.0f), &_projectiles, TANK_SPEED/1.5f);
+		_enemy[i]->init(_harta[_curLevel]->getEnemysStartPos()[i], &_projectiles, TANK_SPEED/1.5f);
 		_enemy[i]->initGun(new Artillery(20, 1, 100, BULLET_SPEED, false));
 	}
 
@@ -175,7 +176,7 @@ while (_gameState != GameState::EXIT)
 
 	if (rand() % 302 == 0)
 		if (_bonuses.size() != 0)
-			_bonuses[0]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
+			_bonuses[0]->spawnBonus(_harta[0]->getMapData(), (BonusType)(rand()%9), _bonuses);
 		else {
 			_bonuses.push_back(new BonusBox(glm::vec2(-100, -100)));
 			_bonuses[_bonuses.size() - 1]->spawnBonus(_harta[0]->getMapData(), BonusType::RANDOM, _bonuses);
