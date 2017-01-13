@@ -51,6 +51,9 @@ public:
 	void updateButtons();
 	void arrowPressed();
 	void drawBG();
+	int getLevel() {
+		return map_x;
+	}
 	Window *_window;
 
 	

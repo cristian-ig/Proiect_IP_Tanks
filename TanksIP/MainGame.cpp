@@ -24,16 +24,18 @@ MainGame::~MainGame()
 
 	for (size_t i = 0; i < _enemy.size(); i++)
 		delete _enemy[i];
+
+	music.pause();
 }
 
-void MainGame::start(Window * window) 
+GameState MainGame::start(Window * window) 
 {
 	_window = window;
 	//inits
 	init();
 
 	//make it rain
-	Music music = _audioManager.loadMusic("Assets/Audio/battle_music.mp3");
+    music = _audioManager.loadMusic("Assets/Audio/battle_music.mp3");
 	music.play(-1);
 
 	resume.textureID.push_back(FileLoad::getTexture("Assets/resume1.png").id);
@@ -49,7 +51,7 @@ void MainGame::start(Window * window)
 	quit.texture = quit.textureID[0];
 
 	//loop
-	mainLoop();
+	return mainLoop();
 
 }
 void MainGame::init() 
@@ -63,10 +65,42 @@ void MainGame::init()
 	//render
 	_drawEntityHandler.init();
 	drawHandler.init();
+	std::cout << _curLevel << std::endl;
+	switch (_curLevel)
+	{
+	case 0:_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
+		break;
+	case 1:_harta.push_back(new Harta("Maps/Map2.txt", 1, 1));
+		break;
+	case 2:_harta.push_back(new Harta("Maps/Map3.txt", 1, 1));
+		break;
+	case 3:_harta.push_back(new Harta("Maps/Map4.txt", 1, 1));
+		break;
+	case 4:_harta.push_back(new Harta("Maps/Map5.txt", 1, 1));
+		break;
+	case 5:_harta.push_back(new Harta("Maps/Map6.txt", 1, 1));
+		break;
+	case 6:_harta.push_back(new Harta("Maps/Map7.txt", 1, 1));
+		break;
+	case 7:_harta.push_back(new Harta("Maps/Map8.txt", 1, 1));
+		break;
+	case 8:_harta.push_back(new Harta("Maps/Map9.txt", 1, 1));
+		break;
+	case 9:_harta.push_back(new Harta("Maps/Map10.txt", 1, 1));
+		break;
+	case 10:_harta.push_back(new Harta("Maps/Map11.txt", 1, 1));
+		break;
+	case 11:_harta.push_back(new Harta("Maps/Map12.txt", 1, 1));
+		break;
+
+	default:
+		break;
+	}
+	_curLevel = 0;
 	
 	//map
-	_harta.push_back(new Harta("Maps/Map1.txt", 1, 1));
-	_curLevel = 0;
+	
+	
 	//const std::vector<glm::vec2>& enemyPositions = _harta[_curLevel]->getEnemysStartPos();
 
 	// camera
@@ -162,7 +196,7 @@ void MainGame::draw()
 	_drawEntityHandler.renderBatch();
 	_shaders.unuse();
 }
-void MainGame::mainLoop() 
+GameState MainGame::mainLoop() 
 {
 	//semi fixed timesteps
 	// Some helpful constants.
@@ -225,6 +259,7 @@ while (_gameState != GameState::EXIT)
 
 	_window->swapBuffer();
 }
+return _gameState;
 }
 void MainGame::processInput() {
 

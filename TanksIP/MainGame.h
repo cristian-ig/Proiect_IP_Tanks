@@ -46,15 +46,16 @@ public:
 	MainGame();
 	~MainGame();
 
-	void start(Window * window);
+	GameState start(Window * window);
 	void setGameState(GameState gamestate) { _gameState = gamestate; }
 	void setTankType(TankType player1, TankType player2);
 	void isKeyPressed();
+	void setLevel(int level) { _curLevel = level; }
 private:
 	void initShaders();
 	void init();
 	//void initMap();
-	void mainLoop();
+	GameState mainLoop();
 	void draw();
 	void drawMenu();
 	
@@ -62,8 +63,9 @@ private:
 	void updateEntitys();
 	void updateBullets();
 	void normalizeTanksStats(BonusType boxTime, Entity* entity);
-	Window *_window;
 	
+	Window *_window;
+	Music music;
 	Input _input;
 	GameState _gameState,state =GameState::SINGLEPLAYER;
 	Camera _camera;

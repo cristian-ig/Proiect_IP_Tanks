@@ -220,29 +220,39 @@ void Menu::menuLoop() {
 		updateButtons();
 
 		if (_gamestate == GameState::SINGLEPLAYER) {
+			_mainGame.setLevel(map_x);
 			_mainGame.setTankType(_player1, _player2);
 			_mainGame.setGameState(_gamestate);
-			_mainGame.start(_window);
-			_gamestate = GameState::MENU;
-			_menuState = MenuState::MAIN_MENU;
-			buttonIndex = 2;
-			for (size_t i=0; i < 3; i++) {
-				MainMenuButtons[i].isSelected = false;
+			if (_mainGame.start(_window) == GameState::EXIT)
+				_menuState = MenuState::EXIT;
+			else {
+				_gamestate = GameState::MENU;
+				_menuState = MenuState::MAIN_MENU;
+				buttonIndex = 2;
+				for (size_t i = 0; i < 3; i++) {
+					MainMenuButtons[i].isSelected = false;
+				}
+				MainMenuButtons[2].isSelected = true;
 			}
-			MainMenuButtons[2].isSelected = true;
 		}
-		if (_gamestate == GameState::MULTYPLAYER) {
-			_mainGame.setTankType(_player1, _player2);
-			_mainGame.setGameState(_gamestate);
-			_mainGame.start(_window);
-			_gamestate = GameState::MENU;
-			_menuState = MenuState::MAIN_MENU;
-			buttonIndex = 2;
-			for (size_t i=0; i < 3; i++) {
-				MainMenuButtons[i].isSelected = false;
+
+			if (_gamestate == GameState::MULTYPLAYER) {
+				_mainGame.setLevel(map_x);
+				_mainGame.setTankType(_player1, _player2);
+				_mainGame.setGameState(_gamestate);
+				if (_mainGame.start(_window) == GameState::EXIT)
+				_menuState = MenuState::EXIT;
+
+				else {
+					_gamestate = GameState::MENU;
+					_menuState = MenuState::MAIN_MENU;
+					buttonIndex = 2;
+					for (size_t i = 0; i < 3; i++) {
+						MainMenuButtons[i].isSelected = false;
+					}
+					MainMenuButtons[2].isSelected = true;
+				}
 			}
-			MainMenuButtons[2].isSelected = true;
-		}
 		
 		if (_menuState == MenuState::MAIN_MENU)
 			drawMain();
