@@ -95,43 +95,45 @@ void Players::update(const std::vector<std::string>& harta, const std::vector<Pl
 			_position.x -= _speed / 2.0f;
 			_direction = glm::vec2(-1.0f, -1.0f);
 		}
-		if (_input->isKeyDown(SDLK_w))
-		{
-			if (gamestate == GameState::SINGLEPLAYER)
+		else {
+			if (_input->isKeyDown(SDLK_w))
 			{
-				_position += _direction*_speed;
+				if (gamestate == GameState::SINGLEPLAYER)
+				{
+					_position += _direction*_speed;
+				}
+				else
+				{
+					_position.y += _speed;
+					_direction = glm::vec2(0.0f, 1.0f);
+				}
 			}
-			else 
+			else if (_input->isKeyDown(SDLK_s))
 			{
-				_position.y += _speed;
-				_direction = glm::vec2(0.0f, 1.0f);
-			}
-		}
-		else if (_input->isKeyDown(SDLK_s))
-		{
 
-			if (gamestate == GameState::SINGLEPLAYER)
-			{
-				_position.y -= _speed / 2.0f;
+				if (gamestate == GameState::SINGLEPLAYER)
+				{
+					_position.y -= _speed / 2.0f;
 
+				}
+				else
+				{
+					_position.y -= _speed;
+					_direction = glm::vec2(0.0f, -1.0f);
+				}
 			}
-			else
+			else if (_input->isKeyDown(SDLK_a))
 			{
-				_position.y -= _speed;
-				_direction = glm::vec2(0.0f, -1.0f);
+				_position.x -= _speed;
+				if (gamestate == GameState::MULTYPLAYER)
+					_direction = glm::vec2(-1.0f, 0.0f);
 			}
-		}
-		else if (_input->isKeyDown(SDLK_a))
-		{
-			_position.x -= _speed;
-			if (gamestate == GameState::MULTYPLAYER)
-				_direction = glm::vec2(-1.0f, 0.0f);
-		}
-		else if (_input->isKeyDown(SDLK_d))
-		{
-			_position.x += _speed;
-			if (gamestate == GameState::MULTYPLAYER)
-				_direction = glm::vec2(1.0f, 0.0f);
+			else if (_input->isKeyDown(SDLK_d))
+			{
+				_position.x += _speed;
+				if (gamestate == GameState::MULTYPLAYER)
+					_direction = glm::vec2(1.0f, 0.0f);
+			}
 		}
 	
 
