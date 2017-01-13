@@ -37,7 +37,7 @@ GameState MainGame::start(Window * window)
 
 	//make it rain
     music = _audioManager.loadMusic("Assets/Audio/battle_music.mp3");
-	music.play(-1);
+	//music.play(-1);
 
 	resume.textureID.push_back(FileLoad::getTexture("Assets/resume1.png").id);
 	resume.textureID.push_back(FileLoad::getTexture("Assets/resume2.png").id);
