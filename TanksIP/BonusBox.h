@@ -1,6 +1,8 @@
 #pragma once
 #include "Entity.h"
 #include "Harta.h"
+#include "DrawClass.h"
+#include "glm/glm.hpp"
 
 enum class BonusType
 {
@@ -14,24 +16,28 @@ enum class BonusType
 	ONE_HIT_KILL, //5 %
 	SHIELD, //10 % Take less damage for a period of time
 	INVULNERABILITY, //5 % cant be touched ..what happens when ONHITKILL shots an INVULNERABLE tank? Divide by 0 to find out.
-	NO_BONUS,
-	RANDOM //10%
+	//NO_BONUS,
+	RANDOM, //10%
 };
 
 class BonusBox
 {
 public:
-	BonusBox(float x, float y);
+	BonusBox(glm::vec2 position);
+	BonusBox();
 	~BonusBox();
 
-	void spawnBonus(const Harta& harta);
-	void spawnBonus(float x, float y, Harta harta);
+	void spawnBonus(const std::vector<std::string>& harta, BonusType bonusType, std::vector<BonusBox*>& bonuses);
+	void spawnBonus(float x, float y, const std::vector<std::string>& harta, std::vector<BonusBox*>& bonuses);
 
 	BonusType getBonusType() const { return _type; }
-	
+	glm::vec2 getPosition() const { return _position; }
+	std::vector<int> getTimers() const { return _timers; }
+
+
 	void applyBonus(BonusType bonusType, Entity& entity);
 
-	void drawBox(BonusType bonusType);
+	void drawBox(BonusType bonusType, Engine::DrawSprites& spriteBatch);
 
 	void addDamage(float damage, Entity& entity);
 	void addHealth(float health, Entity& entity);
@@ -41,12 +47,17 @@ public:
 	void addSpeed(float speed, Entity& entity);
 
 private:
-	BonusType _type = BonusType::NO_BONUS;
-	std::vector<BonusBox*> _bonusBoxes;
+	//void deleteBox();
+	BonusType _type = BonusType::RANDOM;
+	//std::vector<BonusBox*> _bonusBoxes;
 	Entity *_entity;
+	
+	Engine::DrawSprites _spriteBatch;
 
-	float _posX = 0.0f;
-	float _posY = 0.0f;
+	glm::vec2 _position;
+	std::vector<int> _timers;
+	//float _posX = 0.0f;
+	//float _posY = 0.0f;
 
 };
 

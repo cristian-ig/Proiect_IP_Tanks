@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include "FatError.h"
-#include "Vertex.h"
+#include "FileLoad.h"
 
 Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 {
@@ -20,14 +20,12 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 		_mapData.emplace_back(temp);  //read the map line by line
 	}
 
+	_spriteBatch.init();
+	_spriteBatch.begin();
+
 	Engine::Color color(255, 255, 255, 255); //white
 	glm::vec4 uvCoords(0.0f, 0.0f, 1.0f, 1.0f);
 
-	_wallTexture = _textureHandler.loadTexture("Assets/light_wall.png");
-	_waterTexture = _textureHandler.loadTexture("Assets/water.png");
-	_backgroundTexture = _textureHandler.loadTexture("Assets/wall.png");
-	_drawHandler.init();
-	_drawHandler.begin();
 
 		 // Render all the tiles
 	for (size_t y = 0; y < _mapData.size(); y++) 
@@ -45,10 +43,10 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 			// Process the tile
 			switch (tile) {
 			case 'W':
-				_drawHandler.addObj(destRect, uvCoords, _wallTexture.id, color);
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/light_wall.png").id,0.0f, color);
 				break;
 			case '@':
-				_drawHandler.addObj(destRect, uvCoords, _backgroundTexture.id, color);
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
 				_mapData[y][x] = '.'; //so we dont collide with the tile later on
 				if (numPlayers > 0)
 				{
@@ -58,7 +56,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				}
 				break;
 			case 'E':
-				_drawHandler.addObj(destRect, uvCoords, _backgroundTexture.id, color);
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
 				_mapData[y][x] = '.';//so we dont collide with the tile later on
 				if (numEnemys > 0)
 				{
@@ -68,13 +66,13 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 				}
 				break;
 			case 'c':
-				_drawHandler.addObj(destRect, uvCoords, _waterTexture.id, color);
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
 				_cameraPos.x = x;
 				_cameraPos.y = y;
 				_mapData[y][x] = '.';//so we dont collide with the tile later on
 				break;
 			case '.':
-				_drawHandler.addObj(destRect, uvCoords, _backgroundTexture.id, color);
+				_spriteBatch.draw(destRect, uvCoords, Engine::FileLoad::getTexture("Assets/wall.png").id, 0.0f, color);
 				break;
 			default:
 				std::printf("Unexpected symbol %c at (%d,%d)", tile, x, y);
@@ -82,7 +80,7 @@ Harta::Harta(const std::string& fileName, char numPlayers, char numEnemys)
 			}
 		}
 	}
-	_drawHandler.end();
+	_spriteBatch.end();
 	
 }
 
@@ -93,5 +91,6 @@ Harta::~Harta()
 
 void Harta::draw()
 {
-	_drawHandler.renderBatch();
+	_spriteBatch.renderBatch();
+	//std::cout << getMapTile(glm::ivec2(112, 229)) << std::endl;
 }
