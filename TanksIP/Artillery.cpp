@@ -1,17 +1,20 @@
 #include "Artillery.h"
 #include "Defines.h"
 #include<iostream>
+#include "AudioManager.h"
 
 
 Artillery::Artillery(int fireRate, int bulletsPerShot,
-	 float bulletDamage, float bulletSpeed, bool isFromPlayer) :
+	 float bulletDamage, float bulletSpeed, bool isFromPlayer, Engine::SoundEffect fireEffect) :
 	_fireRate(fireRate),
 	_bulletsPerShot(bulletsPerShot),
 	_bulletDamage(bulletDamage),
 	_bulletSpeed(bulletSpeed),
 	_frameCounter(0.0f),
-	_isFromPlayer(isFromPlayer)
+	_isFromPlayer(isFromPlayer),
+	_fireEffect(fireEffect)
 {
+	
 }
 
 
@@ -25,6 +28,7 @@ void Artillery::fire(const glm::vec2& direction, const glm::vec2& position, std:
 	{
 		// Add a new bullet
 		//TODO Add Sound
+		_fireEffect.play(0);
 		//bullets.emplace_back(position + glm::vec2(BULLET_RADIUS ), direction, _bulletDamage, _bulletSpeed);
 
 		glm::ivec2 gridPosition;
