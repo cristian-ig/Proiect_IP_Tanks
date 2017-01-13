@@ -444,6 +444,68 @@ void Menu::arrowPressed() {
 			}
 		}
 	}
+	else if (_menuState == MenuState::MAP_SELECTION_SINGLEPLAYER || _menuState == MenuState::MAP_SELECTION_MULTIPLAYER) {
+		if (_input.isKeyPressed(SDLK_UP)) {
+			if (map_y == 2) {
+				map_y--;
+				MapSelectionButtons[map_x].isSelected = false;
+				map_x += 6;
+				MapSelectionButtons[map_x].isSelected = true;
+			}else if (map_y == 3) {
+				MapSelectionButtons[12].isSelected = false;
+				MapSelectionButtons[map_x].isSelected = true;
+				map_y--;
+			}
+		}
+		else if (_input.isKeyPressed(SDLK_DOWN)) {
+			if (map_y == 1) {
+				map_y++;
+				MapSelectionButtons[map_x].isSelected = false;
+				map_x -= 6;
+				MapSelectionButtons[map_x].isSelected = true;
+			}
+			else if (map_y == 2) {
+				MapSelectionButtons[map_x].isSelected = false;
+				map_y++;
+				MapSelectionButtons[12].isSelected = true;
+			}
+
+		}
+		else if (_input.isKeyPressed(SDLK_LEFT)) {
+			if (map_y == 1) {
+				if (map_x > 6) {
+					MapSelectionButtons[map_x].isSelected = false;
+					map_x--;
+					MapSelectionButtons[map_x].isSelected = true;
+				}
+			}
+			else if (map_y == 2) {
+				if (map_x > 0) {
+					MapSelectionButtons[map_x].isSelected = false;
+					map_x--;
+					MapSelectionButtons[map_x].isSelected = true;
+				}
+			}
+
+		}
+		else if (_input.isKeyPressed(SDLK_RIGHT)) {
+			if (map_y == 1) {
+				if (map_x < 11) {
+					MapSelectionButtons[map_x].isSelected = false;
+					map_x++;
+					MapSelectionButtons[map_x].isSelected = true;
+				}
+			}
+			else if (map_y == 2) {
+				if (map_x < 5) {
+					MapSelectionButtons[map_x].isSelected = false;
+					map_x++;
+					MapSelectionButtons[map_x].isSelected = true;
+				}
+			}
+		}
+
+	}
 
 
 	//enter key
@@ -542,7 +604,7 @@ void Menu::arrowPressed() {
 				_player1 = TankType::DEFAULT;
 				buttonIndex = 5;
 				TankSelectionButtons[buttonIndex].isSelected = true;
-			}
+			}else
 			//back end
 			//panzer
 			if (TankSelectionButtons[1].isSelected && player == 1) {
@@ -563,7 +625,7 @@ void Menu::arrowPressed() {
 
 				//index
 
-			}
+			}else
 			//panzer end
 			//mo9ther russia
 			if (TankSelectionButtons[2].isSelected && player == 1) {
@@ -584,7 +646,7 @@ void Menu::arrowPressed() {
 
 				//index
 
-			}
+			}else
 			//motherrussia end
 			//speed runner
 			if (TankSelectionButtons[3].isSelected && player == 1) {
@@ -602,7 +664,7 @@ void Menu::arrowPressed() {
 				map_x = 6;
 				map_y = 1;
 				MapSelectionButtons[map_x].isSelected = true;
-			}
+			}else
 			//speedrunner end
 			//random
 			if (TankSelectionButtons[4].isSelected && player == 1) {
@@ -620,7 +682,7 @@ void Menu::arrowPressed() {
 				map_x = 6;
 				map_y = 1;
 				MapSelectionButtons[map_x].isSelected = true;
-			}
+			}else
 			//random end
 			//default
 			if (TankSelectionButtons[5].isSelected && player == 1) {
@@ -640,14 +702,42 @@ void Menu::arrowPressed() {
 				MapSelectionButtons[map_x].isSelected = true;
 			}
 			//default end
+			//multyplayer end
 		}
-		//multyplayer end
-
 		//map selection
+		else if (_menuState == MenuState::MAP_SELECTION_SINGLEPLAYER || _menuState == MenuState::MAP_SELECTION_MULTIPLAYER) {
+
+			if (MapSelectionButtons[12].isSelected && _menuState == MenuState::MAP_SELECTION_SINGLEPLAYER) {
+				MapSelectionButtons[12].isSelected = false;
+				_menuState = MenuState::TANK_SELECTION_SINGLEPLAYER;
+				buttonIndex = 5;
+				TankSelectionButtons[buttonIndex].isSelected = true;
+			}
+			else if (MapSelectionButtons[12].isSelected && _menuState == MenuState::MAP_SELECTION_MULTIPLAYER) {
+
+				MapSelectionButtons[12].isSelected = false;
+				_menuState = MenuState::TANK_SELECTION_MULTIPLAYER;
+				buttonIndex = 5;
+				TankSelectionButtons[buttonIndex].isSelected = true;
+			}
+			if (map_x < 12) {
+				_map = map_x;
+				if (_menuState == MenuState::MAP_SELECTION_SINGLEPLAYER)
+					_gamestate = GameState::SINGLEPLAYER;
+				else if (_menuState == MenuState::MAP_SELECTION_MULTIPLAYER)
+					_gamestate = GameState::MULTYPLAYER;
+			}
 
 
 
 		//map end
+		}
+
+		
+
+
+
+		
 	}
 }
 
