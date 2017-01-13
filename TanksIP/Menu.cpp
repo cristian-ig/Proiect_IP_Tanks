@@ -236,6 +236,8 @@ void Menu::menuLoop() {
 		_camera.update();
 
 		_window->swapBuffer();
+		if (_gamestate != GameState::MENU)
+			_menuState = MenuState::EXIT;
 
 	}
 
@@ -309,15 +311,7 @@ void Menu::drawMain() {
 	_shaders.unuse();
 
 }
-void Menu::drawSingleplayer() {
 
-	
-
-}
-void Menu::drawMultiplayer() {
-
-
-}
 void Menu::drawMapSelection() {
 	_shaders.use();
 	_drawHandler.begin();
@@ -346,6 +340,7 @@ void Menu::drawMapSelection() {
 
 
 }
+
 void Menu::drawTankSelection() {
 
 	_shaders.use();

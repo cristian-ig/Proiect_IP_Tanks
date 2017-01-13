@@ -71,13 +71,16 @@ namespace Engine {
 		glGetProgramiv(_programID, GL_LINK_STATUS, (int *)&isLinked);
 		if (isLinked == GL_FALSE)
 		{
-			GLint maxLength = 0;
+			GLint maxLength = 1000;
 			glGetProgramiv(_programID, GL_INFO_LOG_LENGTH, &maxLength);
 
 			//The maxLength includes the NULL character
 			std::vector<char> errorLog(maxLength);
 			glGetProgramInfoLog(_programID, maxLength, &maxLength, &errorLog[0]);
-
+			for (size_t i = 0; i < maxLength; i++) {
+				std::cout << errorLog[i];
+			}
+			std::cout << std::endl;
 			//We don't need the program anymore.
 			glDeleteProgram(_programID);
 			//Don't leak shaders either.

@@ -46,10 +46,8 @@ public:
 	void start(TankType player1, TankType player2);
 	void proccesInput();
 	void drawMain();
-	void drawSingleplayer();
 	void drawTankSelection();
 	void drawMapSelection();
-	void drawMultiplayer();
 	void updateButtons();
 	void arrowPressed();
 	Window *_window;
